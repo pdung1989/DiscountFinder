@@ -41,7 +41,7 @@ const StackScreen = () => {
             name="RecentPosts"
             component={RecentPosts}
             options={{headerShown: false}}
-          ></Stack.Screen>
+          />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />
