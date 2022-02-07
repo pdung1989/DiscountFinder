@@ -1,22 +1,52 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import Home from '../views/Home';
+import Profile from '../views/Profile';
+import Browse from '../views/Browse';
+import AddPost from '../views/AddPost';
+import Favorites from '../views/Favorites';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import RecentPosts from '../views/RecentPosts';
 
-const Navigator = () => {
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const TabScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>This is for Navigation</Text>
-    </SafeAreaView>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home}></Tab.Screen>
+      <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
+      <Tab.Screen name="Add" component={AddPost}></Tab.Screen>
+      <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
+      <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+    </Tab.Navigator>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-});
+const StackScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="MainPage"
+        component={TabScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RecentPosts"
+        component={RecentPosts}
+        options={{headerShown: false}}
+      ></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+const Navigator = () => {
+  return (
+    <NavigationContainer>
+      <StackScreen />
+    </NavigationContainer>
+  );
+};
 
 export default Navigator;

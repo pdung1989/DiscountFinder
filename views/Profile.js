@@ -1,11 +1,10 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text, Button} from 'react-native';
+import {StyleSheet, SafeAreaView, Text} from 'react-native';
 
 const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text>This is for Profile Page</Text>
-      <Button>Logout</Button>
     </SafeAreaView>
   );
 };
