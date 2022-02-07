@@ -1,20 +1,19 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, View, Text, Button} from 'react-native';
 import PropTypes from 'prop-types';
+import {MainContext} from '../contexts/MainContext';
 
-const Login = ({navigation}) => { // props is needed for navigation
+const Login = ({navigation}) => {
+  // props is needed for navigation
+  const {setIsLoggedIn} = useContext(MainContext);
   const logIn = () => {
-      console.log('Button pressed');
+    console.log('Button pressed');
+    setIsLoggedIn(true);
   };
   return (
     <View style={styles.container}>
       <Text>Login</Text>
-      <Button title="Sign in!" onPress={logIn}/>
+      <Button title="Sign in!" onPress={logIn} />
     </View>
   );
 };
