@@ -1,11 +1,21 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+} from 'react-native';
+import PropTypes from 'prop-types';
 
-const Login = () => {
+const Login = ({navigation}) => { // props is needed for navigation
+  const logIn = () => {
+      console.log('Button pressed');
+  };
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>This is for Login View</Text>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Text>Login</Text>
+      <Button title="Sign in!" onPress={logIn}/>
+    </View>
   );
 };
 
@@ -15,8 +25,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 40,
   },
 });
+
+Login.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Login;
