@@ -58,7 +58,13 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users', options);
   };
 
-  return {getUserByToken, postUser};
+   // check user name if it is already used
+   const checkUsername = async (username) => {
+    const result = await doFetch(baseUrl + 'users/username/' + username);
+    return result.available;
+  };
+  
+  return {getUserByToken, postUser, checkUsername};
 };
 
 export {useLogin, useUser};

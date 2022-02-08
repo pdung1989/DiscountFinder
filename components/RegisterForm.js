@@ -109,7 +109,7 @@ const RegisterForm = ({navigation}) => {
         name="full_name"
       />
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };
