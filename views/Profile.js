@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from "react";
 import {
   Image,
   SafeAreaView,
@@ -8,15 +8,33 @@ import {
   View,
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
-import {StatusBar} from 'expo-status-bar';
 import {Ionicons} from '@expo/vector-icons';
 import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from "../components/FocusAwareStatusBar";
+import {uploadsUrl} from '../utils/variables';
+import {useTag} from '../hooks/ApiHooks';
 
 const Profile = ({navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
+  const {user} = useContext(MainContext);
+  const [avatar, setAvatar] = useState('http://placekitten.com/640');
+  const {getFilesByTag} = useTag();
+
+  const fetchAvatar = async () => {
+    try {
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      const avatar = avatarArray.pop();
+      setAvatar(uploadsUrl + avatar.filename);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvatar();
+  }, []);
 
   const logout = async () => {
     setIsLoggedIn(false);
@@ -31,11 +49,11 @@ const Profile = ({navigation}) => {
           <View style={styles.profile}>
             <Image
               source={{
-                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnzCc4_HnkhhWPouqsYT42QDguYx2Qwjzrlg&usqp=CAU',
+                uri: avatar,
               }}
               style={styles.profilePic}
             />
-            <Text style={styles.username}>username</Text>
+            <Text style={styles.username}>{user.username}</Text>
           </View>
         </View>
         <View style={styles.content}>

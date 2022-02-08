@@ -1,17 +1,37 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Searchbar } from "react-native-paper";
 import RecentButton from "../components/RecentButton";
 import CategoryBox from "../components/CategoryBox";
+import {MainContext} from '../contexts/MainContext';
 import { Dimensions } from "react-native";
 import PropTypes from 'prop-types';
+import {useTag} from '../hooks/ApiHooks';
 import FocusAwareStatusBar from "../components/FocusAwareStatusBar";
+import {uploadsUrl} from '../utils/variables';
 
 const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const {user} = useContext(MainContext);
+  const [avatar, setAvatar] = useState('http://placekitten.com/640');
+  const {getFilesByTag} = useTag();
 
   const onChangeSearch = (query) => setSearchQuery(query);
+
+  const fetchAvatar = async () => {
+    try {
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      const avatar = avatarArray.pop();
+      setAvatar(uploadsUrl + avatar.filename);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvatar();
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
@@ -24,12 +44,12 @@ const Home = ({navigation}) => {
                 numberOfLines={2}
                 ellipsizeMode="tail"
               >
-                Tamas
+                {user.username}
               </Text>
             </View>
             <Image
               source={{
-                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnzCc4_HnkhhWPouqsYT42QDguYx2Qwjzrlg&usqp=CAU",
+                uri: avatar,
               }}
               style={styles.profilePic}
             />
