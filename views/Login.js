@@ -1,10 +1,19 @@
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const Login = ({navigation}) => {
   // props is needed for navigation
@@ -42,14 +51,19 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={styles.container}
       >
-        <Text>Login</Text>
-        <LoginForm />
-        <TouchableOpacity
-        onPress={() => navigation.navigate('Register')}
-      >
-        <Text>Register</Text>
-      </TouchableOpacity>
+        <View style={styles.header}></View>
+        <View style={styles.content}>
+          <Text style={styles.loginTitle}>Login</Text>
+          <LoginForm />
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <Text style={styles.registerText}>Register</Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
+      <FocusAwareStatusBar barStyle="light-content" />
     </TouchableOpacity>
   );
 };
@@ -57,9 +71,45 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#1D3354',
+  },
+  header: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  content: {
+    flex: 2,
+    width: '100%',
+    paddingLeft: 17,
+    paddingRight: 17,
+    backgroundColor: '#fefefe',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  loginTitle: {
+    fontSize: 30,
+    color: '#1D3354',
+    fontWeight: '600',
+    alignSelf: 'flex-start',
+    marginTop: 15,
+  },
+  registerButton: {
+    marginTop: 35,
+    backgroundColor: '#467599',
+    width: 140,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  registerText: {
+    fontWeight: '500',
+    fontSize: 24,
+    color: '#fefefe',
   },
 });
 
