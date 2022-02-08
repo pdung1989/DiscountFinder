@@ -1,22 +1,51 @@
-import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {baseUrl} from '../utils/variables';
 
-const useMedia = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text>This is for useMedia hook</Text>
-    </SafeAreaView>
-  );
+// fetch data from endpoint
+const doFetch = async (url, options = {}) => {
+  try {
+    const response = await fetch(url, options);
+    const json = await response.json();
+    if (response.ok) {
+      return json;
+    } else {
+      const message = json.error
+        ? `${json.message}: ${json.error}`
+        : json.message;
+      throw new Error(message || response.statusText);
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-});
+// create useLogin hook for handling login
+const useLogin = () => {
+  const postLogin = async (userCredentials) => {
+    // user credentials format: {username: 'someUsername', password: 'somePassword'}
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userCredentials),
+    };
+    return await doFetch(baseUrl + 'login', options);
+  };
 
-export default {useMedia};
+  return {postLogin};
+};
+
+// useUser hook to handle user token
+const useUser = () => {
+  const getUserByToken = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    return await doFetch(baseUrl + 'users/user', options);
+  };
+
+  return {getUserByToken};
+};
+
+export default {useLogin, useUser};
