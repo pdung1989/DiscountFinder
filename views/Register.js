@@ -9,6 +9,7 @@ import {
 import RegisterForm from '../components/RegisterForm';
 import PropTypes from 'prop-types';
 import {Card} from 'react-native-elements';
+import FocusAwareStatusBar from "../components/FocusAwareStatusBar";
 
 const Register = ({navigation}) => {
   return (
@@ -23,6 +24,7 @@ const Register = ({navigation}) => {
           </TouchableOpacity>
         </Card>
       </View>
+      <FocusAwareStatusBar barStyle="dark-content" />
     </SafeAreaView>
   );
 };
