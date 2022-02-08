@@ -1,17 +1,28 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text, TouchableOpacity} from 'react-native';
-import {Button} from 'react-native-web';
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import RegisterForm from '../components/RegisterForm';
 import PropTypes from 'prop-types';
+import {Card} from 'react-native-elements';
 
 const Register = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Register</Text>
-      <RegisterForm />
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text>Login</Text>
-      </TouchableOpacity>
+      <View style={styles.form}>
+        <Card>
+          <Card.Title h4>Register</Card.Title>
+          <Card.Divider />
+          <RegisterForm />
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text>Login</Text>
+          </TouchableOpacity>
+        </Card>
+      </View>
     </SafeAreaView>
   );
 };
@@ -19,10 +30,10 @@ const Register = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
+    padding: 16,
+  },
+  form: {
+    flex: 8,
   },
 });
 
