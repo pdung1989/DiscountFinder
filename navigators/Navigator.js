@@ -10,6 +10,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RecentPosts from '../views/RecentPosts';
 import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
+import Register from '../views/Register';
+import SuccessfulRegister from '../views/SuccessfulRegister';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -28,6 +30,7 @@ const TabScreen = () => {
 
 const StackScreen = () => {
   const {isLoggedIn} = useContext(MainContext);
+
   return (
     <Stack.Navigator>
       {isLoggedIn ? (
@@ -44,7 +47,14 @@ const StackScreen = () => {
           />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login} />
+        <>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen
+            name="SuccessfulRegister"
+            component={SuccessfulRegister}
+          />
+        </>
       )}
     </Stack.Navigator>
   );

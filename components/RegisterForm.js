@@ -1,10 +1,11 @@
-import React from 'react';
-import {Text, View, TextInput, Button} from 'react-native';
+import React, {useContext} from 'react';
+import {Text, View, TextInput, Button, Alert} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
+import PropTypes from 'prop-types';
 
 // Handle registering new users with useForm
-const RegisterForm = () => {
+const RegisterForm = ({navigation}) => {
   const {postUser} = useUser();
 
   const {
@@ -25,6 +26,9 @@ const RegisterForm = () => {
     try {
       const userData = await postUser(data);
       console.log('register onSubmit', userData);
+      if (userData) {
+        Alert.alert('success', 'User created sucessfully!');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -110,5 +114,8 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+RegisterForm.propTypes = {
+  navigation: PropTypes.object,
+};
 
+export default RegisterForm;
