@@ -5,6 +5,8 @@ import { Searchbar } from "react-native-paper";
 import RecentButton from "../components/RecentButton";
 import CategoryBox from "../components/CategoryBox";
 import { Dimensions } from "react-native";
+import PropTypes from 'prop-types';
+import FocusAwareStatusBar from "../components/FocusAwareStatusBar";
 
 const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -40,7 +42,7 @@ const Home = ({navigation}) => {
           />
         </View>
         <ScrollView>
-          <RecentButton></RecentButton>
+          <RecentButton navigation={navigation}></RecentButton>
           <Text style={styles.title}>Categories</Text>
           <View style={styles.categories}>
             <CategoryBox
@@ -70,7 +72,7 @@ const Home = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-      <StatusBar style="dark" />
+      <FocusAwareStatusBar barStyle="dark-content" />
     </>
   );
 };
@@ -131,5 +133,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 });
+
+Home.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Home;

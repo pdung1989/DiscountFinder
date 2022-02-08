@@ -39,9 +39,9 @@ const styles = (color, side) =>
   });
 
 CategoryBox.propTypes = {
-  icon: PropTypes.func,
-  color: PropTypes.func,
-  title: PropTypes.func,
+  icon: PropTypes.number,
+  color: PropTypes.string,
+  title: PropTypes.string,
   side: PropTypes.string,
 };
 

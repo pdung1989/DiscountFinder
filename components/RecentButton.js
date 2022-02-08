@@ -2,9 +2,9 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
-const RecentButton = () => {
+const RecentButton = ({navigation}) => {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RecentPosts')}>
       <Text style={styles.recentText}>Recent posts</Text>
       <EvilIcons name="arrow-right" size={40} color="#fdfdfd" />
     </TouchableOpacity>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 17,
     marginRight: 17,
-    marginBottom: 30, 
+    marginBottom: 30,
     paddingLeft: 10,
     paddingRight: 10,
   },
