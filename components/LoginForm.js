@@ -97,7 +97,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   icon: {
-    paddingTop: 18,
+    height: 50,
+    paddingRight: 10,
+    paddingLeft: 10,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 6,
+    borderRadius: 6,
   },
   submitButton: {
     marginTop: 15,
