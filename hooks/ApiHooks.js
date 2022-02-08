@@ -37,6 +37,7 @@ const useLogin = () => {
 
 // useUser hook to handle user token
 const useUser = () => {
+  // get user token when login
   const getUserByToken = async (token) => {
     const options = {
       method: 'GET',
@@ -45,7 +46,19 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users/user', options);
   };
 
-  return {getUserByToken};
+  // add new user
+  const postUser = async (data) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await doFetch(baseUrl + 'users', options);
+  };
+
+  return {getUserByToken, postUser};
 };
 
-export default {useLogin, useUser};
+export {useLogin, useUser};
