@@ -60,7 +60,7 @@ const Login = ({navigation}) => {
             style={styles.registerButton}
             onPress={() => navigation.navigate('Register')}
           >
-            <Text style={styles.registerText}>Sign Up</Text>
+            <Text style={styles.registerText}>Sign up here</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -101,22 +101,18 @@ const styles = StyleSheet.create({
     color: '#1D3354',
     marginTop: 40,
     alignSelf: 'center',
-    marginBottom: 10,
   },
   registerButton: {
     backgroundColor: '#fefefe',
     width: 150,
-    height: 50,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#467599',
-    borderRadius: 10,
     alignSelf: 'center',
   },
   registerText: {
     fontWeight: '500',
-    fontSize: 24,
+    fontSize: 18,
     color: '#467599',
   },
 });
