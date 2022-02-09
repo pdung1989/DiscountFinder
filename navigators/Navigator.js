@@ -76,6 +76,7 @@ const StackScreen = () => {
           <Stack.Screen
             name="SuccessfulRegister"
             component={SuccessfulRegister}
+            options={{headerShown: false}}
           />
         </>
       )}

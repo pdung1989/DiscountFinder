@@ -7,6 +7,7 @@ import {
   Platform,
   Keyboard,
   View,
+  Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -51,7 +52,9 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={styles.container}
       >
-        <View style={styles.header}></View>
+        <View style={styles.header}>
+          <Image style={styles.logo} source={require('../assets/logo.png')} />
+        </View>
         <View style={styles.content}>
           <Text style={styles.loginTitle}>Login</Text>
           <LoginForm />
@@ -77,12 +80,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#1D3354',
   },
   header: {
-    flex: 1,
+    flex: 2,
     width: '100%',
     height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    width: '50%',
+    resizeMode: 'contain',
   },
   content: {
-    flex: 2,
+    flex: 3,
     width: '100%',
     paddingLeft: 17,
     paddingRight: 17,
