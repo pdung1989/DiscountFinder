@@ -1,22 +1,21 @@
-import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 
-const MainContext = () => {
+const MainContext = React.createContext({});
+
+const MainProvider = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>This is for useContext</Text>
-    </SafeAreaView>
+    <MainContext.Provider value={{isLoggedIn, setIsLoggedIn, user, setUser}}>
+      {props.children}
+    </MainContext.Provider>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-});
+MainProvider.propTypes = {
+  children: PropTypes.node,
+};
 
-export default {MainContext};
+export {MainContext, MainProvider};
