@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
+  Image,
 } from 'react-native';
 import RegisterForm from '../components/RegisterForm';
 import PropTypes from 'prop-types';
@@ -35,7 +36,7 @@ const Register = ({navigation}) => {
         </SafeAreaView>
         <ScrollView style={styles.content}>
           <Text style={styles.loginTitle}>Sign Up</Text>
-          <RegisterForm />
+          <RegisterForm navigation={navigation}/>
         </ScrollView>
       </KeyboardAvoidingView>
       <FocusAwareStatusBar barStyle="light-content" />
@@ -52,12 +53,12 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 150,
+    height: 140,
+    justifyContent: 'center'
   },
   headerButton: {
     width: 50,
     height: 50,
-    marginTop: 17,
     marginLeft: 17,
     borderRadius: 50,
     backgroundColor: '#fefefe',

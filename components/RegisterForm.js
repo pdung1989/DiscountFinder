@@ -34,7 +34,7 @@ const RegisterForm = ({navigation}) => {
       const userData = await postUser(data);
       console.log('register onSubmit', userData);
       if (userData) {
-        Alert.alert('success', 'User created sucessfully!');
+        navigation.navigate('SuccessfulRegister');
       }
     } catch (error) {
       console.error(error);
