@@ -72,7 +72,7 @@ const StackScreen = () => {
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
           <Stack.Screen
             name="SuccessfulRegister"
             component={SuccessfulRegister}
