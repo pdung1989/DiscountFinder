@@ -19,12 +19,9 @@ const Register = ({navigation}) => {
           <Card.Title h4>Register</Card.Title>
           <Card.Divider />
           <RegisterForm />
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text>Login</Text>
-          </TouchableOpacity>
         </Card>
       </View>
-      <FocusAwareStatusBar barStyle="dark-content" />
+      <FocusAwareStatusBar barStyle="light-content" />
     </SafeAreaView>
   );
 };

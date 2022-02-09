@@ -1,13 +1,15 @@
-import React from 'react';
-import {View, Alert} from 'react-native';
+import React, { useState } from 'react';
+import {View, Alert, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
-import {Input, Button} from 'react-native-elements';
 import PropTypes from 'prop-types';
+import InteractiveTextInput from 'react-native-text-input-interactive';
 
 // Handle registering new users with useForm
 const RegisterForm = ({navigation}) => {
   const {postUser, checkUsername} = useUser();
+  const [hidden, setHidden] = useState(true);
+  const [hiddenConfirm, setHiddenConfirm] = useState(true);
 
   const {
     control,
@@ -63,8 +65,10 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={{borderWidth: 1, padding: 10}}
+          <InteractiveTextInput
+            textInputStyle={styles.input}
+            animatedPlaceholderTextColor={'#1D3354'}
+            mainColor={'#467599'}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -92,15 +96,21 @@ const RegisterForm = ({navigation}) => {
           */
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={{borderWidth: 1, padding: 10}}
+          <InteractiveTextInput
+            textInputStyle={styles.input}
+            animatedPlaceholderTextColor={'#1D3354'}
+            mainColor={'#467599'}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            secureTextEntry={true}
+            secureTextEntry={hidden}
             placeholder="Password"
             errorMessage={errors.password && errors.password.message}
+            enableIcon
+            iconContainerStyle={styles.icon}
+            iconImageSource={require("../assets/visibility-button.png")}
+            onIconPress={() => {setHidden(!hidden)}}
           />
         )}
         name="password"
@@ -121,14 +131,20 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={{borderWidth: 1, padding: 10}}
+          <InteractiveTextInput
+            textInputStyle={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
+            animatedPlaceholderTextColor={'#1D3354'}
+            mainColor={'#467599'}
             value={value}
             autoCapitalize="none"
-            secureTextEntry={true}
+            secureTextEntry={hiddenConfirm}
             placeholder="Confirm Password"
+            enableIcon
+            iconContainerStyle={styles.icon}
+            iconImageSource={require("../assets/visibility-button.png")}
+            onIconPress={() => {setHiddenConfirm(!hiddenConfirm)}}
             errorMessage={
               errors.confirmPassword && errors.confirmPassword.message
             }
@@ -147,8 +163,10 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={{borderWidth: 1, padding: 10}}
+          <InteractiveTextInput
+            textInputStyle={styles.input}
+            animatedPlaceholderTextColor={'#1D3354'}
+            mainColor={'#467599'}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -169,8 +187,10 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            style={{borderWidth: 1, padding: 10}}
+          <InteractiveTextInput
+            textInputStyle={styles.input}
+            animatedPlaceholderTextColor={'#1D3354'}
+            mainColor={'#467599'}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -181,7 +201,9 @@ const RegisterForm = ({navigation}) => {
         )}
         name="full_name"
       />
-      <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.loginText}>Sign Up</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -189,5 +211,37 @@ const RegisterForm = ({navigation}) => {
 RegisterForm.propTypes = {
   navigation: PropTypes.object,
 };
+
+const styles = StyleSheet.create({
+  input: {
+    marginTop: 20,
+    width: '100%',
+  },
+  icon: {
+    height: 50,
+    paddingRight: 10,
+    paddingLeft: 10,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 6,
+    borderRadius: 6,
+  },
+  submitButton: {
+    marginTop: 15,
+    backgroundColor: '#467599',
+    width: 150,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  loginText: {
+    fontWeight: '500',
+    fontSize: 24,
+    color: '#fefefe',
+  },
+});
 
 export default RegisterForm;
