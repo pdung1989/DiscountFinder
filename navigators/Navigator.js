@@ -4,26 +4,89 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Browse from '../views/Browse';
-import AddPost from '../views/AddPost';
+import Add from '../views/Add';
 import Favorites from '../views/Favorites';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RecentPosts from '../views/RecentPosts';
+import Single from '../views/Single';
 import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabScreen = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home}></Tab.Screen>
-      <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
-      <Tab.Screen name="Add" component={AddPost}></Tab.Screen>
-      <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
-      <Tab.Screen name="Profile" component={Profile}></Tab.Screen>
+    <Tab.Navigator
+      activeColor="#4B88A2"
+      barStyle={{backgroundColor: '#FFFFFF'}}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: true,
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color}) => (
+            <Ionicons name="md-home-outline" color={color} size={26} />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Browse"
+        component={Browse}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Browse',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="menu" color={color} size={26} />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Add"
+        component={Add}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Add',
+          tabBarIcon: ({color}) => (
+            <Ionicons name="add-circle-outline" color={color} size={26} />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{
+          headerShown: true,
+          tabBarLabel: 'Favorite',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="heart-outline"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: true,
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="account-circle-outline"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      ></Tab.Screen>
     </Tab.Navigator>
   );
 };
@@ -40,11 +103,16 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          {/* <Stack.Screen
+            name="List"
+            component={TabScreen}
+            options={{headerTransparent: true, headerShown: false}}
+          ></Stack.Screen> */}
           <Stack.Screen
-            name="RecentPosts"
-            component={RecentPosts}
+            name="Single"
+            component={Single}
             options={{headerShown: false}}
-          />
+          ></Stack.Screen>
         </>
       ) : (
         <>

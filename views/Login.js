@@ -1,5 +1,12 @@
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,11 +51,9 @@ const Login = ({navigation}) => {
       >
         <Text>Login</Text>
         <LoginForm />
-        <TouchableOpacity
-        onPress={() => navigation.navigate('Register')}
-      >
-        <Text>Register</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text>Register</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableOpacity>
   );

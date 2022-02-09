@@ -22,7 +22,7 @@ const Home = ({navigation}) => {
           <Text>You are on Home Screen</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('RecentPosts')}
+            onPress={() => navigation.navigate('Browse')}
           >
             <Text>Open Recent Posts</Text>
           </TouchableOpacity>

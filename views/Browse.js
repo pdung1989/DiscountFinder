@@ -1,10 +1,12 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import List from '../components/List';
+import PropTypes from 'prop-types';
 
-const Browse = () => {
+const Browse = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is for Browse Page</Text>
+      <List navigation={navigation} style={styles.infoArea} />
     </SafeAreaView>
   );
 };
@@ -12,11 +14,18 @@ const Browse = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 40,
+    backgroundColor: '#ffffff',
+    height: '100%',
+    paddingTop: 0,
+  },
+  infoArea: {
+    flex: 1,
   },
 });
+
+Browse.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Browse;
