@@ -85,7 +85,7 @@ const LoginForm = () => {
       {errors.password && <Text>This is required.</Text>}
 
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
-        <Ionicons name={'arrow-forward-outline'} size={40} color={'#fefefe'} />
+        <Text style={styles.loginText}>Log In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -109,12 +109,17 @@ const styles = StyleSheet.create({
   submitButton: {
     marginTop: 15,
     backgroundColor: '#467599',
-    width: 70,
+    width: 150,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    marginLeft: 'auto',
+    alignSelf: 'center',
+  },
+  loginText: {
+    fontWeight: '500',
+    fontSize: 24,
+    color: '#fefefe',
   },
 });
 
