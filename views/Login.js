@@ -7,6 +7,7 @@ import {
   Platform,
   Keyboard,
   View,
+  Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -51,15 +52,18 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={styles.container}
       >
-        <View style={styles.header}></View>
+        <View style={styles.header}>
+          <Image style={styles.logo} source={require('../assets/logo.png')} />
+        </View>
         <View style={styles.content}>
           <Text style={styles.loginTitle}>Login</Text>
           <LoginForm />
+          <Text style={styles.noAccountText}>Don't have an account yet?</Text>
           <TouchableOpacity
             style={styles.registerButton}
             onPress={() => navigation.navigate('Register')}
           >
-            <Text style={styles.registerText}>Register</Text>
+            <Text style={styles.registerText}>Sign up here</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -76,12 +80,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#1D3354',
   },
   header: {
-    flex: 1,
+    flex: 2,
     width: '100%',
     height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    width: '50%',
+    resizeMode: 'contain',
   },
   content: {
-    flex: 2,
+    flex: 3,
     width: '100%',
     paddingLeft: 17,
     paddingRight: 17,
@@ -96,20 +106,23 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 15,
   },
+  noAccountText: {
+    color: '#1D3354',
+    marginTop: 40,
+    alignSelf: 'center',
+  },
   registerButton: {
-    marginTop: 35,
-    backgroundColor: '#467599',
-    width: 140,
-    height: 50,
+    backgroundColor: '#fefefe',
+    width: 150,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
     alignSelf: 'center',
   },
   registerText: {
     fontWeight: '500',
-    fontSize: 24,
-    color: '#fefefe',
+    fontSize: 18,
+    color: '#467599',
   },
 });
 
