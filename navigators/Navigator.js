@@ -12,81 +12,41 @@ import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabScreen = () => {
   return (
-    <Tab.Navigator
-      activeColor="#4B88A2"
-      barStyle={{backgroundColor: '#FFFFFF'}}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: true,
-          tabBarLabel: 'Home',
-          tabBarIcon: ({color}) => (
-            <Ionicons name="md-home-outline" color={color} size={26} />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Browse"
-        component={Browse}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Browse',
-          tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons name="menu" color={color} size={26} />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Add"
-        component={Add}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Add',
-          tabBarIcon: ({color}) => (
-            <Ionicons name="add-circle-outline" color={color} size={26} />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Favorites"
-        component={Favorites}
-        options={{
-          headerShown: true,
-          tabBarLabel: 'Favorite',
-          tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons
-              name="heart-outline"
-              color={color}
-              size={26}
-            />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          headerShown: true,
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons
-              name="account-circle-outline"
-              color={color}
-              size={26}
-            />
-          ),
-        }}
-      ></Tab.Screen>
+    <Tab.Navigator screenOptions={({route}) => ({
+      tabBarIcon: ({color}) => {
+        let iconName;
+        switch (route.name) {
+          case 'Home':
+            iconName = 'home-outline';
+            break;
+          case 'Browse':
+            iconName = 'menu-outline';
+            break;
+          case 'Add':
+            iconName = 'add-circle-outline';
+            break;
+          case 'Favorites':
+            iconName = 'heart-outline';
+            break;
+          case 'Profile':
+            iconName = 'person-circle-outline';
+            break;
+        }
+        return <Ionicons name={iconName} size={30} color={color} />;
+      },
+    })}>
+      <Tab.Screen name="Home" component={Home} options={{headerShown: false}}></Tab.Screen>
+      <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
+      <Tab.Screen name="Add" component={AddPost}></Tab.Screen>
+      <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
+      <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}}></Tab.Screen>
     </Tab.Navigator>
   );
 };
@@ -116,11 +76,12 @@ const StackScreen = () => {
         </>
       ) : (
         <>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
           <Stack.Screen
             name="SuccessfulRegister"
             component={SuccessfulRegister}
+            options={{headerShown: false}}
           />
         </>
       )}

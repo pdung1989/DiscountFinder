@@ -9,7 +9,7 @@ const App = () => {
       <MainProvider>
         <Navigator />
       </MainProvider>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </>
   );
 };
