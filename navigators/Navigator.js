@@ -4,10 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Browse from '../views/Browse';
-import AddPost from '../views/AddPost';
+import Add from '../views/Add';
 import Favorites from '../views/Favorites';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RecentPosts from '../views/RecentPosts';
+import Single from '../views/Single';
 import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
 import Register from '../views/Register';
@@ -63,11 +63,16 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          {/* <Stack.Screen
+            name="List"
+            component={TabScreen}
+            options={{headerTransparent: true, headerShown: false}}
+          ></Stack.Screen> */}
           <Stack.Screen
-            name="RecentPosts"
-            component={RecentPosts}
+            name="Single"
+            component={Single}
             options={{headerShown: false}}
-          />
+          ></Stack.Screen>
         </>
       ) : (
         <>
