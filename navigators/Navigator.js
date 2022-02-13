@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
-import Profile from '../views/Profile';
+import Profile from '../components/Profile';
 import Browse from '../views/Browse';
 import Add from '../views/Add';
 import Favorites from '../views/Favorites';
@@ -13,6 +13,7 @@ import Login from '../views/Login';
 import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
 import { Ionicons } from "@expo/vector-icons";
+import MyProfile from '../views/MyProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -46,7 +47,7 @@ const TabScreen = () => {
       <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
       <Tab.Screen name="Add" component={Add}></Tab.Screen>
       <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
-      <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}}></Tab.Screen>
+      <Tab.Screen name="Profile" component={MyProfile} options={{headerShown: false}}></Tab.Screen>
     </Tab.Navigator>
   );
 };

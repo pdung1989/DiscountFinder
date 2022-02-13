@@ -1,7 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,12 +10,12 @@ import {
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Ionicons} from '@expo/vector-icons';
-import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FocusAwareStatusBar from "../components/FocusAwareStatusBar";
+import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 import {useTag} from '../hooks/ApiHooks';
+import {Dimensions} from 'react-native';
 
 const Profile = ({navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
@@ -46,34 +47,27 @@ const Profile = ({navigation}) => {
       <SafeAreaView style={styles.full}>
         <View style={styles.header}>
           <Text style={styles.title}>My Profile</Text>
-          <View style={styles.profile}>
-            <Image
-              source={{
-                uri: avatar,
-              }}
-              style={styles.profilePic}
-            />
-            <Text style={styles.username}>{user.username}</Text>
+          <Ionicons style={styles.settingsIcon} name="settings-outline" size={30} color="#fefefe" />
+        </View>
+        <ScrollView style={styles.scroll}>
+          <View style={styles.profilePhotoBackground}>
           </View>
-        </View>
-        <View style={styles.content}>
-          <TouchableOpacity style={styles.button}>
-            <Ionicons name="ios-eye-outline" size={30} color="#1D3354" />
-            <Text style={styles.settingsText}>View profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <FontAwesome name="pencil-square-o" size={30} color="#1D3354" />
-            <Text style={styles.settingsText}>Edit profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Ionicons name="key-outline" size={30} color="#1D3354" />
-            <Text style={styles.settingsText}>Change password</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={logout}>
-            <Ionicons name="ios-exit-outline" size={30} color="#D64045" />
-            <Text style={styles.logoutText}>Log out</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.content}>
+            <View style={styles.profile}>
+              <Image
+                source={{
+                  uri: avatar,
+                }}
+                style={styles.profilePic}
+              />
+              <Text style={styles.username}>{user.username}</Text>
+              <Text style={styles.fullName}>{user.full_name}</Text>
+              <View style={styles.line}></View>
+            </View>
+            <View style={styles.feed}>
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
@@ -86,36 +80,67 @@ const styles = StyleSheet.create({
     backgroundColor: '#1D3354',
   },
   header: {
-    height: 190,
+    height: 70,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 30,
+    color: '#fdfdfd',
+    fontWeight: 'bold',
+    marginTop: 15,
     marginLeft: 17,
-    marginTop: 20,
+  },
+  settingsIcon: {
+    marginTop: 15,
+    marginRight: 17,
+  },
+  profilePhotoBackground: {
+    height: 70,
+    backgroundColor: '#1D3354',
+  },
+  scroll: {
+    backgroundColor: '#fefefe',
   },
   profile: {
-    flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
   },
   profilePic: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 100,
+    position: 'relative',
+    top: -60,
   },
   username: {
-    color: '#fdfdfd',
+    color: '#1D3354',
+    fontWeight: '600',
     paddingLeft: 15,
-    fontSize: 20,
+    paddingRight: 15,
+    fontSize: 26,
+    marginTop: -50,
+  },
+  fullName: {
+    color: '#1D3354',
+    paddingLeft: 17,
+    paddingRight: 17,
+    fontSize: 16,
+  },
+  line: {
+    width: Dimensions.get('window').width - 17 - 17,
+    height: 1,
+    backgroundColor: '#cecece',
+    marginTop: 15,
   },
   content: {
     flex: 1,
-    backgroundColor: '#fdfdfd',
-    paddingTop: 12,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    backgroundColor: '#fefefe',
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 34,
-    color: '#fdfdfd',
-    fontWeight: 'bold',
+  feed: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 15,
   },
   button: {
     flexDirection: 'row',
