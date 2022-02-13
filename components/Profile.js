@@ -10,18 +10,28 @@ import {
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Ionicons} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 import {useTag} from '../hooks/ApiHooks';
 import {Dimensions} from 'react-native';
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
 
 const Profile = ({navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
   const {user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
+
+  const {Popover} = renderers;
 
   const fetchAvatar = async () => {
     try {
@@ -37,38 +47,68 @@ const Profile = ({navigation}) => {
     fetchAvatar();
   }, []);
 
-  const logout = async () => {
-    setIsLoggedIn(false);
-    await AsyncStorage.clear();
-    navigation.navigate('Login');
-  };
   return (
     <>
-      <SafeAreaView style={styles.full}>
-        <View style={styles.header}>
-          <Text style={styles.title}>My Profile</Text>
-          <Ionicons style={styles.settingsIcon} name="settings-outline" size={30} color="#fefefe" />
-        </View>
-        <ScrollView style={styles.scroll}>
-          <View style={styles.profilePhotoBackground}>
+      <MenuProvider
+        style={styles.container}
+        customStyles={{backdrop: styles.backdrop}}
+      >
+        <SafeAreaView style={styles.full}>
+          <View style={styles.header}>
+            <Text style={styles.title}>My Profile</Text>
+            <Menu renderer={Popover} rendererProps={{placement: 'bottom'}}>
+              <MenuTrigger>
+                <Ionicons
+                  style={menuStyles.settingsIcon}
+                  name="settings-outline"
+                  size={32}
+                  color="#fefefe"
+                />
+              </MenuTrigger>
+              <MenuOptions style={menuStyles.menuOptions}>
+                <TouchableOpacity style={menuStyles.button}>
+                  <FontAwesome
+                    name="pencil-square-o"
+                    size={26}
+                    color="#1D3354"
+                  />
+                  <Text style={menuStyles.settingsText}>Edit profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={menuStyles.button}>
+                  <Ionicons name="key-outline" size={26} color="#1D3354"/>
+                  <Text style={menuStyles.settingsText}>Change password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={menuStyles.button}
+                  onPress={async () => {
+                    await AsyncStorage.clear();
+                    setIsLoggedIn(false);
+                  }}
+                >
+                  <Ionicons name="ios-exit-outline" size={26} color="#D64045" />
+                  <Text style={menuStyles.logoutText}>Log out</Text>
+                </TouchableOpacity>
+              </MenuOptions>
+            </Menu>
           </View>
-          <View style={styles.content}>
-            <View style={styles.profile}>
-              <Image
-                source={{
-                  uri: avatar,
-                }}
-                style={styles.profilePic}
-              />
-              <Text style={styles.username}>{user.username}</Text>
-              <Text style={styles.fullName}>{user.full_name}</Text>
-              <View style={styles.line}></View>
+          <ScrollView style={styles.scroll}>
+            <View style={styles.profilePhotoBackground}></View>
+            <View style={styles.content}>
+              <View style={styles.profile}>
+                <Image
+                  source={{
+                    uri: avatar,
+                  }}
+                  style={styles.profilePic}
+                />
+                <Text style={styles.username}>{user.username}</Text>
+                <Text style={styles.fullName}>{user.full_name}</Text>
+              </View>
+              <View style={styles.feed}></View>
             </View>
-            <View style={styles.feed}>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </MenuProvider>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
   );
@@ -83,17 +123,14 @@ const styles = StyleSheet.create({
     height: 70,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 15,
+    marginRight: 17,
+    marginLeft: 17,
   },
   title: {
     fontSize: 30,
     color: '#fdfdfd',
     fontWeight: 'bold',
-    marginTop: 15,
-    marginLeft: 17,
-  },
-  settingsIcon: {
-    marginTop: 15,
-    marginRight: 17,
   },
   profilePhotoBackground: {
     height: 70,
@@ -126,12 +163,6 @@ const styles = StyleSheet.create({
     paddingRight: 17,
     fontSize: 16,
   },
-  line: {
-    width: Dimensions.get('window').width - 17 - 17,
-    height: 1,
-    backgroundColor: '#cecece',
-    marginTop: 15,
-  },
   content: {
     flex: 1,
     backgroundColor: '#fefefe',
@@ -142,23 +173,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
+});
+
+const menuStyles = StyleSheet.create({
+  settingsIcon: {
+    padding: 5,
+    paddingTop: 0,
+  },
+  menuOptions: {
+    padding: 10,
+  },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 45,
-    width: '100%',
-    paddingLeft: 17,
-    marginBottom: 12,
+    height: 40,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
   settingsText: {
     color: '#1D3354',
     paddingLeft: 12,
-    fontSize: 16,
+    fontSize: 14,
   },
   logoutText: {
     color: '#D64045',
     paddingLeft: 12,
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 
