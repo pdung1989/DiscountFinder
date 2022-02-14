@@ -61,7 +61,7 @@ const Profile = ({navigation}) => {
             <Ionicons name="ios-eye-outline" size={30} color="#1D3354" />
             <Text style={styles.settingsText}>View profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Edit profile")}>
             <FontAwesome name="pencil-square-o" size={30} color="#1D3354" />
             <Text style={styles.settingsText}>Edit profile</Text>
           </TouchableOpacity>

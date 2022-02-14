@@ -75,7 +75,20 @@ const useUser = () => {
     return await doFetch(`${baseUrl}users/${userId}`, options);
   };
 
-  return {getUserByToken, postUser, checkUsername, getUserById};
+  // edit user
+  const putUser = async (data, token, userId) => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json'
+      },
+        body: JSON.stringify(data),
+    };
+    return await doFetch(`${baseUrl}users`, options);
+  }
+
+  return {getUserByToken, postUser, checkUsername, getUserById, putUser};
 };
 
 const useMedia = () => {

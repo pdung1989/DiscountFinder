@@ -13,6 +13,7 @@ import Login from '../views/Login';
 import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
 import { Ionicons } from "@expo/vector-icons";
+import EditProfile from '../views/EditProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -58,21 +59,16 @@ const StackScreen = () => {
     <Stack.Navigator>
       {isLoggedIn ? (
         <>
-          <Stack.Screen
-            name="MainPage"
-            component={TabScreen}
-            options={{headerShown: false}}
+          <Stack.Screen name="MainPage" component={TabScreen} options={{headerShown: false}}
           />
           {/* <Stack.Screen
             name="List"
             component={TabScreen}
             options={{headerTransparent: true, headerShown: false}}
           ></Stack.Screen> */}
-          <Stack.Screen
-            name="Single"
-            component={Single}
-            options={{headerShown: false}}
-          ></Stack.Screen>
+          <Stack.Screen name="Single" component={Single} options={{headerShown: false}}
+         />
+         <Stack.Screen name="Edit profile" component={EditProfile} options={{headerShown: false}} />
         </>
       ) : (
         <>
