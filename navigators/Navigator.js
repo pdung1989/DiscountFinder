@@ -44,7 +44,7 @@ const TabScreen = () => {
               iconName = 'person-circle-outline';
               break;
           }
-          return <Ionicons name={iconName} size={40} color={color} />;
+          return <Ionicons name={iconName} size={35} color={color} />;
         },
       })}
     >

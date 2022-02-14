@@ -76,17 +76,17 @@ const useUser = () => {
   };
 
   // edit user
-  const putUser = async (data, token, userId) => {
+  const putUser = async (data, token) => {
     const options = {
       method: 'PUT',
       headers: {
         'x-access-token': token,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-        body: JSON.stringify(data),
+      body: JSON.stringify(data),
     };
     return await doFetch(`${baseUrl}users`, options);
-  }
+  };
 
   return {getUserByToken, postUser, checkUsername, getUserById, putUser};
 };
@@ -158,4 +158,3 @@ const useTag = () => {
 };
 
 export {useLogin, useUser, useMedia, useComment, useTag};
-
