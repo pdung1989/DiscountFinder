@@ -44,7 +44,7 @@ const TabScreen = () => {
     })}>
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}}></Tab.Screen>
       <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
-      <Tab.Screen name="Add" component={AddPost}></Tab.Screen>
+      <Tab.Screen name="Add" component={Add}></Tab.Screen>
       <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
       <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}}></Tab.Screen>
     </Tab.Navigator>
