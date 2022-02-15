@@ -4,7 +4,7 @@ import { EvilIcons } from "@expo/vector-icons";
 
 const RecentButton = ({navigation}) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RecentPosts')}>
+    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Browse')}>
       <Text style={styles.recentText}>Newest posts</Text>
       <EvilIcons name="arrow-right" size={40} color="#fdfdfd" />
     </TouchableOpacity>
