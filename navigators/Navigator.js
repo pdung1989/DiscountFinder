@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
-import Profile from '../views/Profile';
+import Profile from '../components/Profile';
 import Browse from '../views/Browse';
 import Add from '../views/Add';
 import Favorites from '../views/Favorites';
@@ -21,10 +21,8 @@ const Stack = createNativeStackNavigator();
 const TabScreen = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#467599',
-      }}
       screenOptions={({route}) => ({
+        activeTintColor: '#467599',
         tabBarIcon: ({color}) => {
           let iconName;
           switch (route.name) {
