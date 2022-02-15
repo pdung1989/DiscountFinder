@@ -61,7 +61,7 @@ const Profile = ({navigation}) => {
                 <Ionicons
                   style={menuStyles.settingsIcon}
                   name="settings-outline"
-                  size={32}
+                  size={30}
                   color="#fefefe"
                 />
               </MenuTrigger>
@@ -69,14 +69,10 @@ const Profile = ({navigation}) => {
                 <TouchableOpacity style={menuStyles.button}>
                   <FontAwesome
                     name="pencil-square-o"
-                    size={26}
+                    size={24}
                     color="#1D3354"
                   />
                   <Text style={menuStyles.settingsText}>Edit profile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={menuStyles.button}>
-                  <Ionicons name="key-outline" size={26} color="#1D3354"/>
-                  <Text style={menuStyles.settingsText}>Change password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={menuStyles.button}
@@ -85,7 +81,7 @@ const Profile = ({navigation}) => {
                     setIsLoggedIn(false);
                   }}
                 >
-                  <Ionicons name="ios-exit-outline" size={26} color="#D64045" />
+                  <Ionicons name="ios-exit-outline" size={24} color="#D64045" />
                   <Text style={menuStyles.logoutText}>Log out</Text>
                 </TouchableOpacity>
               </MenuOptions>
@@ -187,7 +183,7 @@ const menuStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
-    marginBottom: 10,
+    marginBottom: 5,
     paddingHorizontal: 10,
   },
   settingsText: {
