@@ -14,7 +14,9 @@ import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
-import {IconButton} from 'react-native-paper';
+import {Title, IconButton} from 'react-native-paper';
+import {Text} from 'react-native-elements';
+import {SafeAreaView} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -57,6 +59,7 @@ const TabScreen = ({navigation}) => {
         name="Add"
         component={Add}
         options={{
+          headerTitle: () => <Title>Add a new post</Title>,
           headerLeft: () => (
             <IconButton
               icon="arrow-left"
