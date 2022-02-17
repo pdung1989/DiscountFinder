@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -20,7 +20,10 @@ import {
   Chip,
   FAB,
   IconButton,
+  ActivityIndicator,
+  Divider,
 } from 'react-native-paper';
+import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
 import {useUser, useTag, useFavorite} from '../hooks/ApiHooks';
@@ -32,6 +35,7 @@ import {MainContext} from '../contexts/MainContext';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
+  const videoRef = useRef(null);
   const {getUserById} = useUser();
   const {convertUTCToLocalTime} = useTime();
   const {getFavoritesByFileId, postFavorite, deleteFavorite} = useFavorite();
@@ -96,94 +100,113 @@ const Single = ({route, navigation}) => {
   }, [likedByUser]);
 
   return (
-    <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : ''}>
-        <SafeAreaView>
-          <Card style={{position: 'relative', height: '100%'}}>
-            <Card.Cover
-              source={{uri: uploadsUrl + file.filename}}
-              style={{height: 200}}
-            />
-            <View style={styles.fabRight}>
-              <Ionicons name="heart-sharp" size={24} color="#d64045" />
-              <Text style={{alignSelf: 'center', fontWeight: '700'}}>
-                {likes.length}
-              </Text>
-            </View>
-            <FAB
-              style={styles.fabLeft}
-              small
-              icon="arrow-left"
-              onPress={() => navigation.navigate('Browse')}
-            />
-            <Card.Title
-              title={file.title}
-              titleStyle={styles.cardTitle}
-              right={() => (
-                <View style={styles.iconGroup}>
-                  {likedByUser ? (
-                    <IconButton
-                      icon="cards-heart"
-                      size={28}
-                      onPress={() => {
-                        removeFavorite();
-                      }}
-                      color="#d64045"
-                    />
-                  ) : (
-                    <IconButton
-                      icon="heart-outline"
-                      size={28}
-                      onPress={() => {
-                        createFavorite();
-                        fetchLikes();
-                      }}
-                    />
-                  )}
-                  <IconButton icon="square-edit-outline" size={28} />
-                  <IconButton icon="delete" size={28} />
-                </View>
+    <SafeAreaView>
+      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : ''}
+        >
+          <SafeAreaView>
+            <Card style={{position: 'relative', height: '100%'}}>
+              <Card.Title
+                title={file.title}
+                titleStyle={styles.cardTitle}
+                left={() => (
+                  <IconButton
+                    icon="arrow-left"
+                    onPress={() => navigation.navigate('Browse')}
+                  />
+                )}
+                right={() => (
+                  <View style={styles.iconGroup}>
+                    {likedByUser ? (
+                      <IconButton
+                        icon="cards-heart"
+                        size={25}
+                        onPress={() => {
+                          removeFavorite();
+                        }}
+                        color="#d64045"
+                      />
+                    ) : (
+                      <IconButton
+                        icon="heart-outline"
+                        size={25}
+                        onPress={() => {
+                          createFavorite();
+                          fetchLikes();
+                        }}
+                      />
+                    )}
+                    <IconButton icon="square-edit-outline" size={25} />
+                    <IconButton icon="delete" size={25} />
+                  </View>
+                )}
+              />
+              {file.media_type === 'image' ? (
+                <Card.Cover
+                  source={{uri: uploadsUrl + file.filename}}
+                  style={{height: 200}}
+                  PlaceholderContent={
+                    <ActivityIndicator animating={true} color="#d64045" />
+                  }
+                />
+              ) : (
+                <>
+                  <Video
+                    ref={videoRef}
+                    style={{height: 200}}
+                    source={{
+                      uri: uploadsUrl + file.filename,
+                    }}
+                    posterSource={{
+                      uri: uploadsUrl + file.screenshot,
+                    }}
+                    useNativeControls={true}
+                    isLooping
+                    resizeMode="center"
+                    onError={(error) => {
+                      console.error('<Video> error', error);
+                    }}
+                  ></Video>
+                </>
               )}
-            />
-            <List.Item
-              title={postOwner.username}
-              titleStyle={{fontSize: 14, fontWeight: '500'}}
-              left={() => <AvatarComponent userId={file.user_id} />}
-              style={{paddingLeft: 15, paddingTop: 0}}
-            />
-            <Card.Content>
-              <Paragraph>{file.description}</Paragraph>
-              <View style={styles.tag}>
-                <Chip style={{height: 30}}>Clothing</Chip>
-                <Text style={{paddingTop: 7}}>
-                  {convertUTCToLocalTime(file.time_added)}
+              <View style={styles.fabRight}>
+                <Ionicons name="heart-sharp" size={16} color="#d64045" />
+                <Text style={{alignSelf: 'center', fontWeight: '700'}}>
+                  {likes.length}
                 </Text>
               </View>
-              <CommentPostForm fileId={file.file_id} />
-              <ListComment fileId={file.file_id} />
-            </Card.Content>
-          </Card>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    </TouchableOpacity>
+              <List.Item
+                title={postOwner.username}
+                titleStyle={{fontSize: 14, fontWeight: '500'}}
+                left={() => <AvatarComponent userId={file.user_id} />}
+                style={{paddingLeft: 15, paddingTop: 5}}
+              />
+              <Card.Content>
+                <Paragraph>{file.description}</Paragraph>
+                <View style={styles.tag}>
+                  <Chip style={{height: 30}}>Clothing</Chip>
+                  <Text style={{paddingTop: 7}}>
+                    {convertUTCToLocalTime(file.time_added)}
+                  </Text>
+                </View>
+                <CommentPostForm fileId={file.file_id} />
+                <ListComment fileId={file.file_id} />
+              </Card.Content>
+            </Card>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  fabLeft: {
-    position: 'absolute',
-    margin: 16,
-    backgroundColor: '#fafafa',
-    top: 0,
-    left: 0,
-  },
-
   fabRight: {
     flexDirection: 'row',
     position: 'absolute',
-    top: 16,
+    top: 280,
     right: 16,
-    backgroundColor: '#fafafa',
     padding: 5,
     borderRadius: 50,
   },
@@ -195,7 +218,6 @@ const styles = StyleSheet.create({
 
   iconGroup: {
     flexDirection: 'row',
-    paddingRight: 10,
     alignContent: 'center',
   },
 

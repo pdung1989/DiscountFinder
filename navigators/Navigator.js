@@ -14,11 +14,14 @@ import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
+import {Title, IconButton} from 'react-native-paper';
+import {Text} from 'react-native-elements';
+import {SafeAreaView} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabScreen = () => {
+const TabScreen = ({navigation}) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -52,7 +55,21 @@ const TabScreen = () => {
         options={{headerShown: false}}
       ></Tab.Screen>
       <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
-      <Tab.Screen name="Add" component={Add}></Tab.Screen>
+      <Tab.Screen
+        name="Add"
+        component={Add}
+        options={{
+          headerTitle: () => <Title>Add a new post</Title>,
+          headerLeft: () => (
+            <IconButton
+              icon="arrow-left"
+              onPress={() => {
+                navigation.navigate('Browse');
+              }}
+            />
+          ),
+        }}
+      ></Tab.Screen>
       <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
       <Tab.Screen
         name="Profile"

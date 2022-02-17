@@ -113,6 +113,7 @@ const useUser = () => {
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [loading, setLoading] = useState(false);
   const loadMedia = async (start = 0, limit = 10) => {
     try {
       const json = await useTag().getFilesByTag(appId);
@@ -134,7 +135,25 @@ const useMedia = () => {
     loadMedia();
   }, []);
 
-  return {mediaArray};
+  const postMedia = async (formData, token) => {
+    setLoading(true);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    };
+
+    const result = await doFetch(baseUrl + 'media', options);
+    result && setLoading(false);
+
+    return result;
+  };
+
+  return {mediaArray, postMedia, loading};
 };
 
 const useComment = () => {
