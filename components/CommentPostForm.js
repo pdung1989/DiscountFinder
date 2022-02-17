@@ -1,5 +1,5 @@
 import {View, Alert, StyleSheet} from 'react-native';
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useComment} from '../hooks/ApiHooks';
@@ -48,7 +48,6 @@ const CommentPostForm = ({navigation, fileId}) => {
             onPress: () => {
               reset();
               setUpdate(update + 1);
-              //navigation.navigate('Single');
             },
           },
         ]);

@@ -1,12 +1,14 @@
 import {FlatList, View, StyleSheet, Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
+import {MainContext} from '../contexts/MainContext';
 
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
+  const {update} = useContext(MainContext);
 
   const fetchComments = async () => {
     try {
@@ -19,7 +21,7 @@ const ListComment = ({fileId}) => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [update]);
 
   return (
     <View style={{height: 170, marginTop: 7}}>

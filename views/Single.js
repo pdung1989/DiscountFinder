@@ -13,20 +13,16 @@ import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {
   Card,
-  Title,
   Paragraph,
   List,
-  Avatar,
   Chip,
-  FAB,
   IconButton,
   ActivityIndicator,
-  Divider,
 } from 'react-native-paper';
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useTag, useFavorite} from '../hooks/ApiHooks';
+import {useUser, useFavorite} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
