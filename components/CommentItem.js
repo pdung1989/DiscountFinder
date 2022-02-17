@@ -1,6 +1,6 @@
 import {FlatList, Text, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {List} from 'react-native-paper';
+import {Card, List, Paragraph} from 'react-native-paper';
 import {useUser, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
@@ -33,11 +33,17 @@ const CommentItem = ({singleCommment}) => {
       description={singleCommment.comment}
       left={() => <AvatarComponent userId={singleCommment.user_id} />}
       right={() => (
-        <Text style={{paddingTop: 7}}>
+        <Text
+          style={{
+            position: 'absolute',
+            top: 7,
+            right: 0,
+          }}
+        >
           {convertUTCToLocalTime(singleCommment.time_added)}
         </Text>
       )}
-      style={{padding: 0}}
+      style={{padding: 5}}
     />
   );
 };

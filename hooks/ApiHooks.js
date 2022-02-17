@@ -101,7 +101,14 @@ const useUser = () => {
     return await doFetch(`${baseUrl}users`, options);
   };
 
-  return {getUserByToken, postUser, checkUsername, getUserById, putUser, putPassword};
+  return {
+    getUserByToken,
+    postUser,
+    checkUsername,
+    getUserById,
+    putUser,
+    putPassword,
+  };
 };
 
 const useMedia = () => {
@@ -170,4 +177,34 @@ const useTag = () => {
   return {postTag, getFilesByTag};
 };
 
-export {useLogin, useUser, useMedia, useComment, useTag};
+const useFavorite = () => {
+  const getFavoritesByFileId = async (fileId) => {
+    return await doFetch(`${baseUrl}favourites/file/${fileId}`);
+  };
+
+  const postFavorite = async (fileId, token) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify({file_id: fileId}),
+    };
+    return await doFetch(`${baseUrl}favourites`, options);
+  };
+
+  const deleteFavorite = async (fileId, token) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(`${baseUrl}favourites/file/${fileId}`, options);
+  };
+
+  return {getFavoritesByFileId, postFavorite, deleteFavorite};
+};
+
+export {useLogin, useUser, useMedia, useComment, useTag, useFavorite};

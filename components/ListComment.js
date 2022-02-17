@@ -22,7 +22,7 @@ const ListComment = ({fileId}) => {
   }, []);
 
   return (
-    <View style={{height: 190, marginTop: 7}}>
+    <View style={{height: 170, marginTop: 7}}>
       <Text style={styles.commentTitle}>{comments.length} comments</Text>
       <FlatList
         data={comments}
