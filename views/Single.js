@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -19,19 +19,26 @@ import {
   Avatar,
   Chip,
   FAB,
+  IconButton,
 } from 'react-native-paper';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useTag} from '../hooks/ApiHooks';
+import {useUser, useTag, useFavorite} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
+import {Ionicons} from '@expo/vector-icons';
+import {MainContext} from '../contexts/MainContext';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
   const {getUserById} = useUser();
   const {convertUTCToLocalTime} = useTime();
+  const {getFavoritesByFileId, postFavorite, deleteFavorite} = useFavorite();
   const [postOwner, setPostOwner] = useState({username: 'fetching...'});
+  const [likes, setLikes] = useState([]);
+  const [likedByUser, setLikedByUser] = useState(false);
+  const {user} = useContext(MainContext);
 
   const fetchPostOwner = async () => {
     try {
@@ -44,9 +51,49 @@ const Single = ({route, navigation}) => {
     }
   };
 
+  const fetchLikes = async () => {
+    try {
+      const likesData = await getFavoritesByFileId(file.file_id);
+      setLikes(likesData);
+      likesData.forEach((like) => {
+        like.user_id === user.user_id && setLikedByUser(true);
+      });
+    } catch (error) {
+      console.error('fetchLikes error', error.message);
+    }
+  };
+
+  const createFavorite = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const response = await postFavorite(file.file_id, token);
+
+      response && setLikedByUser(true);
+    } catch (error) {
+      console.error('createFavorite error', error);
+      setPostOwner({username: '[not available]'});
+    }
+  };
+
+  const removeFavorite = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const response = await deleteFavorite(file.file_id, token);
+
+      response && setLikedByUser(false);
+    } catch (error) {
+      console.error('removeFavorite error', error);
+      setPostOwner({username: '[not available]'});
+    }
+  };
+
   useEffect(() => {
     fetchPostOwner();
   }, []);
+
+  useEffect(() => {
+    fetchLikes();
+  }, [likedByUser]);
 
   return (
     <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
@@ -57,25 +104,54 @@ const Single = ({route, navigation}) => {
               source={{uri: uploadsUrl + file.filename}}
               style={{height: 200}}
             />
-            <FAB
-              style={styles.fabRight}
-              small
-              icon="heart-outline"
-              onPress={() => console.log('Pressed')}
-            />
+            <View style={styles.fabRight}>
+              <Ionicons name="heart-sharp" size={24} color="#d64045" />
+              <Text style={{alignSelf: 'center', fontWeight: '700'}}>
+                {likes.length}
+              </Text>
+            </View>
             <FAB
               style={styles.fabLeft}
               small
               icon="arrow-left"
               onPress={() => navigation.navigate('Browse')}
             />
+            <Card.Title
+              title={file.title}
+              titleStyle={styles.cardTitle}
+              right={() => (
+                <View style={styles.iconGroup}>
+                  {likedByUser ? (
+                    <IconButton
+                      icon="cards-heart"
+                      size={28}
+                      onPress={() => {
+                        removeFavorite();
+                      }}
+                      color="#d64045"
+                    />
+                  ) : (
+                    <IconButton
+                      icon="heart-outline"
+                      size={28}
+                      onPress={() => {
+                        createFavorite();
+                        fetchLikes();
+                      }}
+                    />
+                  )}
+                  <IconButton icon="square-edit-outline" size={28} />
+                  <IconButton icon="delete" size={28} />
+                </View>
+              )}
+            />
+            <List.Item
+              title={postOwner.username}
+              titleStyle={{fontSize: 14, fontWeight: '500'}}
+              left={() => <AvatarComponent userId={file.user_id} />}
+              style={{paddingLeft: 15, paddingTop: 0}}
+            />
             <Card.Content>
-              <Title style={styles.cardTitle}>{file.title}</Title>
-              <List.Item
-                title={postOwner.username}
-                titleStyle={{fontSize: 14, fontWeight: '500'}}
-                left={() => <AvatarComponent userId={file.user_id} />}
-              />
               <Paragraph>{file.description}</Paragraph>
               <View style={styles.tag}>
                 <Chip style={{height: 30}}>Clothing</Chip>
@@ -97,22 +173,30 @@ const styles = StyleSheet.create({
   fabLeft: {
     position: 'absolute',
     margin: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fafafa',
     top: 0,
     left: 0,
   },
 
   fabRight: {
+    flexDirection: 'row',
     position: 'absolute',
-    margin: 16,
-    backgroundColor: '#ffffff',
-    top: 0,
-    right: 0,
+    top: 16,
+    right: 16,
+    backgroundColor: '#fafafa',
+    padding: 5,
+    borderRadius: 50,
   },
 
   cardTitle: {
     fontSize: 18,
     fontWeight: '700',
+  },
+
+  iconGroup: {
+    flexDirection: 'row',
+    paddingRight: 10,
+    alignContent: 'center',
   },
 
   tag: {
