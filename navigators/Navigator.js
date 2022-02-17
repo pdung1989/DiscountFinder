@@ -15,8 +15,6 @@ import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
 import {Title, IconButton} from 'react-native-paper';
-import {Text} from 'react-native-elements';
-import {SafeAreaView} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -25,7 +23,8 @@ const TabScreen = ({navigation}) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        activeTintColor: '#467599',
+        tabBarActiveTintColor: "#1D3354",
+        tabBarInactiveTintColor: "#467599",
         tabBarIcon: ({color}) => {
           let iconName;
           switch (route.name) {
