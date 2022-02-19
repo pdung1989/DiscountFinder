@@ -177,6 +177,13 @@ const Single = ({route, navigation}) => {
                 titleStyle={{fontSize: 14, fontWeight: '500'}}
                 left={() => <AvatarComponent userId={file.user_id} />}
                 style={{paddingLeft: 15, paddingTop: 5}}
+                onPress={() => {
+                  navigation.navigate('Profile', {
+                    navigation: navigation,
+                    fromBottomNav: false,
+                    currentUserId: file.user_id,
+                  });
+                }}
               />
               <Card.Content>
                 <Paragraph>{file.description}</Paragraph>
