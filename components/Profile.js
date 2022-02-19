@@ -66,7 +66,9 @@ const Profile = ({navigation}) => {
                 />
               </MenuTrigger>
               <MenuOptions style={menuStyles.menuOptions}>
-                <TouchableOpacity style={menuStyles.button}>
+                <TouchableOpacity style={menuStyles.button} onPress={() => {
+                  navigation.navigate('Edit profile');
+                }}>
                   <FontAwesome
                     name="pencil-square-o"
                     size={24}
