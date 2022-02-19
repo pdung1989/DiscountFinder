@@ -1,5 +1,14 @@
 import React, {useContext, useState} from 'react';
-import {Alert, View, StyleSheet, TouchableOpacity, Keyboard, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
+import {
+  Alert,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+  Text,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
@@ -73,201 +82,207 @@ const EditProfile = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.full}>
-      <View style={styles.title}>
-        <IconButton
-          icon="arrow-left"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          color={'#fefefe'}
-        />
-        <Title style={styles.titleText}>Edit Profile</Title>
-      </View>
-      <ScrollView>
+    <TouchableOpacity
+      style={{flex: 1}}
+      activeOpacity={1}
+      onPress={() => Keyboard.dismiss()}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : ''}
         style={styles.container}
       >
-        <View style={styles.content}>
-          <Text style={styles.customLabel}>Username</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: {value: true, message: 'This is required.'},
-              minLength: {
-                value: 3,
-                message: 'Username has to be at least 3 characters.',
-              },
-              validate: async (value) => {
-                try {
-                  const available = await checkUsername(value);
-                  if (available || user.username === value) {
-                    return true;
-                  } else {
-                    return 'Username is already taken.';
+        <SafeAreaView style={styles.full}>
+          <View style={styles.title}>
+            <IconButton
+              icon="arrow-left"
+              onPress={() => {
+                navigation.goBack();
+              }}
+              color={'#fefefe'}
+            />
+            <Title style={styles.titleText}>Edit Profile</Title>
+          </View>
+        </SafeAreaView>
+        <ScrollView>
+          <View style={styles.content}>
+            <Text style={styles.customLabel}>Username</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: {value: true, message: 'This is required.'},
+                minLength: {
+                  value: 3,
+                  message: 'Username has to be at least 3 characters.',
+                },
+                validate: async (value) => {
+                  try {
+                    const available = await checkUsername(value);
+                    if (available || user.username === value) {
+                      return true;
+                    } else {
+                      return 'Username is already taken.';
+                    }
+                  } catch (error) {
+                    throw new Error(error.message);
                   }
-                } catch (error) {
-                  throw new Error(error.message);
-                }
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <InteractiveTextInput
-                textInputStyle={styles.input}
-                animatedPlaceholderTextColor={'#1D3354'}
-                mainColor={'#467599'}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                placeholder="Username"
-                errorMessage={errors.username && errors.username.message}
-              />
-            )}
-            name="username"
-          />
-          <Text style={styles.customLabel}>Email</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: {value: true, message: 'This is required.'},
-              pattern: {
-                value: /\S+@\S+\.\S+$/,
-                message: 'Has to be valid email.',
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <InteractiveTextInput
-                textInputStyle={styles.input}
-                animatedPlaceholderTextColor={'#1D3354'}
-                mainColor={'#467599'}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                placeholder="Email"
-                errorMessage={errors.email && errors.email.message}
-              />
-            )}
-            name="email"
-          />
-          <Text style={styles.customLabel}>Full name</Text>
-          <Controller
-            control={control}
-            rules={{
-              minLength: {
-                value: 3,
-                message: 'Full name has to be at least 3 characters.',
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <InteractiveTextInput
-                textInputStyle={styles.input}
-                animatedPlaceholderTextColor={'#1D3354'}
-                mainColor={'#467599'}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="words"
-                placeholder="Full name"
-                errorMessage={errors.full_name && errors.full_name.message}
-              />
-            )}
-            name="full_name"
-          />
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleSubmit(onSubmit)}
-          >
-            <Text style={styles.loginText}>Submit</Text>
-          </TouchableOpacity>
-          <Text style={styles.customLabel}>Password</Text>
-          <Controller
-            control={control}
-            rules={{
-              minLength: {
-                value: 5,
-                message: 'Password has to be at least 5 characters.',
-              },
-              /*
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InteractiveTextInput
+                  textInputStyle={styles.input}
+                  animatedPlaceholderTextColor={'#1D3354'}
+                  mainColor={'#467599'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  placeholder="Username"
+                  errorMessage={errors.username && errors.username.message}
+                />
+              )}
+              name="username"
+            />
+            <Text style={styles.customLabel}>Email</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: {value: true, message: 'This is required.'},
+                pattern: {
+                  value: /\S+@\S+\.\S+$/,
+                  message: 'Has to be valid email.',
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InteractiveTextInput
+                  textInputStyle={styles.input}
+                  animatedPlaceholderTextColor={'#1D3354'}
+                  mainColor={'#467599'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  placeholder="Email"
+                  errorMessage={errors.email && errors.email.message}
+                />
+              )}
+              name="email"
+            />
+            <Text style={styles.customLabel}>Full name</Text>
+            <Controller
+              control={control}
+              rules={{
+                minLength: {
+                  value: 3,
+                  message: 'Full name has to be at least 3 characters.',
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InteractiveTextInput
+                  textInputStyle={styles.input}
+                  animatedPlaceholderTextColor={'#1D3354'}
+                  mainColor={'#467599'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="words"
+                  placeholder="Full name"
+                  errorMessage={errors.full_name && errors.full_name.message}
+                />
+              )}
+              name="full_name"
+            />
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit(onSubmit)}
+            >
+              <Text style={styles.loginText}>Submit</Text>
+            </TouchableOpacity>
+            <Text style={styles.customLabel}>Password</Text>
+            <Controller
+              control={control}
+              rules={{
+                minLength: {
+                  value: 5,
+                  message: 'Password has to be at least 5 characters.',
+                },
+                /*
           pattern: {
             value: /(?=.*[\p{Lu}])(?=.*[0-9]).{8,}/u,
             message: 'Min 8, Uppercase, Number',
           },
           */
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <InteractiveTextInput
-                textInputStyle={styles.input}
-                animatedPlaceholderTextColor={'#1D3354'}
-                mainColor={'#467599'}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                secureTextEntry={hidden}
-                placeholder="Password"
-                enableIcon
-                iconContainerStyle={styles.icon}
-                iconImageSource={require('../assets/visibility-button.png')}
-                onIconPress={() => {
-                  setHidden(!hidden);
-                }}
-                errorMessage={errors.password && errors.password.message}
-              />
-            )}
-            name="password"
-          />
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InteractiveTextInput
+                  textInputStyle={styles.input}
+                  animatedPlaceholderTextColor={'#1D3354'}
+                  mainColor={'#467599'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  secureTextEntry={hidden}
+                  placeholder="Password"
+                  enableIcon
+                  iconContainerStyle={styles.icon}
+                  iconImageSource={require('../assets/visibility-button.png')}
+                  onIconPress={() => {
+                    setHidden(!hidden);
+                  }}
+                  errorMessage={errors.password && errors.password.message}
+                />
+              )}
+              name="password"
+            />
 
-          <Text style={styles.customLabel}>Confirm Password</Text>
-          <Controller
-            control={control}
-            rules={{
-              validate: (value) => {
-                const {password} = getValues();
-                if (value === password) {
-                  return true;
-                } else {
-                  return 'Passwords do not match.';
-                }
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <InteractiveTextInput
-                textInputStyle={styles.input}
-                animatedPlaceholderTextColor={'#1D3354'}
-                mainColor={'#467599'}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                secureTextEntry={hiddenConfirm}
-                placeholder="Confirm Password"
-                enableIcon
-                iconContainerStyle={styles.icon}
-                iconImageSource={require('../assets/visibility-button.png')}
-                onIconPress={() => {
-                  setHiddenConfirm(!hiddenConfirm);
-                }}
-                errorMessage={
-                  errors.confirmPassword && errors.confirmPassword.message
-                }
-              />
-            )}
-            name="confirmPassword"
-          />
-          <TouchableOpacity
-            style={styles.passwordButton}
-            onPress={handleSubmit(onSubmitPassword)}
-          >
-            <Text style={styles.loginText}>Change Password</Text>
-          </TouchableOpacity>
-        </View>
+            <Text style={styles.customLabel}>Confirm Password</Text>
+            <Controller
+              control={control}
+              rules={{
+                validate: (value) => {
+                  const {password} = getValues();
+                  if (value === password) {
+                    return true;
+                  } else {
+                    return 'Passwords do not match.';
+                  }
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InteractiveTextInput
+                  textInputStyle={styles.input}
+                  animatedPlaceholderTextColor={'#1D3354'}
+                  mainColor={'#467599'}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  secureTextEntry={hiddenConfirm}
+                  placeholder="Confirm Password"
+                  enableIcon
+                  iconContainerStyle={styles.icon}
+                  iconImageSource={require('../assets/visibility-button.png')}
+                  onIconPress={() => {
+                    setHiddenConfirm(!hiddenConfirm);
+                  }}
+                  errorMessage={
+                    errors.confirmPassword && errors.confirmPassword.message
+                  }
+                />
+              )}
+              name="confirmPassword"
+            />
+            <TouchableOpacity
+              style={styles.passwordButton}
+              onPress={handleSubmit(onSubmitPassword)}
+            >
+              <Text style={styles.loginText}>Change Password</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <FocusAwareStatusBar barStyle="light-content" />
       </KeyboardAvoidingView>
-      </ScrollView>
-      <FocusAwareStatusBar barStyle="light-content" />
-    </SafeAreaView>
+    </TouchableOpacity>
   );
 };
 
@@ -284,7 +299,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1D3354',
+    backgroundColor: '#fefefe',
   },
   title: {
     flexDirection: 'row',
