@@ -54,7 +54,7 @@ const EditProfile = ({navigation}) => {
         Alert.alert('Success', userData.message);
         delete data.password;
         setUser(data);
-        navigation.navigate(back);
+        navigation.goBack();
       }
     } catch (error) {
       console.error(error.message);

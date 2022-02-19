@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -16,7 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 import {useTag} from '../hooks/ApiHooks';
-import {Dimensions} from 'react-native';
 import {
   Menu,
   MenuProvider,
@@ -30,6 +29,7 @@ const Profile = ({navigation}) => {
   const {user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
+  const menuP = useRef();
 
   const {Popover} = renderers;
 
@@ -47,9 +47,14 @@ const Profile = ({navigation}) => {
     fetchAvatar();
   }, []);
 
+  const closeMenu = async () => {
+    await menuP.current.menuCtx.menuActions.closeMenu();
+  };
+
   return (
     <>
       <MenuProvider
+        ref={menuP}
         style={styles.container}
         customStyles={{backdrop: styles.backdrop}}
       >
@@ -66,9 +71,13 @@ const Profile = ({navigation}) => {
                 />
               </MenuTrigger>
               <MenuOptions style={menuStyles.menuOptions}>
-                <TouchableOpacity style={menuStyles.button} onPress={() => {
-                  navigation.navigate('Edit profile');
-                }}>
+                <TouchableOpacity
+                  style={menuStyles.button}
+                  onPress={() => {
+                    closeMenu();
+                    navigation.navigate('Edit profile');
+                  }}
+                >
                   <FontAwesome
                     name="pencil-square-o"
                     size={24}
