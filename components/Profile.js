@@ -15,41 +15,30 @@ import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
-import {useTag, useUser} from '../hooks/ApiHooks';
+import {useTag} from '../hooks/ApiHooks';
 import {
   Menu,
-  MenuProvider,
   MenuOptions,
+  MenuProvider,
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
 
 const Profile = ({route}) => {
-  const {fromBottomNav, currentUserId, navigation} = route.params;
+  const {fromBottomNav, userProf, navigation} = route.params;
   const {setIsLoggedIn} = useContext(MainContext);
   const {user} = useContext(MainContext);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser] = useState(userProf);
   const [ownProfile, setOwnProfile] = useState();
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
   const menuP = useRef();
-  const {getUserById} = useUser();
 
   const {Popover} = renderers;
 
-  const fetchUser = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
+  const fetchAvatar = async (id) => {
     try {
-      const userData = await getUserById(currentUserId, userToken);
-      console.log('fetchUser', userData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchAvatar = async (currentUser) => {
-    try {
-      const avatarArray = await getFilesByTag('avatar_' + currentUser);
+      const avatarArray = await getFilesByTag('avatar_' + id);
       const avatar = avatarArray.pop();
       avatar !== undefined && setAvatar(uploadsUrl + avatar.filename);
     } catch (e) {
@@ -58,16 +47,9 @@ const Profile = ({route}) => {
   };
 
   useEffect(() => {
-    fetchUser();
-    if (currentUserId == user.user_id) {
-      setOwnProfile(true);
-      setCurrentUser(user.user_id);
-    } else {
-      setOwnProfile(false);
-      setCurrentUser(currentUserId);
-    }
-    fetchAvatar(currentUser);
-  });
+    userProf.user_id == user.user_id ? setOwnProfile(true) : setOwnProfile(false);
+    fetchAvatar(userProf.user_id);
+  }, []);
 
   const closeMenu = async () => {
     await menuP.current.menuCtx.menuActions.closeMenu();
@@ -75,12 +57,8 @@ const Profile = ({route}) => {
 
   return (
     <>
-      {ownProfile ? (
-        <MenuProvider
-          ref={menuP}
-          style={styles.container}
-          customStyles={{backdrop: styles.backdrop}}
-        >
+      <MenuProvider ref={menuP}>
+        {ownProfile ? (
           <SafeAreaView style={styles.full}>
             <View style={styles.header}>
               {fromBottomNav ? (
@@ -99,7 +77,6 @@ const Profile = ({route}) => {
                   <Text style={styles.title}>Profile</Text>
                 </View>
               )}
-
               <Menu renderer={Popover} rendererProps={{placement: 'bottom'}}>
                 <MenuTrigger>
                   <Ionicons
@@ -151,52 +128,52 @@ const Profile = ({route}) => {
                     }}
                     style={styles.profilePic}
                   />
-                  <Text style={styles.username}>{user.username}</Text>
-                  <Text style={styles.fullName}>{user.full_name}</Text>
+                  <Text style={styles.username}>{currentUser.username}</Text>
+                  <Text style={styles.fullName}>{currentUser.full_name}</Text>
                 </View>
                 <View style={styles.feed}></View>
               </View>
             </ScrollView>
           </SafeAreaView>
-        </MenuProvider>
-      ) : (
-        <SafeAreaView style={styles.full}>
-          <View style={styles.header}>
-            {fromBottomNav ? (
-              <Text style={styles.title}>My Profile</Text>
-            ) : (
-              <View style={styles.titleWithButtonView}>
-                <Ionicons
-                  style={menuStyles.settingsIcon}
-                  name="arrow-back-outline"
-                  size={30}
-                  color="#fefefe"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />
-                <Text style={styles.title}>Profile</Text>
-              </View>
-            )}
-          </View>
-          <ScrollView style={styles.scroll}>
-            <View style={styles.profilePhotoBackground}></View>
-            <View style={styles.content}>
-              <View style={styles.profile}>
-                <Image
-                  source={{
-                    uri: avatar,
-                  }}
-                  style={styles.profilePic}
-                />
-                <Text style={styles.username}>{user.username}</Text>
-                <Text style={styles.fullName}>{user.full_name}</Text>
-              </View>
-              <View style={styles.feed}></View>
+        ) : (
+          <SafeAreaView style={styles.full}>
+            <View style={styles.header}>
+              {fromBottomNav ? (
+                <Text style={styles.title}>My Profile</Text>
+              ) : (
+                <View style={styles.titleWithButtonView}>
+                  <Ionicons
+                    style={menuStyles.settingsIcon}
+                    name="arrow-back-outline"
+                    size={30}
+                    color="#fefefe"
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  />
+                  <Text style={styles.title}>Profile</Text>
+                </View>
+              )}
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      )}
+            <ScrollView style={styles.scroll}>
+              <View style={styles.profilePhotoBackground}></View>
+              <View style={styles.content}>
+                <View style={styles.profile}>
+                  <Image
+                    source={{
+                      uri: avatar,
+                    }}
+                    style={styles.profilePic}
+                  />
+                  <Text style={styles.username}>{currentUser.username}</Text>
+                  <Text style={styles.fullName}>{currentUser.full_name}</Text>
+                </View>
+                <View style={styles.feed}></View>
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        )}
+      </MenuProvider>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
   );

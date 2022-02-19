@@ -76,7 +76,7 @@ const TabScreen = ({navigation}) => {
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-        initialParams={{navigation: navigation, fromBottomNav: true, currentUserId: user.user_id}}
+        initialParams={{navigation: navigation, fromBottomNav: true, userProf: user}}
       ></Tab.Screen>
     </Tab.Navigator>
   );

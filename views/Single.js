@@ -181,7 +181,7 @@ const Single = ({route, navigation}) => {
                   navigation.navigate('Profile', {
                     navigation: navigation,
                     fromBottomNav: false,
-                    currentUserId: file.user_id,
+                    userProf: postOwner,
                   });
                 }}
               />
