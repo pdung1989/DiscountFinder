@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Keyboard,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -22,7 +23,7 @@ import {
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useFavorite} from '../hooks/ApiHooks';
+import {useUser, useFavorite, useMedia} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
@@ -38,7 +39,8 @@ const Single = ({route, navigation}) => {
   const [postOwner, setPostOwner] = useState({username: 'fetching...'});
   const [likes, setLikes] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
-  const {user} = useContext(MainContext);
+  const {user, update, setUpdate} = useContext(MainContext);
+  const {deleteMedia} = useMedia();
 
   const fetchPostOwner = async () => {
     try {
@@ -85,6 +87,27 @@ const Single = ({route, navigation}) => {
       console.error('removeFavorite error', error);
       setPostOwner({username: '[not available]'});
     }
+  };
+
+  // delete post
+  const deletePost = () => {
+    Alert.alert('Delete', 'Do you want to delete?', [
+      {text: 'No'},
+      {
+        text: 'Yes',
+        onPress: async () => {
+          try {
+            const token = await AsyncStorage.getItem('userToken');
+            const response = await deleteMedia(token, file.file_id);
+            console.log('delete', deletePost);
+            response && setUpdate(update + 1);
+            navigation.navigate('Browse');
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -134,7 +157,11 @@ const Single = ({route, navigation}) => {
                       />
                     )}
                     <IconButton icon="square-edit-outline" size={25} />
-                    <IconButton icon="delete" size={25} />
+                    <IconButton
+                      icon="delete"
+                      size={25}
+                      onPress={() => deletePost()}
+                    />
                   </View>
                 )}
               />

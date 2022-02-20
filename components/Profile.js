@@ -41,6 +41,7 @@ const Profile = ({route, navigation}) => {
   const menuP = useRef();
   const {mediaArray} = useMedia();
   const [userMedia, setUserMedia] = useState([]);
+  const {update} = useContext(MainContext);
 
   const {Popover} = renderers;
 

@@ -155,7 +155,18 @@ const useMedia = () => {
     return result;
   };
 
-  return {mediaArray, postMedia, loading};
+  // delete post
+  const deleteMedia = async (token, fileId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + `media/${fileId}`, options);
+  }
+
+  return {mediaArray, postMedia, loading, deleteMedia};
 };
 
 const useComment = () => {
