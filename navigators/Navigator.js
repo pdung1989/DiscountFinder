@@ -65,7 +65,7 @@ const TabScreen = ({navigation}) => {
             <IconButton
               icon="arrow-left"
               onPress={() => {
-                navigation.navigate('Browse');
+                navigation.goBack();
               }}
             />
           ),
@@ -76,7 +76,7 @@ const TabScreen = ({navigation}) => {
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-        initialParams={{navigation: navigation, fromBottomNav: true, userProf: user}}
+        initialParams={{fromBottomNav: true, userProf: user}}
       ></Tab.Screen>
     </Tab.Navigator>
   );

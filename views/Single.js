@@ -109,7 +109,7 @@ const Single = ({route, navigation}) => {
                 left={() => (
                   <IconButton
                     icon="arrow-left"
-                    onPress={() => navigation.navigate('Browse')}
+                    onPress={() => navigation.goBack()}
                   />
                 )}
                 right={() => (

@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  LogBox,
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Ionicons} from '@expo/vector-icons';
@@ -25,8 +26,12 @@ import {
 } from 'react-native-popup-menu';
 import ListItem from './ListItem';
 
-const Profile = ({route}) => {
-  const {fromBottomNav, userProf, navigation} = route.params;
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+const Profile = ({route, navigation}) => {
+  const {fromBottomNav, userProf} = route.params;
   const {setIsLoggedIn} = useContext(MainContext);
   const {user} = useContext(MainContext);
   const [currentUser] = useState(userProf);
