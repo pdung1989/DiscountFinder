@@ -57,7 +57,7 @@ const Profile = ({route}) => {
 
   return (
     <>
-      <MenuProvider ref={menuP}>
+      <MenuProvider ref={menuP} skipInstanceCheck={true}>
         {ownProfile ? (
           <SafeAreaView style={styles.full}>
             <View style={styles.header}>
