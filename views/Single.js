@@ -157,11 +157,12 @@ const Single = ({route, navigation}) => {
                       />
                     )}
                     <IconButton icon="square-edit-outline" size={25} />
+                    {file.user_id === user.user_id &&
                     <IconButton
                       icon="delete"
                       size={25}
                       onPress={() => deletePost()}
-                    />
+                    />}
                   </View>
                 )}
               />
