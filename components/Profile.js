@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
+  FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
-import {useTag} from '../hooks/ApiHooks';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
   Menu,
   MenuOptions,
@@ -23,6 +23,7 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
+import ListItem from './ListItem';
 
 const Profile = ({route}) => {
   const {fromBottomNav, userProf, navigation} = route.params;
@@ -33,6 +34,8 @@ const Profile = ({route}) => {
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
   const menuP = useRef();
+  const {mediaArray} = useMedia();
+  const [userMedia, setUserMedia] = useState([]);
 
   const {Popover} = renderers;
 
@@ -46,10 +49,25 @@ const Profile = ({route}) => {
     }
   };
 
+  const filterFiles = () => {
+    if (mediaArray.length > 0) {
+      const tempUserMedia = mediaArray.filter((item) => {
+        return item.user_id === currentUser.user_id;
+      });
+      setUserMedia(tempUserMedia);
+    }
+  };
+
   useEffect(() => {
-    userProf.user_id == user.user_id ? setOwnProfile(true) : setOwnProfile(false);
+    userProf.user_id == user.user_id
+      ? setOwnProfile(true)
+      : setOwnProfile(false);
     fetchAvatar(userProf.user_id);
   }, []);
+
+  useEffect(() => {
+    filterFiles();
+  }, [mediaArray]);
 
   const closeMenu = async () => {
     await menuP.current.menuCtx.menuActions.closeMenu();
@@ -118,22 +136,39 @@ const Profile = ({route}) => {
                 </MenuOptions>
               </Menu>
             </View>
-            <ScrollView style={styles.scroll}>
-              <View style={styles.profilePhotoBackground}></View>
-              <View style={styles.content}>
-                <View style={styles.profile}>
-                  <Image
-                    source={{
-                      uri: avatar,
-                    }}
-                    style={styles.profilePic}
-                  />
-                  <Text style={styles.username}>{currentUser.username}</Text>
-                  <Text style={styles.fullName}>{currentUser.full_name}</Text>
-                </View>
-                <View style={styles.feed}></View>
-              </View>
-            </ScrollView>
+            <View>
+              <FlatList
+                style={styles.list}
+                data={userMedia}
+                contentContainerStyle={{paddingBottom: 60}}
+                ListHeaderComponent={
+                  <View style={styles.scroll}>
+                    <View style={styles.profilePhotoBackground}></View>
+                    <View style={styles.content}>
+                      <View style={styles.profile}>
+                        <Image
+                          source={{
+                            uri: avatar,
+                          }}
+                          style={styles.profilePic}
+                        />
+                        <Text style={styles.username}>
+                          {currentUser.username}
+                        </Text>
+                        <Text style={styles.fullName}>
+                          {currentUser.full_name}
+                        </Text>
+                      </View>
+                      <View style={styles.feed}></View>
+                    </View>
+                  </View>
+                }
+                keyExtractor={(item) => item.file_id.toString()}
+                renderItem={({item}) => (
+                  <ListItem navigation={navigation} singleMedia={item} />
+                )}
+              />
+            </View>
           </SafeAreaView>
         ) : (
           <SafeAreaView style={styles.full}>
@@ -155,22 +190,39 @@ const Profile = ({route}) => {
                 </View>
               )}
             </View>
-            <ScrollView style={styles.scroll}>
-              <View style={styles.profilePhotoBackground}></View>
-              <View style={styles.content}>
-                <View style={styles.profile}>
-                  <Image
-                    source={{
-                      uri: avatar,
-                    }}
-                    style={styles.profilePic}
-                  />
-                  <Text style={styles.username}>{currentUser.username}</Text>
-                  <Text style={styles.fullName}>{currentUser.full_name}</Text>
-                </View>
-                <View style={styles.feed}></View>
-              </View>
-            </ScrollView>
+            <View>
+              <FlatList
+                style={styles.list}
+                data={userMedia}
+                contentContainerStyle={{paddingBottom: 60}}
+                ListHeaderComponent={
+                  <View style={styles.scroll}>
+                    <View style={styles.profilePhotoBackground}></View>
+                    <View style={styles.content}>
+                      <View style={styles.profile}>
+                        <Image
+                          source={{
+                            uri: avatar,
+                          }}
+                          style={styles.profilePic}
+                        />
+                        <Text style={styles.username}>
+                          {currentUser.username}
+                        </Text>
+                        <Text style={styles.fullName}>
+                          {currentUser.full_name}
+                        </Text>
+                      </View>
+                      <View style={styles.feed}></View>
+                    </View>
+                  </View>
+                }
+                keyExtractor={(item) => item.file_id.toString()}
+                renderItem={({item}) => (
+                  <ListItem navigation={navigation} singleMedia={item} />
+                )}
+              />
+            </View>
           </SafeAreaView>
         )}
       </MenuProvider>
@@ -239,7 +291,12 @@ const styles = StyleSheet.create({
   feed: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 20,
+  },
+  list: {
+    height: '100%',
+    backgroundColor: '#fefefe',
+    paddingBottom: 100,
   },
 });
 
