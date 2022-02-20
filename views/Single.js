@@ -13,15 +13,11 @@ import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {
   Card,
-  Title,
   Paragraph,
   List,
-  Avatar,
   Chip,
-  FAB,
   IconButton,
   ActivityIndicator,
-  Divider,
 } from 'react-native-paper';
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
@@ -43,6 +39,8 @@ const Single = ({route, navigation}) => {
   const [likes, setLikes] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
   const {user} = useContext(MainContext);
+  const {getAllTagsOfAFile} = useTag();
+  const [tag, setTag] = useState('Other');
 
   const fetchPostOwner = async () => {
     try {
@@ -64,6 +62,17 @@ const Single = ({route, navigation}) => {
       });
     } catch (error) {
       console.error('fetchLikes error', error.message);
+    }
+  };
+
+  const fetchTags = async () => {
+    try {
+      const tags = await getAllTagsOfAFile(file.file_id);
+      const tag = tags.pop().tag.split('_').pop();
+      setTag(tag);
+    } catch (error) {
+      console.error('fetchTags', error);
+      setTag('Other');
     }
   };
 
@@ -93,6 +102,7 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     fetchPostOwner();
+    fetchTags();
   }, []);
 
   useEffect(() => {
@@ -105,8 +115,10 @@ const Single = ({route, navigation}) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'position' : ''}
         >
-          <SafeAreaView>
-            <Card style={{position: 'relative', height: '100%'}}>
+          <SafeAreaView
+            style={{flexDirection: 'column', alignContent: 'space-around'}}
+          >
+            <Card style={{}}>
               <Card.Title
                 title={file.title}
                 titleStyle={styles.cardTitle}
@@ -185,7 +197,7 @@ const Single = ({route, navigation}) => {
               <Card.Content>
                 <Paragraph>{file.description}</Paragraph>
                 <View style={styles.tag}>
-                  <Chip style={{height: 30}}>Clothing</Chip>
+                  <Chip style={{height: 30}}>{tag}</Chip>
                   <Text style={{paddingTop: 7}}>
                     {convertUTCToLocalTime(file.time_added)}
                   </Text>

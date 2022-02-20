@@ -193,7 +193,12 @@ const useTag = () => {
   const getFilesByTag = async (tag) => {
     return await doFetch(baseUrl + 'tags/' + tag);
   };
-  return {postTag, getFilesByTag};
+
+  const getAllTagsOfAFile = async (fileId) => {
+    return await doFetch(`${baseUrl}tags/file/${fileId}`);
+  };
+
+  return {postTag, getFilesByTag, getAllTagsOfAFile};
 };
 
 const useFavorite = () => {

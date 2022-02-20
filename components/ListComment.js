@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
@@ -22,7 +23,12 @@ const ListComment = ({fileId}) => {
   }, []);
 
   return (
-    <View style={{height: 170, marginTop: 7}}>
+    <View
+      style={{
+        /* height: 170, */
+        marginTop: 5,
+      }}
+    >
       <Text style={styles.commentTitle}>{comments.length} comments</Text>
       <FlatList
         data={comments}
