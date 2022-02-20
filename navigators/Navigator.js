@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
-import Profile from '../components/Profile';
+import ProfilePage from '../components/Profile';
 import Browse from '../views/Browse';
 import Add from '../views/Add';
 import Favorites from '../views/Favorites';
@@ -15,11 +15,13 @@ import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
 import {Title, IconButton} from 'react-native-paper';
+import Profile from '../components/Profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabScreen = ({navigation}) => {
+  const {user} = useContext(MainContext);
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -63,7 +65,7 @@ const TabScreen = ({navigation}) => {
             <IconButton
               icon="arrow-left"
               onPress={() => {
-                navigation.navigate('Browse');
+                navigation.goBack();
               }}
             />
           ),
@@ -74,6 +76,7 @@ const TabScreen = ({navigation}) => {
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
+        initialParams={{fromBottomNav: true, userProf: user}}
       ></Tab.Screen>
     </Tab.Navigator>
   );
@@ -104,6 +107,11 @@ const StackScreen = () => {
           <Stack.Screen
             name="Edit profile"
             component={EditProfile}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfilePage}
             options={{headerShown: false}}
           />
         </>

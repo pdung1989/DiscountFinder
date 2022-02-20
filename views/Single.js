@@ -109,7 +109,7 @@ const Single = ({route, navigation}) => {
                 left={() => (
                   <IconButton
                     icon="arrow-left"
-                    onPress={() => navigation.navigate('Browse')}
+                    onPress={() => navigation.goBack()}
                   />
                 )}
                 right={() => (
@@ -177,6 +177,13 @@ const Single = ({route, navigation}) => {
                 titleStyle={{fontSize: 14, fontWeight: '500'}}
                 left={() => <AvatarComponent userId={file.user_id} />}
                 style={{paddingLeft: 15, paddingTop: 5}}
+                onPress={() => {
+                  navigation.push('Profile', {
+                    navigation: navigation,
+                    fromBottomNav: false,
+                    userProf: postOwner,
+                  });
+                }}
               />
               <Card.Content>
                 <Paragraph>{file.description}</Paragraph>
