@@ -178,7 +178,7 @@ const Single = ({route, navigation}) => {
                 left={() => <AvatarComponent userId={file.user_id} />}
                 style={{paddingLeft: 15, paddingTop: 5}}
                 onPress={() => {
-                  navigation.navigate('Profile', {
+                  navigation.push('Profile', {
                     navigation: navigation,
                     fromBottomNav: false,
                     userProf: postOwner,

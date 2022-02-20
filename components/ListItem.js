@@ -13,7 +13,7 @@ const ListItem = ({navigation, singleMedia}) => {
       mode="elevated"
       style={styles.row}
       onPress={() => {
-        navigation.navigate('Single', {file: singleMedia});
+        navigation.push('Single', {file: singleMedia});
       }}
     >
       <Card.Cover source={{uri: uploadsUrl + singleMedia.thumbnails.w160}} />
