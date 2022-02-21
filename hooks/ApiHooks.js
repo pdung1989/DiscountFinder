@@ -115,8 +115,11 @@ const useUser = () => {
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {update} = useContext(MainContext);
-  const loadMedia = async (start = 0, limit = 10) => {
+  const {update, setUpdate} = useContext(MainContext);
+
+  const loadMedia = async () => {
+    setLoading(true);
+
     try {
       const json = await useTag().getFilesByTag(appId);
       const media = await Promise.all(
@@ -128,7 +131,11 @@ const useMedia = () => {
       );
       setMediaArray(media);
     } catch (error) {
+      if (error.name === 'AbortError') return;
       console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -162,10 +169,25 @@ const useMedia = () => {
         'x-access-token': token,
       },
     };
+    const result = await doFetch(baseUrl + `media/${fileId}`, options);
+    result && setUpdate(update + 1);
+
+    return result;
+  };
+
+  const putMedia = async (data, token, fileId) => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify(data),
+    };
     return await doFetch(baseUrl + `media/${fileId}`, options);
   };
 
-  return {mediaArray, postMedia, loading, deleteMedia};
+  return {mediaArray, postMedia, loading, deleteMedia, putMedia};
 };
 
 const useComment = () => {

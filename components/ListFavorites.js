@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListFavorites = ({navigation}) => {
   const [favoritesArray, setFavoritesArray] = useState([]);
   const {getFavoritesByUserId} = useFavorite();
-  const {favoriteUpdate, setFavoriteUpdate} = useContext(MainContext);
+  const {update, setUpdate} = useContext(MainContext);
 
   const fetchFavoritesByUser = async () => {
     try {
@@ -24,7 +24,7 @@ const ListFavorites = ({navigation}) => {
 
   useEffect(() => {
     fetchFavoritesByUser();
-  }, [favoriteUpdate]);
+  }, [update]);
 
   return (
     <FlatList

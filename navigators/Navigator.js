@@ -16,6 +16,7 @@ import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
 import {Title, IconButton} from 'react-native-paper';
 import Profile from '../components/Profile';
+import ModifyPost from '../views/ModifyPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -25,8 +26,8 @@ const TabScreen = ({navigation}) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: "#1D3354",
-        tabBarInactiveTintColor: "#467599",
+        tabBarActiveTintColor: '#1D3354',
+        tabBarInactiveTintColor: '#467599',
         tabBarIcon: ({color}) => {
           let iconName;
           switch (route.name) {
@@ -61,14 +62,14 @@ const TabScreen = ({navigation}) => {
         component={Add}
         options={{
           headerTitle: () => <Title>Add a new post</Title>,
-          headerLeft: () => (
+          /* headerLeft: () => (
             <IconButton
               icon="arrow-left"
               onPress={() => {
                 navigation.goBack();
               }}
             />
-          ),
+          ), */
         }}
       ></Tab.Screen>
       <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
@@ -94,15 +95,26 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
-          {/* <Stack.Screen
-            name="List"
-            component={TabScreen}
-            options={{headerTransparent: true, headerShown: false}}
-          ></Stack.Screen> */}
           <Stack.Screen
             name="Single"
             component={Single}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Modify Post"
+            component={ModifyPost}
+            options={{
+              headerShown: true,
+              headerTitle: () => <Title>Modify a post</Title>,
+              /* headerLeft: () => (
+                <IconButton
+                  icon="arrow-left"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />
+              ), */
+            }}
           />
           <Stack.Screen
             name="Edit profile"

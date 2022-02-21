@@ -29,6 +29,7 @@ import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
 import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
+import {ScrollView} from 'react-native-web';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
@@ -39,7 +40,7 @@ const Single = ({route, navigation}) => {
   const [postOwner, setPostOwner] = useState({username: 'fetching...'});
   const [likes, setLikes] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
-  const {user, favoriteUpdate, setFavoriteUpdate} = useContext(MainContext);
+  const {user, update, setUpdate} = useContext(MainContext);
   const {getAllTagsOfAFile} = useTag();
   const [tag, setTag] = useState('Other');
   const {deleteMedia} = useMedia();
@@ -84,7 +85,7 @@ const Single = ({route, navigation}) => {
       const response = await postFavorite(file.file_id, token);
 
       response && setLikedByUser(true);
-      setFavoriteUpdate(favoriteUpdate + 1);
+      setUpdate(update + 1);
     } catch (error) {
       console.error('createFavorite error', error);
       setPostOwner({username: '[not available]'});
@@ -97,7 +98,7 @@ const Single = ({route, navigation}) => {
       const response = await deleteFavorite(file.file_id, token);
 
       response && setLikedByUser(false);
-      setFavoriteUpdate(favoriteUpdate + 1);
+      setUpdate(update + 1);
     } catch (error) {
       console.error('removeFavorite error', error);
       setPostOwner({username: '[not available]'});
@@ -115,7 +116,7 @@ const Single = ({route, navigation}) => {
             const token = await AsyncStorage.getItem('userToken');
             const response = await deleteMedia(token, file.file_id);
             console.log('delete', deletePost);
-            response && setUpdate(update + 1);
+            //response && setUpdate(update + 1);
             navigation.navigate('Browse');
           } catch (error) {
             console.error(error);
@@ -174,13 +175,22 @@ const Single = ({route, navigation}) => {
                         }}
                       />
                     )}
-                    <IconButton icon="square-edit-outline" size={25} />
+
                     {file.user_id === user.user_id && (
-                      <IconButton
-                        icon="delete"
-                        size={25}
-                        onPress={() => deletePost()}
-                      />
+                      <>
+                        <IconButton
+                          icon="square-edit-outline"
+                          size={25}
+                          onPress={() =>
+                            navigation.navigate('Modify Post', {file})
+                          }
+                        />
+                        <IconButton
+                          icon="delete"
+                          size={25}
+                          onPress={() => deletePost()}
+                        />
+                      </>
                     )}
                   </View>
                 )}
