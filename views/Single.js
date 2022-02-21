@@ -38,7 +38,7 @@ const Single = ({route, navigation}) => {
   const [postOwner, setPostOwner] = useState({username: 'fetching...'});
   const [likes, setLikes] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
-  const {user} = useContext(MainContext);
+  const {user, favoriteUpdate, setFavoriteUpdate} = useContext(MainContext);
   const {getAllTagsOfAFile} = useTag();
   const [tag, setTag] = useState('Other');
 
@@ -82,6 +82,7 @@ const Single = ({route, navigation}) => {
       const response = await postFavorite(file.file_id, token);
 
       response && setLikedByUser(true);
+      setFavoriteUpdate(favoriteUpdate + 1);
     } catch (error) {
       console.error('createFavorite error', error);
       setPostOwner({username: '[not available]'});
@@ -94,6 +95,7 @@ const Single = ({route, navigation}) => {
       const response = await deleteFavorite(file.file_id, token);
 
       response && setLikedByUser(false);
+      setFavoriteUpdate(favoriteUpdate + 1);
     } catch (error) {
       console.error('removeFavorite error', error);
       setPostOwner({username: '[not available]'});

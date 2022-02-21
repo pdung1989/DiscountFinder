@@ -212,7 +212,6 @@ const useFavorite = () => {
 
     try {
       const json = await doFetch(baseUrl + 'favourites', options);
-      console.log('favorites array', json);
       const media = await Promise.all(
         json.map(async (item) => {
           const response = await fetch(baseUrl + 'media/' + item.file_id);
@@ -220,7 +219,6 @@ const useFavorite = () => {
           return mediaData;
         })
       );
-      console.log('favorites filter', media);
       return media;
     } catch (error) {
       console.error(error);

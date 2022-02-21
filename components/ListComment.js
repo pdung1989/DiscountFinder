@@ -8,7 +8,7 @@ import {MainContext} from '../contexts/MainContext';
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
-  const {update} = useContext(MainContext);
+  const {commentUpdate, setCommentUpdate} = useContext(MainContext);
 
   const fetchComments = async () => {
     try {
@@ -21,7 +21,7 @@ const ListComment = ({fileId}) => {
 
   useEffect(() => {
     fetchComments();
-  }, [update]);
+  }, [commentUpdate]);
 
   return (
     <View

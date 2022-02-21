@@ -10,7 +10,7 @@ import {MainContext} from '../contexts/MainContext';
 
 const CommentPostForm = ({navigation, fileId}) => {
   const {postComment} = useComment(fileId);
-  const {update, setUpdate} = useContext(MainContext);
+  const {commentUpdate, setCommentUpdate} = useContext(MainContext);
 
   const {
     control,
@@ -26,7 +26,7 @@ const CommentPostForm = ({navigation, fileId}) => {
   useFocusEffect(
     useCallback(() => {
       return () => reset();
-    }, [update])
+    }, [])
   );
 
   const onSubmit = async (comment) => {
@@ -47,7 +47,7 @@ const CommentPostForm = ({navigation, fileId}) => {
             text: 'OK',
             onPress: () => {
               reset();
-              setUpdate(update + 1);
+              setCommentUpdate(commentUpdate + 1);
             },
           },
         ]);
