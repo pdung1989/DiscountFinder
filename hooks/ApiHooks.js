@@ -114,7 +114,8 @@ const useUser = () => {
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  const loadMedia = async (start = 0, limit = 10) => {
+
+  const loadMedia = async () => {
     try {
       const json = await useTag().getFilesByTag(appId);
       const media = await Promise.all(
@@ -124,7 +125,6 @@ const useMedia = () => {
           return mediaData;
         })
       );
-
       setMediaArray(media);
     } catch (error) {
       console.error(error);
@@ -202,6 +202,31 @@ const useTag = () => {
 };
 
 const useFavorite = () => {
+  const getFavoritesByUserId = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+
+    try {
+      const json = await doFetch(baseUrl + 'favourites', options);
+      console.log('favorites array', json);
+      const media = await Promise.all(
+        json.map(async (item) => {
+          const response = await fetch(baseUrl + 'media/' + item.file_id);
+          const mediaData = await response.json();
+          return mediaData;
+        })
+      );
+      console.log('favorites filter', media);
+      return media;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getFavoritesByFileId = async (fileId) => {
     return await doFetch(`${baseUrl}favourites/file/${fileId}`);
   };
@@ -228,7 +253,12 @@ const useFavorite = () => {
     return await doFetch(`${baseUrl}favourites/file/${fileId}`, options);
   };
 
-  return {getFavoritesByFileId, postFavorite, deleteFavorite};
+  return {
+    getFavoritesByFileId,
+    getFavoritesByUserId,
+    postFavorite,
+    deleteFavorite,
+  };
 };
 
 export {useLogin, useUser, useMedia, useComment, useTag, useFavorite};

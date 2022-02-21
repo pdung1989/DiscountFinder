@@ -22,7 +22,7 @@ import {
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useFavorite} from '../hooks/ApiHooks';
+import {useUser, useFavorite, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
