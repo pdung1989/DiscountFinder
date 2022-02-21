@@ -116,7 +116,7 @@ const Single = ({route, navigation}) => {
             const token = await AsyncStorage.getItem('userToken');
             const response = await deleteMedia(token, file.file_id);
             console.log('delete', deletePost);
-            //response && setUpdate(update + 1);
+            response && setUpdate(update + 1);
             navigation.navigate('Browse');
           } catch (error) {
             console.error(error);

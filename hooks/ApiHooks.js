@@ -113,11 +113,11 @@ const useUser = () => {
 };
 
 const useMedia = () => {
-  const [mediaArray, setMediaArray] = useState([]);
+  //const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {update, setUpdate} = useContext(MainContext);
+  //const {update, setUpdate} = useContext(MainContext);
 
-  const loadMedia = async () => {
+  /* const loadMedia = async () => {
     setLoading(true);
 
     try {
@@ -141,7 +141,29 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-  }, [update]);
+  }, [update]); */
+
+  const loadMedia = async (tag) => {
+    setLoading(true);
+
+    try {
+      const json = await useTag().getFilesByTag(tag);
+      const media = await Promise.all(
+        json.map(async (item) => {
+          const response = await fetch(baseUrl + 'media/' + item.file_id);
+          const mediaData = await response.json();
+          return mediaData;
+        })
+      );
+      return media;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const postMedia = async (formData, token) => {
     setLoading(true);
@@ -169,13 +191,12 @@ const useMedia = () => {
         'x-access-token': token,
       },
     };
-    const result = await doFetch(baseUrl + `media/${fileId}`, options);
-    result && setUpdate(update + 1);
-
-    return result;
+    return await doFetch(baseUrl + `media/${fileId}`, options);
   };
 
   const putMedia = async (data, token, fileId) => {
+    setLoading(true);
+
     const options = {
       method: 'PUT',
       headers: {
@@ -184,10 +205,19 @@ const useMedia = () => {
       },
       body: JSON.stringify(data),
     };
-    return await doFetch(baseUrl + `media/${fileId}`, options);
+    const result = await doFetch(baseUrl + `media/${fileId}`, options);
+
+    result && setLoading(false);
+    return result;
   };
 
-  return {mediaArray, postMedia, loading, deleteMedia, putMedia};
+  return {
+    /* mediaArray, */ loadMedia,
+    postMedia,
+    loading,
+    deleteMedia,
+    putMedia,
+  };
 };
 
 const useComment = () => {

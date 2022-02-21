@@ -9,14 +9,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListFavorites = ({navigation}) => {
   const [favoritesArray, setFavoritesArray] = useState([]);
   const {getFavoritesByUserId} = useFavorite();
-  const {update, setUpdate} = useContext(MainContext);
+  const {update} = useContext(MainContext);
 
   const fetchFavoritesByUser = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const favoritesData = await getFavoritesByUserId(token);
       setFavoritesArray(favoritesData);
-      //setFavoriteUpdate(favoriteUpdate + 1);
     } catch (error) {
       console.error('fetchFavoritesByUser error', error.message);
     }
