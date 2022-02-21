@@ -23,7 +23,7 @@ import {
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useFavorite, useMedia} from '../hooks/ApiHooks';
+import {useUser, useFavorite, useMedia, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
@@ -40,6 +40,8 @@ const Single = ({route, navigation}) => {
   const [likes, setLikes] = useState([]);
   const [likedByUser, setLikedByUser] = useState(false);
   const {user, update, setUpdate} = useContext(MainContext);
+  const {getAllTagsOfAFile} = useTag();
+  const [tag, setTag] = useState('Other');
   const {deleteMedia} = useMedia();
 
   const fetchPostOwner = async () => {
@@ -65,12 +67,24 @@ const Single = ({route, navigation}) => {
     }
   };
 
+  const fetchTags = async () => {
+    try {
+      const tags = await getAllTagsOfAFile(file.file_id);
+      const tag = tags.pop().tag.split('_').pop();
+      setTag(tag);
+    } catch (error) {
+      console.error('fetchTags', error);
+      setTag('Other');
+    }
+  };
+
   const createFavorite = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const response = await postFavorite(file.file_id, token);
 
       response && setLikedByUser(true);
+      setUpdate(update + 1);
     } catch (error) {
       console.error('createFavorite error', error);
       setPostOwner({username: '[not available]'});
@@ -83,6 +97,7 @@ const Single = ({route, navigation}) => {
       const response = await deleteFavorite(file.file_id, token);
 
       response && setLikedByUser(false);
+      setUpdate(update + 1);
     } catch (error) {
       console.error('removeFavorite error', error);
       setPostOwner({username: '[not available]'});
@@ -112,6 +127,7 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     fetchPostOwner();
+    fetchTags();
   }, []);
 
   useEffect(() => {
@@ -124,8 +140,10 @@ const Single = ({route, navigation}) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'position' : ''}
         >
-          <SafeAreaView>
-            <Card style={{position: 'relative', height: '100%'}}>
+          <SafeAreaView
+            style={{flexDirection: 'column', alignContent: 'space-around'}}
+          >
+            <Card style={{}}>
               <Card.Title
                 title={file.title}
                 titleStyle={styles.cardTitle}
@@ -156,13 +174,23 @@ const Single = ({route, navigation}) => {
                         }}
                       />
                     )}
-                    <IconButton icon="square-edit-outline" size={25} />
-                    {file.user_id === user.user_id &&
-                    <IconButton
-                      icon="delete"
-                      size={25}
-                      onPress={() => deletePost()}
-                    />}
+
+                    {file.user_id === user.user_id && (
+                      <>
+                        <IconButton
+                          icon="square-edit-outline"
+                          size={25}
+                          onPress={() =>
+                            navigation.navigate('Modify Post', {file})
+                          }
+                        />
+                        <IconButton
+                          icon="delete"
+                          size={25}
+                          onPress={() => deletePost()}
+                        />
+                      </>
+                    )}
                   </View>
                 )}
               />
@@ -216,7 +244,7 @@ const Single = ({route, navigation}) => {
               <Card.Content>
                 <Paragraph>{file.description}</Paragraph>
                 <View style={styles.tag}>
-                  <Chip style={{height: 30}}>Clothing</Chip>
+                  <Chip style={{height: 30}}>{tag}</Chip>
                   <Text style={{paddingTop: 7}}>
                     {convertUTCToLocalTime(file.time_added)}
                   </Text>

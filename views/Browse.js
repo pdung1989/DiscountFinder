@@ -3,10 +3,10 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 
-const Browse = ({navigation}) => {
+const Browse = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <List navigation={navigation} style={styles.infoArea} />
+      <List navigation={navigation} route={route} style={styles.infoArea} />
     </SafeAreaView>
   );
 };

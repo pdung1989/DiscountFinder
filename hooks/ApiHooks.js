@@ -113,10 +113,13 @@ const useUser = () => {
 };
 
 const useMedia = () => {
-  const [mediaArray, setMediaArray] = useState([]);
+  //const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {update} = useContext(MainContext);
-  const loadMedia = async (start = 0, limit = 10) => {
+  //const {update, setUpdate} = useContext(MainContext);
+
+  /* const loadMedia = async () => {
+    setLoading(true);
+
     try {
       const json = await useTag().getFilesByTag(appId);
       const media = await Promise.all(
@@ -126,16 +129,41 @@ const useMedia = () => {
           return mediaData;
         })
       );
-
       setMediaArray(media);
     } catch (error) {
+      if (error.name === 'AbortError') return;
       console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadMedia();
-  }, [update]);
+  }, [update]); */
+
+  const loadMedia = async (tag) => {
+    setLoading(true);
+
+    try {
+      const json = await useTag().getFilesByTag(tag);
+      const media = await Promise.all(
+        json.map(async (item) => {
+          const response = await fetch(baseUrl + 'media/' + item.file_id);
+          const mediaData = await response.json();
+          return mediaData;
+        })
+      );
+      return media;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const postMedia = async (formData, token) => {
     setLoading(true);
@@ -164,9 +192,32 @@ const useMedia = () => {
       },
     };
     return await doFetch(baseUrl + `media/${fileId}`, options);
-  }
+  };
 
-  return {mediaArray, postMedia, loading, deleteMedia};
+  const putMedia = async (data, token, fileId) => {
+    setLoading(true);
+
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify(data),
+    };
+    const result = await doFetch(baseUrl + `media/${fileId}`, options);
+
+    result && setLoading(false);
+    return result;
+  };
+
+  return {
+    /* mediaArray, */ loadMedia,
+    postMedia,
+    loading,
+    deleteMedia,
+    putMedia,
+  };
 };
 
 const useComment = () => {
@@ -206,10 +257,38 @@ const useTag = () => {
   const getFilesByTag = async (tag) => {
     return await doFetch(baseUrl + 'tags/' + tag);
   };
-  return {postTag, getFilesByTag};
+
+  const getAllTagsOfAFile = async (fileId) => {
+    return await doFetch(`${baseUrl}tags/file/${fileId}`);
+  };
+
+  return {postTag, getFilesByTag, getAllTagsOfAFile};
 };
 
 const useFavorite = () => {
+  const getFavoritesByUserId = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+
+    try {
+      const json = await doFetch(baseUrl + 'favourites', options);
+      const media = await Promise.all(
+        json.map(async (item) => {
+          const response = await fetch(baseUrl + 'media/' + item.file_id);
+          const mediaData = await response.json();
+          return mediaData;
+        })
+      );
+      return media;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getFavoritesByFileId = async (fileId) => {
     return await doFetch(`${baseUrl}favourites/file/${fileId}`);
   };
@@ -236,7 +315,12 @@ const useFavorite = () => {
     return await doFetch(`${baseUrl}favourites/file/${fileId}`, options);
   };
 
-  return {getFavoritesByFileId, postFavorite, deleteFavorite};
+  return {
+    getFavoritesByFileId,
+    getFavoritesByUserId,
+    postFavorite,
+    deleteFavorite,
+  };
 };
 
 export {useLogin, useUser, useMedia, useComment, useTag, useFavorite};

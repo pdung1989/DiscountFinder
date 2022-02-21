@@ -1,10 +1,12 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import ListFavorites from '../components/ListFavorites';
+import PropTypes from 'prop-types';
 
-const Favorites= () => {
+const Favourites = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is for Favorite Page</Text>
+      <ListFavorites navigation={navigation} style={styles.infoArea} />
     </SafeAreaView>
   );
 };
@@ -12,11 +14,18 @@ const Favorites= () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 40,
+    backgroundColor: '#ffffff',
+    height: '100%',
+    paddingTop: 0,
+  },
+  infoArea: {
+    flex: 1,
   },
 });
 
-export default Favorites;
+Favourites.propTypes = {
+  navigation: PropTypes.object,
+};
+
+export default Favourites;

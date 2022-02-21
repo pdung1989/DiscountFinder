@@ -1,15 +1,17 @@
 import {FlatList, Text, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Card, List, Paragraph} from 'react-native-paper';
+import React, {useState, useEffect, useContext} from 'react';
+import {Card, List, Paragraph, IconButton} from 'react-native-paper';
 import {useUser, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
+import {MainContext} from '../contexts/MainContext';
 
 const CommentItem = ({singleCommment}) => {
   const {getUserById} = useUser();
   const [commentOwner, setCommentOwner] = useState({username: 'fetching...'});
   const {convertUTCToLocalTime} = useTime();
+  const {user} = useContext(MainContext);
 
   const fetchCommentOwner = async () => {
     try {
@@ -33,15 +35,20 @@ const CommentItem = ({singleCommment}) => {
       description={singleCommment.comment}
       left={() => <AvatarComponent userId={singleCommment.user_id} />}
       right={() => (
-        <Text
-          style={{
-            position: 'absolute',
-            top: 7,
-            right: 0,
-          }}
-        >
-          {convertUTCToLocalTime(singleCommment.time_added)}
-        </Text>
+        <>
+          <Text
+            style={{
+              position: 'absolute',
+              top: 7,
+              right: 0,
+            }}
+          >
+            {convertUTCToLocalTime(singleCommment.time_added)}
+          </Text>
+          {commentOwner.user_id === user.user_id && (
+            <IconButton icon="delete" size={25} style={{marginTop: 15}} />
+          )}
+        </>
       )}
       style={{padding: 5}}
     />

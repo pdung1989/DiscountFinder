@@ -8,7 +8,7 @@ import {MainContext} from '../contexts/MainContext';
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
-  const {update} = useContext(MainContext);
+  const {commentUpdate, setCommentUpdate} = useContext(MainContext);
 
   const fetchComments = async () => {
     try {
@@ -21,10 +21,15 @@ const ListComment = ({fileId}) => {
 
   useEffect(() => {
     fetchComments();
-  }, [update]);
+  }, [commentUpdate]);
 
   return (
-    <View style={{height: 170, marginTop: 7}}>
+    <View
+      style={{
+        /* height: 170, */
+        marginTop: 5,
+      }}
+    >
       <Text style={styles.commentTitle}>{comments.length} comments</Text>
       <FlatList
         data={comments}
