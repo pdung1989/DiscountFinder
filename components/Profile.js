@@ -1,12 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
+  FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  LogBox,
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Ionicons} from '@expo/vector-icons';
@@ -15,95 +16,221 @@ import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
-import {useTag} from '../hooks/ApiHooks';
-import {Dimensions} from 'react-native';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
   Menu,
-  MenuProvider,
   MenuOptions,
+  MenuProvider,
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
+import ListItem from './ListItem';
 
-const Profile = ({navigation}) => {
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+const Profile = ({route, navigation}) => {
+  const {fromBottomNav, userProf} = route.params;
   const {setIsLoggedIn} = useContext(MainContext);
   const {user} = useContext(MainContext);
+  const [currentUser] = useState(userProf);
+  const [ownProfile, setOwnProfile] = useState();
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
+  const menuP = useRef();
+  const {mediaArray} = useMedia();
+  const [userMedia, setUserMedia] = useState([]);
+  const {update} = useContext(MainContext);
 
   const {Popover} = renderers;
 
-  const fetchAvatar = async () => {
+  const fetchAvatar = async (id) => {
     try {
-      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + id);
       const avatar = avatarArray.pop();
-      setAvatar(uploadsUrl + avatar.filename);
+      avatar !== undefined && setAvatar(uploadsUrl + avatar.filename);
     } catch (e) {
       console.log(e.message);
     }
   };
 
+  const filterFiles = () => {
+    if (mediaArray.length > 0) {
+      const tempUserMedia = mediaArray.filter((item) => {
+        return item.user_id === currentUser.user_id;
+      });
+      setUserMedia(tempUserMedia);
+    }
+  };
+
   useEffect(() => {
-    fetchAvatar();
+    userProf.user_id == user.user_id
+      ? setOwnProfile(true)
+      : setOwnProfile(false);
+    fetchAvatar(userProf.user_id);
   }, []);
+
+  useEffect(() => {
+    filterFiles();
+  }, [mediaArray]);
+
+  const closeMenu = async () => {
+    await menuP.current.menuCtx.menuActions.closeMenu();
+  };
 
   return (
     <>
-      <MenuProvider
-        style={styles.container}
-        customStyles={{backdrop: styles.backdrop}}
-      >
-        <SafeAreaView style={styles.full}>
-          <View style={styles.header}>
-            <Text style={styles.title}>My Profile</Text>
-            <Menu renderer={Popover} rendererProps={{placement: 'bottom'}}>
-              <MenuTrigger>
-                <Ionicons
-                  style={menuStyles.settingsIcon}
-                  name="settings-outline"
-                  size={30}
-                  color="#fefefe"
-                />
-              </MenuTrigger>
-              <MenuOptions style={menuStyles.menuOptions}>
-                <TouchableOpacity style={menuStyles.button}>
-                  <FontAwesome
-                    name="pencil-square-o"
-                    size={24}
-                    color="#1D3354"
+      <MenuProvider ref={menuP} skipInstanceCheck={true}>
+        {ownProfile ? (
+          <SafeAreaView style={styles.full}>
+            <View style={styles.header}>
+              {fromBottomNav ? (
+                <Text style={styles.title}>My Profile</Text>
+              ) : (
+                <View style={styles.titleWithButtonView}>
+                  <Ionicons
+                    style={menuStyles.settingsIcon}
+                    name="arrow-back-outline"
+                    size={30}
+                    color="#fefefe"
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
                   />
-                  <Text style={menuStyles.settingsText}>Edit profile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={menuStyles.button}
-                  onPress={async () => {
-                    await AsyncStorage.clear();
-                    setIsLoggedIn(false);
-                  }}
-                >
-                  <Ionicons name="ios-exit-outline" size={24} color="#D64045" />
-                  <Text style={menuStyles.logoutText}>Log out</Text>
-                </TouchableOpacity>
-              </MenuOptions>
-            </Menu>
-          </View>
-          <ScrollView style={styles.scroll}>
-            <View style={styles.profilePhotoBackground}></View>
-            <View style={styles.content}>
-              <View style={styles.profile}>
-                <Image
-                  source={{
-                    uri: avatar,
-                  }}
-                  style={styles.profilePic}
-                />
-                <Text style={styles.username}>{user.username}</Text>
-                <Text style={styles.fullName}>{user.full_name}</Text>
-              </View>
-              <View style={styles.feed}></View>
+                  <Text style={styles.title}>Profile</Text>
+                </View>
+              )}
+              <Menu renderer={Popover} rendererProps={{placement: 'bottom'}}>
+                <MenuTrigger>
+                  <Ionicons
+                    style={menuStyles.settingsIcon}
+                    name="settings-outline"
+                    size={30}
+                    color="#fefefe"
+                  />
+                </MenuTrigger>
+                <MenuOptions style={menuStyles.menuOptions}>
+                  <TouchableOpacity
+                    style={menuStyles.button}
+                    onPress={() => {
+                      closeMenu();
+                      navigation.navigate('Edit profile');
+                    }}
+                  >
+                    <FontAwesome
+                      name="pencil-square-o"
+                      size={24}
+                      color="#1D3354"
+                    />
+                    <Text style={menuStyles.settingsText}>Edit profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={menuStyles.button}
+                    onPress={async () => {
+                      await AsyncStorage.clear();
+                      setIsLoggedIn(false);
+                    }}
+                  >
+                    <Ionicons
+                      name="ios-exit-outline"
+                      size={24}
+                      color="#D64045"
+                    />
+                    <Text style={menuStyles.logoutText}>Log out</Text>
+                  </TouchableOpacity>
+                </MenuOptions>
+              </Menu>
             </View>
-          </ScrollView>
-        </SafeAreaView>
+            <View>
+              <FlatList
+                style={styles.list}
+                data={userMedia}
+                contentContainerStyle={{paddingBottom: 60}}
+                ListHeaderComponent={
+                  <View style={styles.scroll}>
+                    <View style={styles.profilePhotoBackground}></View>
+                    <View style={styles.content}>
+                      <View style={styles.profile}>
+                        <Image
+                          source={{
+                            uri: avatar,
+                          }}
+                          style={styles.profilePic}
+                        />
+                        <Text style={styles.username}>
+                          {currentUser.username}
+                        </Text>
+                        <Text style={styles.fullName}>
+                          {currentUser.full_name}
+                        </Text>
+                      </View>
+                      <View style={styles.feed}></View>
+                    </View>
+                  </View>
+                }
+                keyExtractor={(item) => item.file_id.toString()}
+                renderItem={({item}) => (
+                  <ListItem navigation={navigation} singleMedia={item} />
+                )}
+              />
+            </View>
+          </SafeAreaView>
+        ) : (
+          <SafeAreaView style={styles.full}>
+            <View style={styles.header}>
+              {fromBottomNav ? (
+                <Text style={styles.title}>My Profile</Text>
+              ) : (
+                <View style={styles.titleWithButtonView}>
+                  <Ionicons
+                    style={menuStyles.settingsIcon}
+                    name="arrow-back-outline"
+                    size={30}
+                    color="#fefefe"
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  />
+                  <Text style={styles.title}>Profile</Text>
+                </View>
+              )}
+            </View>
+            <View>
+              <FlatList
+                style={styles.list}
+                data={userMedia}
+                contentContainerStyle={{paddingBottom: 60}}
+                ListHeaderComponent={
+                  <View style={styles.scroll}>
+                    <View style={styles.profilePhotoBackground}></View>
+                    <View style={styles.content}>
+                      <View style={styles.profile}>
+                        <Image
+                          source={{
+                            uri: avatar,
+                          }}
+                          style={styles.profilePic}
+                        />
+                        <Text style={styles.username}>
+                          {currentUser.username}
+                        </Text>
+                        <Text style={styles.fullName}>
+                          {currentUser.full_name}
+                        </Text>
+                      </View>
+                      <View style={styles.feed}></View>
+                    </View>
+                  </View>
+                }
+                keyExtractor={(item) => item.file_id.toString()}
+                renderItem={({item}) => (
+                  <ListItem navigation={navigation} singleMedia={item} />
+                )}
+              />
+            </View>
+          </SafeAreaView>
+        )}
       </MenuProvider>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
@@ -116,15 +243,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#1D3354',
   },
   header: {
-    height: 70,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 15,
     marginRight: 17,
     marginLeft: 17,
   },
+  titleWithButtonView: {
+    flexDirection: 'row',
+  },
   title: {
-    fontSize: 30,
+    fontSize: 26,
     color: '#fdfdfd',
     fontWeight: 'bold',
   },
@@ -167,7 +297,12 @@ const styles = StyleSheet.create({
   feed: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 20,
+  },
+  list: {
+    height: '100%',
+    backgroundColor: '#fefefe',
+    paddingBottom: 100,
   },
 });
 

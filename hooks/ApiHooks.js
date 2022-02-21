@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {appId, baseUrl} from '../utils/variables';
 
 // fetch data from endpoint
@@ -114,8 +115,8 @@ const useUser = () => {
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const loadMedia = async () => {
+  const {update} = useContext(MainContext);
+  const loadMedia = async (start = 0, limit = 10) => {
     try {
       const json = await useTag().getFilesByTag(appId);
       const media = await Promise.all(
@@ -133,7 +134,7 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-  }, []);
+  }, [update]);
 
   const postMedia = async (formData, token) => {
     setLoading(true);
@@ -153,7 +154,18 @@ const useMedia = () => {
     return result;
   };
 
-  return {mediaArray, postMedia, loading};
+  // delete post
+  const deleteMedia = async (token, fileId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + `media/${fileId}`, options);
+  };
+
+  return {mediaArray, postMedia, loading, deleteMedia};
 };
 
 const useComment = () => {

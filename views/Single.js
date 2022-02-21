@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Keyboard,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -22,7 +23,7 @@ import {
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
 import CommentPostForm from '../components/CommentPostForm';
-import {useUser, useFavorite, useTag} from '../hooks/ApiHooks';
+import {useUser, useFavorite, useMedia, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
@@ -41,6 +42,7 @@ const Single = ({route, navigation}) => {
   const {user, favoriteUpdate, setFavoriteUpdate} = useContext(MainContext);
   const {getAllTagsOfAFile} = useTag();
   const [tag, setTag] = useState('Other');
+  const {deleteMedia} = useMedia();
 
   const fetchPostOwner = async () => {
     try {
@@ -102,6 +104,27 @@ const Single = ({route, navigation}) => {
     }
   };
 
+  // delete post
+  const deletePost = () => {
+    Alert.alert('Delete', 'Do you want to delete?', [
+      {text: 'No'},
+      {
+        text: 'Yes',
+        onPress: async () => {
+          try {
+            const token = await AsyncStorage.getItem('userToken');
+            const response = await deleteMedia(token, file.file_id);
+            console.log('delete', deletePost);
+            response && setUpdate(update + 1);
+            navigation.navigate('Browse');
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      },
+    ]);
+  };
+
   useEffect(() => {
     fetchPostOwner();
     fetchTags();
@@ -127,7 +150,7 @@ const Single = ({route, navigation}) => {
                 left={() => (
                   <IconButton
                     icon="arrow-left"
-                    onPress={() => navigation.navigate('Browse')}
+                    onPress={() => navigation.goBack()}
                   />
                 )}
                 right={() => (
@@ -152,7 +175,13 @@ const Single = ({route, navigation}) => {
                       />
                     )}
                     <IconButton icon="square-edit-outline" size={25} />
-                    <IconButton icon="delete" size={25} />
+                    {file.user_id === user.user_id && (
+                      <IconButton
+                        icon="delete"
+                        size={25}
+                        onPress={() => deletePost()}
+                      />
+                    )}
                   </View>
                 )}
               />
@@ -195,6 +224,13 @@ const Single = ({route, navigation}) => {
                 titleStyle={{fontSize: 14, fontWeight: '500'}}
                 left={() => <AvatarComponent userId={file.user_id} />}
                 style={{paddingLeft: 15, paddingTop: 5}}
+                onPress={() => {
+                  navigation.push('Profile', {
+                    navigation: navigation,
+                    fromBottomNav: false,
+                    userProf: postOwner,
+                  });
+                }}
               />
               <Card.Content>
                 <Paragraph>{file.description}</Paragraph>
