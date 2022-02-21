@@ -14,10 +14,14 @@ const List = ({navigation, route}) => {
   const {update, setUpdate} = useContext(MainContext);
 
   const fetchAllPosts = async () => {
-    let tag = '';
-    if (category === 'all') {
-      tag = appId;
-    } else {
+    let tag = appId;
+
+    if (
+      category === 'Food' ||
+      category === 'Furniture' ||
+      category === 'Clothing' ||
+      category === 'Vacation'
+    ) {
       tag = `${appId}_${category.toLowerCase()}`;
     }
     console.log('tag', tag.toString());

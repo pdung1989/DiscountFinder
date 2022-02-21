@@ -29,7 +29,6 @@ import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
 import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
-import {ScrollView} from 'react-native-web';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
