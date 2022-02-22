@@ -234,11 +234,22 @@ const useComment = () => {
       },
       body: JSON.stringify(comment),
     };
-    console.log('comment body', options.body);
+
     return doFetch(baseUrl + 'comments', options);
   };
 
-  return {getCommentsByFileId, postComment};
+  const deleteComment = async (commentId, token) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+
+    return doFetch(`${baseUrl}comments/${commentId}`, options);
+  };
+
+  return {getCommentsByFileId, postComment, deleteComment};
 };
 
 const useTag = () => {
