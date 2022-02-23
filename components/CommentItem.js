@@ -55,7 +55,11 @@ const CommentItem = ({singleCommment}) => {
     <List.Item
       title={commentOwner.username}
       titleStyle={{fontSize: 14, fontWeight: '500'}}
-      description={singleCommment.comment}
+      description={
+        <View style={{alignSelf: 'center'}}>
+          <Text>{singleCommment.comment}</Text>
+        </View>
+      }
       left={() => <AvatarComponent userId={singleCommment.user_id} />}
       right={() => (
         <>
