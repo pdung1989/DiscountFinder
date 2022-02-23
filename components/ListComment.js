@@ -26,7 +26,7 @@ const ListComment = ({fileId}) => {
   return (
     <View
       style={{
-        /* height: 170, */
+        height: '100%',
         marginTop: 5,
       }}
     >
