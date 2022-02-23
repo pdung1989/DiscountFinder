@@ -47,13 +47,6 @@ const ModifyPost = ({navigation, route}) => {
             text: 'OK',
             onPress: () => {
               setUpdate(update + 1);
-              /* navigation.navigate({
-                name: 'Browse',
-                params: {
-                  file: file,
-                },
-                merge: true,
-              }); */
               navigation.navigate('Browse');
             },
           },

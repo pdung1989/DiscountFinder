@@ -6,7 +6,7 @@ import CategoryBox from '../components/CategoryBox';
 import {MainContext} from '../contexts/MainContext';
 import {Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
-import {useTag} from '../hooks/ApiHooks';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 
@@ -15,6 +15,7 @@ const Home = ({navigation}) => {
   const {user} = useContext(MainContext);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
+  const {update, setUpdate} = useContext(MainContext);
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
@@ -59,6 +60,13 @@ const Home = ({navigation}) => {
             placeholder="Search"
             onChangeText={onChangeSearch}
             value={searchQuery}
+            onIconPress={() => {
+              navigation.navigate('Browse', {
+                category: `search_${searchQuery}`,
+              });
+              setUpdate(update + 1);
+              setSearchQuery('');
+            }}
           />
         </View>
         <ScrollView>

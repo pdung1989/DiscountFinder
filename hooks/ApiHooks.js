@@ -113,35 +113,11 @@ const useUser = () => {
 };
 
 const useMedia = () => {
-  //const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  //const {update, setUpdate} = useContext(MainContext);
 
-  /* const loadMedia = async () => {
-    setLoading(true);
-
-    try {
-      const json = await useTag().getFilesByTag(appId);
-      const media = await Promise.all(
-        json.map(async (item) => {
-          const response = await fetch(baseUrl + 'media/' + item.file_id);
-          const mediaData = await response.json();
-          return mediaData;
-        })
-      );
-      setMediaArray(media);
-    } catch (error) {
-      if (error.name === 'AbortError') return;
-      console.error(error);
-      setLoading(false);
-    } finally {
-      setLoading(false);
-    }
+  const getMediaById = async (fileId) => {
+    return await doFetch(`${baseUrl}media/${fileId}`);
   };
-
-  useEffect(() => {
-    loadMedia();
-  }, [update]); */
 
   const loadMedia = async (tag) => {
     setLoading(true);
@@ -211,12 +187,39 @@ const useMedia = () => {
     return result;
   };
 
+  const searchMedia = async (data, token) => {
+    let result = [];
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+      },
+      body: JSON.stringify(data),
+    };
+
+    const json = await doFetch(`${baseUrl}media/search`, options);
+    await Promise.all(
+      json.map(async (item) => {
+        const tagArray = await useTag().getAllTagsOfAFile(item.file_id);
+        const filteredItem = tagArray.filter((tag) => tag.tag === appId);
+        if (filteredItem.length > 0) {
+          const response = await getMediaById(item.file_id);
+          result.push(response);
+        }
+      })
+    );
+    return result;
+  };
+
   return {
-    /* mediaArray, */ loadMedia,
+    loadMedia,
     postMedia,
     loading,
     deleteMedia,
     putMedia,
+    getMediaById,
+    searchMedia,
   };
 };
 

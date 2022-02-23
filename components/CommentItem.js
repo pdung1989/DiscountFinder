@@ -62,7 +62,7 @@ const CommentItem = ({singleCommment}) => {
           <Text
             style={{
               position: 'absolute',
-              top: 7,
+              //top: 7,
               right: 0,
             }}
           >
