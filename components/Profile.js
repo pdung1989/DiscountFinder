@@ -15,7 +15,7 @@ import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
-import {uploadsUrl} from '../utils/variables';
+import {appId, uploadsUrl} from '../utils/variables';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
   Menu,
@@ -55,7 +55,7 @@ const Profile = ({route, navigation}) => {
     }
   };
 
-  const filterFiles = () => {
+  const filterFiles = async () => {
     if (mediaArray.length > 0) {
       const tempUserMedia = mediaArray.filter((item) => {
         return item.user_id === currentUser.user_id;
