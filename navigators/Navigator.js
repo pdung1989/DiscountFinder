@@ -56,7 +56,11 @@ const TabScreen = ({navigation}) => {
         component={Home}
         options={{headerShown: false}}
       ></Tab.Screen>
-      <Tab.Screen name="Browse" component={Browse}></Tab.Screen>
+      <Tab.Screen
+        name="Browse"
+        component={Browse}
+        initialParams={{category: `all`}}
+      ></Tab.Screen>
       <Tab.Screen
         name="Add"
         component={Add}
