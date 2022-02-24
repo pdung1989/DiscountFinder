@@ -20,6 +20,17 @@ const doFetch = async (url, options = {}) => {
   }
 };
 
+const sortArray = (a, b) => {
+  if (a.time_added > b.time_added) {
+    return -1;
+  }
+  if (a.time_added < b.time_added) {
+    return 1;
+  }
+
+  return 0;
+};
+
 // create useLogin hook for handling login
 const useLogin = () => {
   const postLogin = async (userCredentials) => {
@@ -131,9 +142,10 @@ const useMedia = () => {
           return mediaData;
         })
       );
+
+      media.sort((a, b) => sortArray(a, b));
       return media;
     } catch (error) {
-      if (error.name === 'AbortError') return;
       console.error(error);
       setLoading(false);
     } finally {
@@ -225,7 +237,9 @@ const useMedia = () => {
 
 const useComment = () => {
   const getCommentsByFileId = async (fileId) => {
-    return await doFetch(`${baseUrl}comments/file/${fileId}`);
+    const comment = await doFetch(`${baseUrl}comments/file/${fileId}`);
+    comment.sort((a, b) => sortArray(a, b));
+    return comment;
   };
 
   const postComment = async (comment, token) => {

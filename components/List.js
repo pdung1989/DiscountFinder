@@ -9,7 +9,7 @@ import {appId, baseUrl} from '../utils/variables';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
-  console.log('category', category.split('_').pop());
+  console.log('category here', category.split('_').pop());
   const {loadMedia, searchMedia} = useMedia();
   const [postArray, setPostArray] = useState([]);
   const {update, setUpdate} = useContext(MainContext);

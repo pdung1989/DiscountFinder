@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -29,6 +30,7 @@ import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
 import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
+import PostDescription from '../components/PostDescription';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
@@ -142,11 +144,10 @@ const Single = ({route, navigation}) => {
         <View style={{height: '100%'}}>
           <Card style={{height: '100%'}}>
             <Card.Content>
-              <View style={{height: '60%'}}>
+              <View style={{maxHeight: '65%'}}>
                 <TouchableOpacity
                   onPress={() => Keyboard.dismiss()}
                   activeOpacity={1}
-                  style={{}}
                 >
                   <Card.Title
                     title={file.title}
@@ -226,7 +227,6 @@ const Single = ({route, navigation}) => {
                       ></Video>
                     </>
                   )}
-
                   <View style={styles.fabRight}>
                     <Ionicons name="heart-sharp" size={16} color="#d64045" />
                     <Text style={{alignSelf: 'center', fontWeight: '700'}}>
@@ -246,18 +246,19 @@ const Single = ({route, navigation}) => {
                       });
                     }}
                   />
-
-                  <Paragraph>{file.description}</Paragraph>
-                  <View style={styles.tag}>
-                    <Chip style={{height: 30}}>{tag}</Chip>
-                    <Text style={{paddingTop: 7}}>
-                      {convertUTCToLocalTime(file.time_added)}
-                    </Text>
-                  </View>
-                  <CommentPostForm fileId={file.file_id} />
                 </TouchableOpacity>
+                <PostDescription text={file.description}></PostDescription>
+                <View style={styles.tag}>
+                  <Chip style={{height: 30}}>{tag}</Chip>
+                  <Text style={{paddingTop: 7}}>
+                    {convertUTCToLocalTime(file.time_added)}
+                  </Text>
+                </View>
+                <View>
+                  <CommentPostForm fileId={file.file_id} />
+                </View>
               </View>
-              <View style={{height: '40%'}}>
+              <View style={{maxHeight: '40%'}}>
                 <ListComment fileId={file.file_id} />
               </View>
             </Card.Content>
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
   fabRight: {
     flexDirection: 'row',
     position: 'absolute',
-    top: 5,
+    top: 280,
     right: 16,
     padding: 5,
     borderRadius: 50,
