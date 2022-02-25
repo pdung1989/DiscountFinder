@@ -4,6 +4,7 @@ import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
 import {MainContext} from '../contexts/MainContext';
+import {Card} from 'react-native-paper';
 
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
@@ -24,7 +25,7 @@ const ListComment = ({fileId}) => {
   }, [commentUpdate]);
 
   return (
-    <View
+    <Card.Content
       style={{
         height: '100%',
         marginTop: 5,
@@ -36,7 +37,7 @@ const ListComment = ({fileId}) => {
         keyExtractor={(item) => item.comment_id.toString()}
         renderItem={({item}) => <CommentItem singleCommment={item} />}
       />
-    </View>
+    </Card.Content>
   );
 };
 

@@ -3,7 +3,7 @@ import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useComment} from '../hooks/ApiHooks';
-import {TextInput} from 'react-native-paper';
+import {Card, TextInput} from 'react-native-paper';
 import PropTypes from 'prop-types';
 import {useFocusEffect} from '@react-navigation/native';
 import {MainContext} from '../contexts/MainContext';
@@ -57,7 +57,7 @@ const CommentPostForm = ({navigation, fileId}) => {
   };
 
   return (
-    <View>
+    <Card.Content>
       <Controller
         control={control}
         rules={{
@@ -86,7 +86,7 @@ const CommentPostForm = ({navigation, fileId}) => {
         )}
         name="comment"
       />
-    </View>
+    </Card.Content>
   );
 };
 
