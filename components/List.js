@@ -59,6 +59,7 @@ const List = ({navigation, route}) => {
         </View>
       )}
       <FlatList
+      style={styles.list}
         data={postArray}
         keyExtractor={(item) => item.file_id.toString()}
         renderItem={({item}) => (
@@ -79,6 +80,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     padding: 10,
+  },
+  list: {
+    backgroundColor: '#fefefe',
+    paddingTop: 15,
+    paddingBottom: 15,
   },
 });
 
