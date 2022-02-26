@@ -59,24 +59,19 @@ const TabScreen = ({navigation}) => {
       <Tab.Screen
         name="Browse"
         component={Browse}
+        options={{headerShown: false}}
         initialParams={{category: `all`}}
       ></Tab.Screen>
       <Tab.Screen
         name="Add"
         component={Add}
-        options={{
-          headerTitle: () => <Title>Add a new post</Title>,
-          /* headerLeft: () => (
-            <IconButton
-              icon="arrow-left"
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
-          ), */
-        }}
+        options={{headerShown: false}}
       ></Tab.Screen>
-      <Tab.Screen name="Favorites" component={Favorites}></Tab.Screen>
+      <Tab.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{headerShown: false}}
+      ></Tab.Screen>
       <Tab.Screen
         name="Profile"
         component={Profile}

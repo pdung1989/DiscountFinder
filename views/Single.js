@@ -31,6 +31,7 @@ import {useTime} from '../hooks/helpersHooks';
 import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
 import PostDescription from '../components/PostDescription';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
@@ -137,135 +138,138 @@ const Single = ({route, navigation}) => {
   }, [likedByUser]);
 
   return (
-    <SafeAreaView
-      style={{flexDirection: 'column', alignContent: 'space-around'}}
-    >
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
-        <View style={{height: '100%'}}>
-          <Card style={{height: '100%'}}>
-            <Card.Content>
-              <View style={{maxHeight: '65%'}}>
-                <TouchableOpacity
-                  onPress={() => Keyboard.dismiss()}
-                  activeOpacity={1}
-                >
-                  <Card.Title
-                    title={file.title}
-                    titleStyle={styles.cardTitle}
-                    left={() => (
-                      <IconButton
-                        icon="arrow-left"
-                        onPress={() => navigation.goBack()}
-                      />
-                    )}
-                    right={() => (
-                      <View style={styles.iconGroup}>
-                        {likedByUser ? (
-                          <IconButton
-                            icon="cards-heart"
-                            size={25}
-                            onPress={() => {
-                              removeFavorite();
-                            }}
-                            color="#d64045"
-                          />
-                        ) : (
-                          <IconButton
-                            icon="heart-outline"
-                            size={25}
-                            onPress={() => {
-                              createFavorite();
-                              fetchLikes();
-                            }}
-                          />
-                        )}
+    <>
+      <SafeAreaView
+        style={{flexDirection: 'column', alignContent: 'space-around'}}
+      >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+          <View style={{height: '100%'}}>
+            <Card style={{height: '100%'}}>
+              <Card.Content>
+                <View style={{maxHeight: '65%'}}>
+                  <TouchableOpacity
+                    onPress={() => Keyboard.dismiss()}
+                    activeOpacity={1}
+                  >
+                    <Card.Title
+                      title={file.title}
+                      titleStyle={styles.cardTitle}
+                      left={() => (
+                        <IconButton
+                          icon="arrow-left"
+                          onPress={() => navigation.goBack()}
+                        />
+                      )}
+                      right={() => (
+                        <View style={styles.iconGroup}>
+                          {likedByUser ? (
+                            <IconButton
+                              icon="cards-heart"
+                              size={25}
+                              onPress={() => {
+                                removeFavorite();
+                              }}
+                              color="#d64045"
+                            />
+                          ) : (
+                            <IconButton
+                              icon="heart-outline"
+                              size={25}
+                              onPress={() => {
+                                createFavorite();
+                                fetchLikes();
+                              }}
+                            />
+                          )}
 
-                        {file.user_id === user.user_id && (
-                          <>
-                            <IconButton
-                              icon="square-edit-outline"
-                              size={25}
-                              onPress={() =>
-                                navigation.navigate('Modify Post', {file})
-                              }
-                            />
-                            <IconButton
-                              icon="delete"
-                              size={25}
-                              onPress={() => deletePost()}
-                            />
-                          </>
-                        )}
-                      </View>
-                    )}
-                  />
-                  {file.media_type === 'image' ? (
-                    <Card.Cover
-                      source={{uri: uploadsUrl + file.filename}}
-                      style={{height: 200}}
-                      PlaceholderContent={
-                        <ActivityIndicator animating={true} color="#d64045" />
-                      }
+                          {file.user_id === user.user_id && (
+                            <>
+                              <IconButton
+                                icon="square-edit-outline"
+                                size={25}
+                                onPress={() =>
+                                  navigation.navigate('Modify Post', {file})
+                                }
+                              />
+                              <IconButton
+                                icon="delete"
+                                size={25}
+                                onPress={() => deletePost()}
+                              />
+                            </>
+                          )}
+                        </View>
+                      )}
                     />
-                  ) : (
-                    <>
-                      <Video
-                        ref={videoRef}
+                    {file.media_type === 'image' ? (
+                      <Card.Cover
+                        source={{uri: uploadsUrl + file.filename}}
                         style={{height: 200}}
-                        source={{
-                          uri: uploadsUrl + file.filename,
-                        }}
-                        posterSource={{
-                          uri: uploadsUrl + file.screenshot,
-                        }}
-                        useNativeControls={true}
-                        isLooping
-                        resizeMode="center"
-                        onError={(error) => {
-                          console.error('<Video> error', error);
-                        }}
-                      ></Video>
-                    </>
-                  )}
-                  <View style={styles.fabRight}>
-                    <Ionicons name="heart-sharp" size={16} color="#d64045" />
-                    <Text style={{alignSelf: 'center', fontWeight: '700'}}>
-                      {likes.length}
+                        PlaceholderContent={
+                          <ActivityIndicator animating={true} color="#d64045" />
+                        }
+                      />
+                    ) : (
+                      <>
+                        <Video
+                          ref={videoRef}
+                          style={{height: 200}}
+                          source={{
+                            uri: uploadsUrl + file.filename,
+                          }}
+                          posterSource={{
+                            uri: uploadsUrl + file.screenshot,
+                          }}
+                          useNativeControls={true}
+                          isLooping
+                          resizeMode="center"
+                          onError={(error) => {
+                            console.error('<Video> error', error);
+                          }}
+                        ></Video>
+                      </>
+                    )}
+                    <View style={styles.fabRight}>
+                      <Ionicons name="heart-sharp" size={16} color="#d64045" />
+                      <Text style={{alignSelf: 'center', fontWeight: '700'}}>
+                        {likes.length}
+                      </Text>
+                    </View>
+                    <List.Item
+                      title={postOwner.username}
+                      titleStyle={{fontSize: 14, fontWeight: '500'}}
+                      left={() => <AvatarComponent userId={file.user_id} />}
+                      style={{paddingLeft: 15, paddingTop: 5}}
+                      onPress={() => {
+                        navigation.push('Profile', {
+                          navigation: navigation,
+                          fromBottomNav: false,
+                          userProf: postOwner,
+                        });
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <PostDescription text={file.description}></PostDescription>
+                  <View style={styles.tag}>
+                    <Chip style={{height: 30}}>{tag}</Chip>
+                    <Text style={{paddingTop: 7}}>
+                      {convertUTCToLocalTime(file.time_added)}
                     </Text>
                   </View>
-                  <List.Item
-                    title={postOwner.username}
-                    titleStyle={{fontSize: 14, fontWeight: '500'}}
-                    left={() => <AvatarComponent userId={file.user_id} />}
-                    style={{paddingLeft: 15, paddingTop: 5}}
-                    onPress={() => {
-                      navigation.push('Profile', {
-                        navigation: navigation,
-                        fromBottomNav: false,
-                        userProf: postOwner,
-                      });
-                    }}
-                  />
-                </TouchableOpacity>
-                <PostDescription text={file.description}></PostDescription>
-                <View style={styles.tag}>
-                  <Chip style={{height: 30}}>{tag}</Chip>
-                  <Text style={{paddingTop: 7}}>
-                    {convertUTCToLocalTime(file.time_added)}
-                  </Text>
+                  <View>
+                    <CommentPostForm fileId={file.file_id} />
+                  </View>
                 </View>
-                <View>
-                  <CommentPostForm fileId={file.file_id} />
+                <View style={{maxHeight: '40%'}}>
+                  <ListComment fileId={file.file_id} />
                 </View>
-              </View>
-              <View style={{maxHeight: '40%'}}>
-                <ListComment fileId={file.file_id} />
-              </View>
-            </Card.Content>
-          </Card>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+              </Card.Content>
+            </Card>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+      <FocusAwareStatusBar barStyle="dark-content" />
+    </>
   );
 };
 

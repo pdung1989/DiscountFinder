@@ -1,4 +1,4 @@
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 import {useFavorite, useMedia} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
@@ -27,6 +27,7 @@ const ListFavorites = ({navigation}) => {
 
   return (
     <FlatList
+      style={styles.list}
       data={favoritesArray}
       keyExtractor={(item) => item.file_id.toString()}
       renderItem={({item}) => (
@@ -39,5 +40,12 @@ const ListFavorites = ({navigation}) => {
 ListFavorites.propTypes = {
   navigation: PropTypes.object,
 };
+
+const styles = StyleSheet.create({
+  list: {
+    backgroundColor: '#fefefe',
+    paddingVertical: 15,
+  },
+});
 
 export default ListFavorites;
