@@ -1,13 +1,20 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const Browse = ({navigation, route}) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <List navigation={navigation} route={route} style={styles.infoArea} />
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Browse</Text>
+        </View>
+        <List navigation={navigation} route={route} style={styles.infoArea} />
+      </SafeAreaView>
+      <FocusAwareStatusBar barStyle="light-content" />
+    </>
   );
 };
 
@@ -15,12 +22,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#1D3354',
     height: '100%',
     paddingTop: 0,
   },
   infoArea: {
     flex: 1,
+  },
+  header: {
+    height: 50,
+    backgroundColor: '#1D3354',
+    justifyContent: 'center',
+    paddingTop: 15,
+    marginBottom: 15,
+  },
+  title: {
+    marginLeft: 17,
+    fontSize: 26,
+    color: '#fdfdfd',
+    fontWeight: 'bold',
   },
 });
 

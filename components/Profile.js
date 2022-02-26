@@ -35,15 +35,15 @@ const Profile = ({route, navigation}) => {
   const {setIsLoggedIn} = useContext(MainContext);
   const {user} = useContext(MainContext);
   const [currentUser] = useState(userProf);
-  const [ownProfile, setOwnProfile] = useState();
+  const [ownProfile, setOwnProfile] = useState(false);
   const [avatar, setAvatar] = useState('http://placekitten.com/640');
   const {getFilesByTag} = useTag();
   const menuP = useRef();
-  const {mediaArray} = useMedia();
   const [userMedia, setUserMedia] = useState([]);
-  const {update} = useContext(MainContext);
+  const {loadMedia} = useMedia();
 
   const {Popover} = renderers;
+  const tag = appId;
 
   const fetchAvatar = async (id) => {
     try {
@@ -55,25 +55,23 @@ const Profile = ({route, navigation}) => {
     }
   };
 
-  const filterFiles = async () => {
-    if (mediaArray.length > 0) {
-      const tempUserMedia = mediaArray.filter((item) => {
-        return item.user_id === currentUser.user_id;
+  const fetchPosts = async (tag) => {
+    try {
+      let data = await loadMedia(tag);
+      data = data.filter((post) => {
+        return post.user_id === userProf.user_id;
       });
-      setUserMedia(tempUserMedia);
+      setUserMedia(data);
+    } catch (error) {
+      console.error('fetchAllPosts error', error.message);
     }
   };
 
   useEffect(() => {
-    userProf.user_id == user.user_id
-      ? setOwnProfile(true)
-      : setOwnProfile(false);
+    userProf.user_id == user.user_id && setOwnProfile(true);
     fetchAvatar(userProf.user_id);
+    fetchPosts(tag);
   }, []);
-
-  useEffect(() => {
-    filterFiles();
-  }, [mediaArray]);
 
   const closeMenu = async () => {
     await menuP.current.menuCtx.menuActions.closeMenu();
