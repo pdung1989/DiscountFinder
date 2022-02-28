@@ -17,11 +17,13 @@ import EditProfile from '../views/EditProfile';
 import {Title, IconButton} from 'react-native-paper';
 import Profile from '../components/Profile';
 import ModifyPost from '../views/ModifyPost';
+import Search from '../views/Search';
+import Filter from '../views/Filter';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabScreen = ({navigation}) => {
+const TabScreen = () => {
   const {user} = useContext(MainContext);
   return (
     <Tab.Navigator
@@ -65,7 +67,9 @@ const TabScreen = ({navigation}) => {
       <Tab.Screen
         name="Add"
         component={Add}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+        }}
       ></Tab.Screen>
       <Tab.Screen
         name="Favorites"
@@ -93,6 +97,20 @@ const StackScreen = () => {
             name="MainPage"
             component={TabScreen}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Search"
+            component={Search}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Filter"
+            component={Filter}
+            options={{
+              headerShown: false,
+            }}
           />
           <Stack.Screen
             name="Single"

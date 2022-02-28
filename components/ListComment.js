@@ -4,6 +4,7 @@ import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
 import {MainContext} from '../contexts/MainContext';
+import {Card} from 'react-native-paper';
 
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
@@ -24,24 +25,30 @@ const ListComment = ({fileId}) => {
   }, [commentUpdate]);
 
   return (
-    <View
-      style={{
-        height: '100%',
-        marginTop: 5,
-      }}
-    >
-      <Text style={styles.commentTitle}>{comments.length} comments</Text>
+    <Card.Content>
+      {comments.length < 2 ? (
+        <Text style={styles.commentTitle}>{comments.length} comment</Text>
+      ) : (
+        <Text style={styles.commentTitle}>{comments.length} comments</Text>
+      )}
+
       <FlatList
         data={comments}
         keyExtractor={(item) => item.comment_id.toString()}
+        initialNumToRender={10}
         renderItem={({item}) => <CommentItem singleCommment={item} />}
       />
-    </View>
+    </Card.Content>
   );
 };
 
 const styles = StyleSheet.create({
-  commentTitle: {fontSize: 16, fontWeight: '700', paddingBottom: 5},
+  commentTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    paddingBottom: 5,
+    paddingTop: 5,
+  },
 });
 
 ListComment.propTypes = {

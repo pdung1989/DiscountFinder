@@ -61,7 +61,7 @@ const Home = ({navigation}) => {
             onChangeText={onChangeSearch}
             value={searchQuery}
             onIconPress={() => {
-              navigation.navigate('Browse', {
+              navigation.navigate('Search', {
                 category: `search_${searchQuery}`,
               });
               setUpdate(update + 1);

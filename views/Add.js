@@ -141,92 +141,95 @@ const Add = ({navigation}) => {
         <View style={styles.header}>
           <Text style={styles.title}>Add a new post</Text>
         </View>
-        <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1} styles={{flex: 1}}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'position' : ''}
-            styles={{flex: 1}}
-          >
-            <Card containerStyle={{width: '100%', margin: 0}}>
-              {type === 'image' ? (
-                <Card.Image
-                  source={{uri: image}}
-                  style={{
-                    height: 200,
-                    marginHorizontal: 10,
-                    marginBottom: 10,
-                  }}
-                  onPress={pickImage}
-                />
-              ) : (
-                <Video
-                  source={{uri: image}}
-                  style={{height: 200, marginHorizontal: 10, marginBottom: 10}}
-                  useNativeControls={true}
-                  resizeMode="cover"
-                  onError={(err) => {
-                    console.error('video', err);
-                  }}
-                />
-              )}
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    mode="outlined"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Title"
-                    inputContainerStyle={styles.titleInput}
-                    errorMessage={errors.description && 'This is required.'}
-                  />
-                )}
-                name="title"
-              />
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    mode="outlined"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Description"
-                    multiline
-                    errorMessage={errors.description && 'This is required.'}
-                    inputContainerStyle={styles.descriptionInput}
-                  />
-                )}
-                name="description"
-              />
-              <DropDownPicker
-                open={open}
-                value={dropDownPickerValue}
-                items={items}
-                setOpen={setOpen}
-                setValue={setDropDownPickerValue}
-                setItems={setItems}
-                containerStyle={styles.picker}
-              />
-              <Button
-                loading={loading}
-                disabled={!imageSelected}
-                mode="contained"
-                color="#1D3354"
-                onPress={handleSubmit(onSubmit)}
-                style={{margin: 10, borderRadius: 7}}
+        <Card containerStyle={{width: '100%', height: '91%', margin: 0}}>
+          <ScrollView style={{height: '100%'}}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'position' : ''}
+              styles={{height: '100%'}}
+            >
+              <TouchableOpacity
+                onPress={() => Keyboard.dismiss()}
+                activeOpacity={1}
               >
-                Upload
-              </Button>
-            </Card>
-          </KeyboardAvoidingView>
-        </TouchableOpacity>
+                {type === 'image' ? (
+                  <Card.Image
+                    source={{uri: image}}
+                    style={styles.imagePicker}
+                    onPress={pickImage}
+                  />
+                ) : (
+                  <Video
+                    source={{uri: image}}
+                    style={styles.imagePicker}
+                    useNativeControls={true}
+                    resizeMode="cover"
+                    onError={(err) => {
+                      console.error('video', err);
+                    }}
+                  />
+                )}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <Input
+                      mode="outlined"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Title"
+                      inputContainerStyle={styles.titleInput}
+                      errorMessage={errors.description && 'This is required.'}
+                    />
+                  )}
+                  name="title"
+                />
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <Input
+                      mode="outlined"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Description"
+                      multiline
+                      errorMessage={errors.description && 'This is required.'}
+                      inputContainerStyle={styles.descriptionInput}
+                    />
+                  )}
+                  name="description"
+                />
+
+                <DropDownPicker
+                  open={open}
+                  value={dropDownPickerValue}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setDropDownPickerValue}
+                  setItems={setItems}
+                  containerStyle={styles.picker}
+                  listMode="SCROLLVIEW"
+                />
+                <Button
+                  loading={loading}
+                  disabled={!imageSelected}
+                  mode="contained"
+                  color="#1D3354"
+                  onPress={handleSubmit(onSubmit)}
+                  style={styles.uploadButton}
+                >
+                  Upload
+                </Button>
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
+          </ScrollView>
+        </Card>
       </SafeAreaView>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
@@ -253,12 +256,18 @@ const styles = StyleSheet.create({
     color: '#fdfdfd',
     fontWeight: 'bold',
   },
+  imagePicker: {
+    height: 200,
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
   titleInput: {
     height: 40,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 7,
     padding: 5,
+    marginTop: 10,
   },
   descriptionInput: {
     height: 100,
@@ -270,7 +279,13 @@ const styles = StyleSheet.create({
   picker: {
     paddingTop: 0,
     marginHorizontal: 10,
-    width: '93%',
+    width: '94%',
+  },
+  uploadButton: {
+    margin: 10,
+    marginTop: 25,
+    paddingVertical: 3,
+    borderRadius: 7,
   },
 });
 

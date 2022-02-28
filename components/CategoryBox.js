@@ -10,7 +10,7 @@ const CategoryBox = ({icon, color, title, side, navigation}) => {
     <TouchableOpacity
       style={styles(color, side).box}
       onPress={() => {
-        navigation.navigate('Browse', {category: title});
+        navigation.navigate('Filter', {category: title});
         setUpdate(update + 1);
       }}
     >

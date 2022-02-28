@@ -1,6 +1,7 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import {Button, Overlay, Icon} from 'react-native-elements';
+import {Card} from 'react-native-paper';
 
 const PostDescription = ({text}) => {
   const [visible, setVisible] = useState(false);
@@ -10,7 +11,7 @@ const PostDescription = ({text}) => {
   };
 
   return (
-    <View>
+    <Card.Content>
       <Text numberOfLines={2}>{text}</Text>
 
       {text.length > 100 && (
@@ -20,7 +21,7 @@ const PostDescription = ({text}) => {
           }}
           accessibilityRole="button"
         >
-          <Text>Show more</Text>
+          <Text style={{color: '#949494', fontWeight: '500'}}>Show more</Text>
         </TouchableOpacity>
       )}
 
@@ -36,7 +37,7 @@ const PostDescription = ({text}) => {
           </Overlay>
         </View>
       )}
-    </View>
+    </Card.Content>
   );
 };
 
