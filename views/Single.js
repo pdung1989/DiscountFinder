@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
-  ScrollView,
+  Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -33,6 +33,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
 import PostDescription from '../components/PostDescription';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import LottieView from 'lottie-react-native';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;

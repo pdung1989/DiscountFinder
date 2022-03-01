@@ -7,6 +7,7 @@ import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appId, baseUrl} from '../utils/variables';
 import {FAB} from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
@@ -71,6 +72,12 @@ const List = ({navigation, route}) => {
         )}
         ListEmptyComponent={
           <View style={styles.notFoundContainer}>
+            <LottieView
+              source={require('../assets/not-found-animation.json')}
+              autoPlay
+              speed={2}
+              style={styles.animation}
+            />
             <Text style={styles.notFoundText}>No post found</Text>
           </View>
         }
@@ -93,13 +100,20 @@ const styles = StyleSheet.create({
   notFoundContainer: {
     flex: 1,
     alignItems: 'center',
+    alignContent: 'center',
     height: '100%',
   },
   notFoundText: {
-    alignSelf: 'center',
+    marginVertical: 50,
+    color: '#808080',
     fontWeight: '700',
     fontSize: 16,
     padding: 10,
+  },
+  animation: {
+    marginVertical: 50,
+    width: 200,
+    height: 200,
   },
   list: {
     backgroundColor: '#fefefe',

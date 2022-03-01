@@ -311,6 +311,7 @@ const useFavorite = () => {
           return mediaData;
         })
       );
+      media.sort((a, b) => sortArray(a, b));
       return media;
     } catch (error) {
       console.error(error);

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FAB} from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 
 const ListFavorites = ({navigation}) => {
   const [favoritesArray, setFavoritesArray] = useState([]);
@@ -44,7 +45,12 @@ const ListFavorites = ({navigation}) => {
         )}
         ListEmptyComponent={
           <View style={styles.notFoundContainer}>
-            <Text style={styles.notFoundText}>No post found</Text>
+            <LottieView
+              source={require('../assets/community-image.json')}
+              autoPlay
+              style={styles.animation}
+            />
+            <Text style={styles.notFoundText}>No favorite posts</Text>
           </View>
         }
       />
@@ -77,10 +83,16 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   notFoundText: {
-    alignSelf: 'center',
+    marginVertical: 50,
+    color: '#808080',
     fontWeight: '700',
     fontSize: 16,
     padding: 10,
+  },
+  animation: {
+    marginVertical: 50,
+    width: 200,
+    height: 200,
   },
   fab: {
     position: 'absolute',
