@@ -26,6 +26,7 @@ const List = ({navigation, route}) => {
       setPostArray(data);
     } catch (error) {
       console.error('fetchAllPosts error', error.message);
+      Alert.alert('Error fetching posts');
     }
   };
 
@@ -36,6 +37,7 @@ const List = ({navigation, route}) => {
       setPostArray(data);
     } catch (error) {
       console.error('searchItem error', error.message);
+      Alert.alert('Error searching posts');
     }
   };
 

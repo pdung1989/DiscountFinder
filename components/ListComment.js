@@ -1,15 +1,16 @@
-import {FlatList, View, StyleSheet, Text, SafeAreaView} from 'react-native';
+import {FlatList, View, StyleSheet, SafeAreaView} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
 import {MainContext} from '../contexts/MainContext';
-import {Card} from 'react-native-paper';
+import {Card, Text} from 'react-native-paper';
 
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
   const {commentUpdate, setCommentUpdate} = useContext(MainContext);
+  const [error, setError] = useState(false);
 
   const fetchComments = async () => {
     try {
@@ -17,6 +18,7 @@ const ListComment = ({fileId}) => {
       setComments(commentsData);
     } catch (error) {
       console.error('fetchComments error', error.message);
+      setError(true);
     }
   };
 
@@ -31,13 +33,17 @@ const ListComment = ({fileId}) => {
       ) : (
         <Text style={styles.commentTitle}>{comments.length} comments</Text>
       )}
-      <FlatList
-        data={comments}
-        keyExtractor={(item) => item.comment_id.toString()}
-        initialNumToRender={10}
-        renderItem={({item}) => <CommentItem singleCommment={item} />}
-        removeClippedSubviews={true}
-      />
+      {error ? (
+        <Text>Can't load comments</Text>
+      ) : (
+        <FlatList
+          data={comments}
+          keyExtractor={(item) => item.comment_id.toString()}
+          initialNumToRender={10}
+          renderItem={({item}) => <CommentItem singleCommment={item} />}
+          removeClippedSubviews={true}
+        />
+      )}
     </Card.Content>
   );
 };

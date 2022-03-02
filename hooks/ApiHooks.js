@@ -313,20 +313,16 @@ const useFavorite = () => {
       },
     };
 
-    try {
-      const json = await doFetch(baseUrl + 'favourites', options);
-      const media = await Promise.all(
-        json.map(async (item) => {
-          const response = await fetch(baseUrl + 'media/' + item.file_id);
-          const mediaData = await response.json();
-          return mediaData;
-        })
-      );
-      media.sort((a, b) => sortArray(a, b));
-      return media;
-    } catch (error) {
-      console.error(error);
-    }
+    const json = await doFetch(baseUrl + 'favouritess', options);
+    const media = await Promise.all(
+      json.map(async (item) => {
+        const response = await fetch(baseUrl + 'media/' + item.file_id);
+        const mediaData = await response.json();
+        return mediaData;
+      })
+    );
+    media.sort((a, b) => sortArray(a, b));
+    return media;
   };
 
   const getFavoritesByFileId = async (fileId) => {

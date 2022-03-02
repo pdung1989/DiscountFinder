@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import {FlatList, StyleSheet, View, Text, Alert} from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import {useFavorite, useMedia} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
@@ -15,9 +15,7 @@ const ListFavorites = ({navigation}) => {
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
   const CONTENT_OFFSET_THRESHOLD = 5;
-  const [visible, setVisible] = useState(false);
-
-  const onDismissSnackBar = () => setVisible(false);
+  const [error, setError] = useState(false);
 
   const fetchFavoritesByUser = async () => {
     try {
@@ -26,6 +24,7 @@ const ListFavorites = ({navigation}) => {
       setFavoritesArray(favoritesData);
     } catch (error) {
       console.error('fetchFavoritesByUser error', error.message);
+      Alert.alert('Error loading favorite posts');
     }
   };
 
@@ -94,8 +93,8 @@ const styles = StyleSheet.create({
   },
   animation: {
     marginVertical: 50,
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   fab: {
     position: 'absolute',
