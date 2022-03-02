@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appId, baseUrl} from '../utils/variables';
-import {FAB} from 'react-native-paper';
+import {Button, FAB} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
+import {Alert} from 'react-native';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
@@ -73,7 +74,7 @@ const List = ({navigation, route}) => {
         ListEmptyComponent={
           <View style={styles.notFoundContainer}>
             <LottieView
-              source={require('../assets/not-found-animation.json')}
+              source={require('../assets/empty-searching.json')}
               autoPlay
               speed={2}
               style={styles.animation}
@@ -104,16 +105,16 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   notFoundText: {
-    marginVertical: 50,
-    color: '#808080',
+    marginVertical: 30,
+    color: '#cdcdcd',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
     padding: 10,
   },
   animation: {
     marginVertical: 50,
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   list: {
     backgroundColor: '#fefefe',

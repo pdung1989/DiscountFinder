@@ -15,6 +15,9 @@ const ListFavorites = ({navigation}) => {
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
   const CONTENT_OFFSET_THRESHOLD = 5;
+  const [visible, setVisible] = useState(false);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const fetchFavoritesByUser = async () => {
     try {

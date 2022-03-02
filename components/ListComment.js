@@ -1,4 +1,4 @@
-import {FlatList, View, StyleSheet, Text} from 'react-native';
+import {FlatList, View, StyleSheet, Text, SafeAreaView} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
@@ -31,12 +31,12 @@ const ListComment = ({fileId}) => {
       ) : (
         <Text style={styles.commentTitle}>{comments.length} comments</Text>
       )}
-
       <FlatList
         data={comments}
         keyExtractor={(item) => item.comment_id.toString()}
         initialNumToRender={10}
         renderItem={({item}) => <CommentItem singleCommment={item} />}
+        removeClippedSubviews={true}
       />
     </Card.Content>
   );

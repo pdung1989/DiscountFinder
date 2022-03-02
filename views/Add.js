@@ -131,7 +131,15 @@ const Add = ({navigation}) => {
           },
         ]);
     } catch (error) {
-      console.log('onSubmit upload image problem');
+      console.error('onSubmit upload image problem', error.message);
+      /* Alert.alert('Error', `${error.message}`, [
+        {
+          text: 'OK',
+          onPress: () => {
+            reset();
+          },
+        },
+      ]); */
     }
   };
 

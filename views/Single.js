@@ -143,7 +143,7 @@ const Single = ({route, navigation}) => {
     <>
       <SafeAreaView>
         <Card style={{height: '100%'}}>
-          <View style={{maxHeight: '65%'}}>
+          <View style={{maxHeight: '70%'}}>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : ''}
             >

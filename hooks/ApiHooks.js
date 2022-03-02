@@ -165,10 +165,15 @@ const useMedia = () => {
       body: formData,
     };
 
-    const result = await doFetch(baseUrl + 'media', options);
-    result && setLoading(false);
+    try {
+      const result = await doFetch(baseUrl + 'media', options);
+      result && setLoading(false);
 
-    return result;
+      return result;
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   // delete post
@@ -193,10 +198,16 @@ const useMedia = () => {
       },
       body: JSON.stringify(data),
     };
-    const result = await doFetch(baseUrl + `media/${fileId}`, options);
 
-    result && setLoading(false);
-    return result;
+    try {
+      const result = await doFetch(baseUrl + `media/${fileId}`, options);
+
+      result && setLoading(false);
+      return result;
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const searchMedia = async (data, token) => {
