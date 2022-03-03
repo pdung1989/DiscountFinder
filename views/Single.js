@@ -121,9 +121,10 @@ const Single = ({route, navigation}) => {
             const response = await deleteMedia(token, file.file_id);
             console.log('delete', deletePost);
             response && setUpdate(update + 1);
-            navigation.navigate('Browse');
+            navigation.goBack();
           } catch (error) {
             console.error(error);
+            Alert.alert('Error:', 'Deleting post failed');
           }
         },
       },

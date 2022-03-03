@@ -41,6 +41,7 @@ const CommentItem = ({singleCommment}) => {
             response && setCommentUpdate(commentUpdate + 1);
           } catch (error) {
             console.error(error);
+            Alert.alert('Error:', 'Deleting comment failed');
           }
         },
       },

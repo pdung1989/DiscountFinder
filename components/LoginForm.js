@@ -18,13 +18,12 @@ const LoginForm = () => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const [hidden, setHidden] = useState(true);
   const {postLogin} = useLogin();
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const {
     control,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm({
     defaultValues: {
       username: '',
@@ -40,20 +39,21 @@ const LoginForm = () => {
       setUser(userData.user);
       setIsLoggedIn(true);
     } catch (error) {
-      setError(true);
-      error.message === 'Authentication failed due bad password' ||
-      error.message === 'Authentication failed due bad username'
-        ? setErrorMessage('Incorrect username or password')
-        : setErrorMessage(error.message);
-      Alert.alert('Error:', `${errorMessage}`, [
+      let errorMessage = '';
+      error.message === 'Authentication failed due bad username' ||
+      error.message === 'Authentication failed due bad password'
+        ? (errorMessage = 'Incorrect username or password')
+        : (errorMessage = error.message);
+
+      Alert.alert('Authentication error:', `${errorMessage}`, [
         {
           text: 'OK',
           onPress: () => {
-            setError(false);
+            setValue('username', '');
+            setValue('password', '');
           },
         },
       ]);
-      console.log('login error', errorMessage);
     }
   };
 

@@ -15,7 +15,6 @@ const ListFavorites = ({navigation}) => {
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
   const CONTENT_OFFSET_THRESHOLD = 5;
-  const [error, setError] = useState(false);
 
   const fetchFavoritesByUser = async () => {
     try {

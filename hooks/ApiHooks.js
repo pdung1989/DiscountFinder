@@ -148,6 +148,7 @@ const useMedia = () => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -207,6 +208,7 @@ const useMedia = () => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+      throw error;
     }
   };
 
@@ -313,16 +315,21 @@ const useFavorite = () => {
       },
     };
 
-    const json = await doFetch(baseUrl + 'favouritess', options);
-    const media = await Promise.all(
-      json.map(async (item) => {
-        const response = await fetch(baseUrl + 'media/' + item.file_id);
-        const mediaData = await response.json();
-        return mediaData;
-      })
-    );
-    media.sort((a, b) => sortArray(a, b));
-    return media;
+    try {
+      const json = await doFetch(baseUrl + 'favourites', options);
+      const media = await Promise.all(
+        json.map(async (item) => {
+          const response = await fetch(baseUrl + 'media/' + item.file_id);
+          const mediaData = await response.json();
+          return mediaData;
+        })
+      );
+      media.sort((a, b) => sortArray(a, b));
+      return media;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   const getFavoritesByFileId = async (fileId) => {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {View, Alert, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import InteractiveTextInput from 'react-native-text-input-interactive';
+import {ErrorMessage} from '@hookform/error-message';
 
 // Handle registering new users with useForm
 const RegisterForm = ({navigation}) => {
@@ -16,6 +17,7 @@ const RegisterForm = ({navigation}) => {
     handleSubmit,
     formState: {errors},
     getValues,
+    setValue,
   } = useForm({
     defaultValues: {
       username: '',
@@ -38,6 +40,18 @@ const RegisterForm = ({navigation}) => {
       }
     } catch (error) {
       console.error(error);
+      Alert.alert('Error registering user:', 'Internal error', [
+        {
+          text: 'Try again',
+          onPress: () => {
+            setValue('username', '');
+            setValue('password', '');
+            setValue('confirmPassword', '');
+            setValue('email', '');
+            setValue('full_name', '');
+          },
+        },
+      ]);
     }
   };
 
@@ -65,17 +79,24 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <InteractiveTextInput
-            textInputStyle={styles.input}
-            animatedPlaceholderTextColor={'#1D3354'}
-            mainColor={'#467599'}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            placeholder="Username"
-            errorMessage={errors.username && errors.username.message}
-          />
+          <>
+            <InteractiveTextInput
+              textInputStyle={styles.input}
+              animatedPlaceholderTextColor={'#1D3354'}
+              mainColor={'#467599'}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              placeholder="Username"
+              errorMessage={errors.username && errors.username.message}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="username"
+              render={({message}) => <Text>{message}</Text>}
+            />
+          </>
         )}
         name="username"
       />
@@ -96,22 +117,31 @@ const RegisterForm = ({navigation}) => {
           */
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <InteractiveTextInput
-            textInputStyle={styles.input}
-            animatedPlaceholderTextColor={'#1D3354'}
-            mainColor={'#467599'}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            secureTextEntry={hidden}
-            placeholder="Password"
-            errorMessage={errors.password && errors.password.message}
-            enableIcon
-            iconContainerStyle={styles.icon}
-            iconImageSource={require("../assets/visibility-button.png")}
-            onIconPress={() => {setHidden(!hidden)}}
-          />
+          <>
+            <InteractiveTextInput
+              textInputStyle={styles.input}
+              animatedPlaceholderTextColor={'#1D3354'}
+              mainColor={'#467599'}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              secureTextEntry={hidden}
+              placeholder="Password"
+              errorMessage={errors.password && errors.password.message}
+              enableIcon
+              iconContainerStyle={styles.icon}
+              iconImageSource={require('../assets/visibility-button.png')}
+              onIconPress={() => {
+                setHidden(!hidden);
+              }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              render={({message}) => <Text>{message}</Text>}
+            />
+          </>
         )}
         name="password"
       />
@@ -131,24 +161,33 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <InteractiveTextInput
-            textInputStyle={styles.input}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            animatedPlaceholderTextColor={'#1D3354'}
-            mainColor={'#467599'}
-            value={value}
-            autoCapitalize="none"
-            secureTextEntry={hiddenConfirm}
-            placeholder="Confirm Password"
-            enableIcon
-            iconContainerStyle={styles.icon}
-            iconImageSource={require("../assets/visibility-button.png")}
-            onIconPress={() => {setHiddenConfirm(!hiddenConfirm)}}
-            errorMessage={
-              errors.confirmPassword && errors.confirmPassword.message
-            }
-          />
+          <>
+            <InteractiveTextInput
+              textInputStyle={styles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              animatedPlaceholderTextColor={'#1D3354'}
+              mainColor={'#467599'}
+              value={value}
+              autoCapitalize="none"
+              secureTextEntry={hiddenConfirm}
+              placeholder="Confirm Password"
+              enableIcon
+              iconContainerStyle={styles.icon}
+              iconImageSource={require('../assets/visibility-button.png')}
+              onIconPress={() => {
+                setHiddenConfirm(!hiddenConfirm);
+              }}
+              errorMessage={
+                errors.confirmPassword && errors.confirmPassword.message
+              }
+            />
+            <ErrorMessage
+              errors={errors}
+              name="confirmPassword"
+              render={({message}) => <Text>{message}</Text>}
+            />
+          </>
         )}
         name="confirmPassword"
       />
@@ -163,17 +202,24 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <InteractiveTextInput
-            textInputStyle={styles.input}
-            animatedPlaceholderTextColor={'#1D3354'}
-            mainColor={'#467599'}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            placeholder="Email"
-            errorMessage={errors.email && errors.email.message}
-          />
+          <>
+            <InteractiveTextInput
+              textInputStyle={styles.input}
+              animatedPlaceholderTextColor={'#1D3354'}
+              mainColor={'#467599'}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              placeholder="Email"
+              errorMessage={errors.email && errors.email.message}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({message}) => <Text>{message}</Text>}
+            />
+          </>
         )}
         name="email"
       />
@@ -187,21 +233,32 @@ const RegisterForm = ({navigation}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <InteractiveTextInput
-            textInputStyle={styles.input}
-            animatedPlaceholderTextColor={'#1D3354'}
-            mainColor={'#467599'}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="words"
-            placeholder="Full name"
-            errorMessage={errors.full_name && errors.full_name.message}
-          />
+          <>
+            <InteractiveTextInput
+              textInputStyle={styles.input}
+              animatedPlaceholderTextColor={'#1D3354'}
+              mainColor={'#467599'}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="words"
+              placeholder="Full name"
+              errorMessage={errors.full_name && errors.full_name.message}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="full_name"
+              render={({message}) => <Text>{message}</Text>}
+            />
+          </>
         )}
         name="full_name"
       />
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
+
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={handleSubmit(onSubmit)}
+      >
         <Text style={styles.loginText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
