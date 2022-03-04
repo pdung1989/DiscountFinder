@@ -1,4 +1,4 @@
-import {View, Alert, StyleSheet} from 'react-native';
+import {View, Alert, StyleSheet, Keyboard} from 'react-native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {useFocusEffect} from '@react-navigation/native';
 import {MainContext} from '../contexts/MainContext';
 import InteractiveTextInput from 'react-native-text-input-interactive';
+import {ErrorMessage} from '@hookform/error-message';
 
 const CommentPostForm = ({navigation, fileId}) => {
   const {postComment} = useComment(fileId);
@@ -47,6 +48,7 @@ const CommentPostForm = ({navigation, fileId}) => {
           {
             text: 'OK',
             onPress: () => {
+              Keyboard.dismiss();
               reset();
               setCommentUpdate(commentUpdate + 1);
             },
@@ -54,6 +56,7 @@ const CommentPostForm = ({navigation, fileId}) => {
         ]);
     } catch (error) {
       console.log(error);
+      Alert.alert('Error:', 'Uploading comment failed');
     }
   };
 
@@ -86,6 +89,11 @@ const CommentPostForm = ({navigation, fileId}) => {
               errorMessage={errors.comment && errors.comment.message}
               style={styles.commentInputBox}
             ></TextInput>
+            <ErrorMessage
+              errors={errors}
+              name="comment"
+              render={({message}) => <Text>{message}</Text>}
+            />
           </>
         )}
         name="comment"
