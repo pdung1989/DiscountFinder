@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';

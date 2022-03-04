@@ -8,6 +8,7 @@ import {
   Keyboard,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -30,11 +31,19 @@ const Login = ({navigation}) => {
     }
     try {
       const userData = await getUserByToken(userToken);
-      console.log('chekToken', userData);
+      console.log('checkToken', userData);
       setUser(userData);
       setIsLoggedIn(true);
     } catch (error) {
       console.error(error);
+      Alert.alert('Authentication error: ', `${error.message}`, [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.navigate('Login');
+          },
+        },
+      ]);
     }
   };
 

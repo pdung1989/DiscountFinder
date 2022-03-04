@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   LogBox,
+  Alert,
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Ionicons} from '@expo/vector-icons';
@@ -64,6 +65,7 @@ const Profile = ({route, navigation}) => {
       setUserMedia(data);
     } catch (error) {
       console.error('fetchAllPosts error', error.message);
+      Alert.alert('Error fetching posts');
     }
   };
 

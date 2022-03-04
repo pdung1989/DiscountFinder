@@ -29,6 +29,7 @@ const ModifyPost = ({navigation, route}) => {
     control,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm({
     defaultValues: {
       title: file.title,
@@ -52,7 +53,16 @@ const ModifyPost = ({navigation, route}) => {
           },
         ]);
     } catch (error) {
-      console.log('onSubmit modify post problem');
+      console.log('onSubmit modify post problem', error.message);
+      Alert.alert('Modyfying post error:', 'Error in uploading post', [
+        {
+          text: 'OK',
+          onPress: () => {
+            setValue('title', `${file.title}`);
+            setValue('description', `${file.description}`);
+          },
+        },
+      ]);
     }
   };
 

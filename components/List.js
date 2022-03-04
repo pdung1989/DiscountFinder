@@ -1,11 +1,14 @@
 import {FlatList, Text, StyleSheet, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useFavorite, useMedia} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appId, baseUrl} from '../utils/variables';
+import {Button, FAB} from 'react-native-paper';
+import LottieView from 'lottie-react-native';
+import {Alert} from 'react-native';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
@@ -13,6 +16,9 @@ const List = ({navigation, route}) => {
   const {loadMedia, searchMedia} = useMedia();
   const [postArray, setPostArray] = useState([]);
   const {update, setUpdate} = useContext(MainContext);
+  const listRef = useRef(null);
+  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
+  const CONTENT_OFFSET_THRESHOLD = 5;
 
   const fetchAllPosts = async (tag) => {
     try {
@@ -20,6 +26,7 @@ const List = ({navigation, route}) => {
       setPostArray(data);
     } catch (error) {
       console.error('fetchAllPosts error', error.message);
+      Alert.alert('Error fetching posts');
     }
   };
 
@@ -30,6 +37,7 @@ const List = ({navigation, route}) => {
       setPostArray(data);
     } catch (error) {
       console.error('searchItem error', error.message);
+      Alert.alert('Error searching posts');
     }
   };
 
@@ -53,19 +61,40 @@ const List = ({navigation, route}) => {
 
   return (
     <>
-      {postArray.length === 0 && (
-        <View style={styles.notFoundContainer}>
-          <Text style={styles.notFoundText}>No post found</Text>
-        </View>
-      )}
       <FlatList
-      style={styles.list}
+        style={styles.list}
         data={postArray}
         keyExtractor={(item) => item.file_id.toString()}
+        initialNumToRender={10}
+        ref={listRef}
+        onScroll={(event) => {
+          setContentVerticalOffset(event.nativeEvent.contentOffset.y);
+        }}
         renderItem={({item}) => (
           <ListItem navigation={navigation} singleMedia={item} />
         )}
+        ListEmptyComponent={
+          <View style={styles.notFoundContainer}>
+            <LottieView
+              source={require('../assets/empty-searching.json')}
+              autoPlay
+              speed={2}
+              style={styles.animation}
+            />
+            <Text style={styles.notFoundText}>No post found</Text>
+          </View>
+        }
       />
+      {contentVerticalOffset > CONTENT_OFFSET_THRESHOLD && (
+        <FAB
+          style={styles.fab}
+          small={false}
+          icon="arrow-up"
+          onPress={() =>
+            listRef.current.scrollToOffset({offset: 0, animated: true})
+          }
+        />
+      )}
     </>
   );
 };
@@ -74,17 +103,32 @@ const styles = StyleSheet.create({
   notFoundContainer: {
     flex: 1,
     alignItems: 'center',
+    alignContent: 'center',
+    height: '100%',
   },
   notFoundText: {
-    alignSelf: 'center',
+    marginVertical: 30,
+    color: '#cdcdcd',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
     padding: 10,
+  },
+  animation: {
+    marginVertical: 50,
+    width: 300,
+    height: 300,
   },
   list: {
     backgroundColor: '#fefefe',
     paddingTop: 15,
     paddingBottom: 15,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 24,
+    backgroundColor: '#d8d8d8',
   },
 });
 

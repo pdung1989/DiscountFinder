@@ -1,20 +1,29 @@
 import React, {useContext, useState} from 'react';
-import {Text, View, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {MainContext} from '../contexts/MainContext';
 import {useLogin} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import InteractiveTextInput from "react-native-text-input-interactive";
-import { Ionicons } from "@expo/vector-icons";
+import InteractiveTextInput from 'react-native-text-input-interactive';
 
 const LoginForm = () => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const [hidden, setHidden] = useState(true);
   const {postLogin} = useLogin();
+
   const {
     control,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm({
     defaultValues: {
       username: '',
@@ -30,7 +39,21 @@ const LoginForm = () => {
       setUser(userData.user);
       setIsLoggedIn(true);
     } catch (error) {
-      console.error(error);
+      let errorMessage = '';
+      error.message === 'Authentication failed due bad username' ||
+      error.message === 'Authentication failed due bad password'
+        ? (errorMessage = 'Incorrect username or password')
+        : (errorMessage = error.message);
+
+      Alert.alert('Authentication error:', `${errorMessage}`, [
+        {
+          text: 'OK',
+          onPress: () => {
+            setValue('username', '');
+            setValue('password', '');
+          },
+        },
+      ]);
     }
   };
 
@@ -76,15 +99,20 @@ const LoginForm = () => {
             placeholder="Password"
             enableIcon
             iconContainerStyle={styles.icon}
-            iconImageSource={require("../assets/visibility-button.png")}
-            onIconPress={() => {setHidden(!hidden)}}
+            iconImageSource={require('../assets/visibility-button.png')}
+            onIconPress={() => {
+              setHidden(!hidden);
+            }}
           />
         )}
         name="password"
       />
       {errors.password && <Text>This is required.</Text>}
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={handleSubmit(onSubmit)}
+      >
         <Text style={styles.loginText}>Log In</Text>
       </TouchableOpacity>
     </View>
@@ -124,4 +152,3 @@ const styles = StyleSheet.create({
 });
 
 export default LoginForm;
-
