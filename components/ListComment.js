@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
   commentTitle: {
     fontSize: 16,
     fontWeight: '700',
-    paddingBottom: 5,
-    paddingTop: 5,
+    paddingBottom: 10,
+    paddingTop: 7,
   },
 });
 

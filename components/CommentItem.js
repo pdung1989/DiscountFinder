@@ -1,4 +1,4 @@
-import {FlatList, Text, View, Alert} from 'react-native';
+import {FlatList, Text, View, Alert, StyleSheet} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {Card, List, Paragraph, IconButton} from 'react-native-paper';
 import {useUser, useTag, useComment} from '../hooks/ApiHooks';
@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarComponent from '../components/AvatarComponent';
 import {useTime} from '../hooks/helpersHooks';
 import {MainContext} from '../contexts/MainContext';
+import InteractiveTextInput from 'react-native-text-input-interactive';
+import {ErrorMessage} from '@hookform/error-message';
 
 const CommentItem = ({singleCommment}) => {
   const {getUserById} = useUser();
@@ -53,40 +55,38 @@ const CommentItem = ({singleCommment}) => {
   }, []);
 
   return (
-    <List.Item
-      title={commentOwner.username}
-      titleStyle={{fontSize: 14, fontWeight: '500'}}
-      description={
-        <View style={{alignSelf: 'center'}}>
-          <Text>{singleCommment.comment}</Text>
-        </View>
-      }
-      left={() => <AvatarComponent userId={singleCommment.user_id} />}
-      right={() => (
-        <>
-          <Text
-            style={{
-              position: 'absolute',
-              //top: 7,
-              right: 0,
-            }}
-          >
-            {convertUTCToLocalTime(singleCommment.time_added)}
-          </Text>
-          {commentOwner.user_id === user.user_id && (
-            <IconButton
-              icon="delete"
-              size={25}
-              style={{marginTop: 15}}
-              onPress={() => {
-                removeComment();
+    <Card mode="elevated" style={{margin: 5}} elevation={2}>
+      <Card.Title
+        title={commentOwner.username}
+        titleStyle={{fontSize: 14, fontWeight: '500', marginLeft: -15}}
+        left={() => <AvatarComponent userId={singleCommment.user_id} />}
+        right={() => (
+          <>
+            <Text
+              style={{
+                marginTop: -27,
+                paddingRight: 7,
               }}
-            />
-          )}
-        </>
-      )}
-      style={{padding: 5}}
-    />
+            >
+              {convertUTCToLocalTime(singleCommment.time_added)}
+            </Text>
+            {commentOwner.user_id === user.user_id && (
+              <IconButton
+                icon="delete"
+                size={25}
+                style={{position: 'absolute', right: 0, marginTop: -11}}
+                onPress={() => {
+                  removeComment();
+                }}
+              />
+            )}
+          </>
+        )}
+      />
+      <Card.Content>
+        <Text>{singleCommment.comment}</Text>
+      </Card.Content>
+    </Card>
   );
 };
 
