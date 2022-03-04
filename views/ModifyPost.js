@@ -76,7 +76,11 @@ const ModifyPost = ({navigation, route}) => {
             <Controller
               control={control}
               rules={{
-                required: true,
+                required: {value: true, message: 'This is required'},
+                minLength: {
+                  value: 3,
+                  message: 'Title has to be at least 3 characters.',
+                },
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
@@ -86,7 +90,7 @@ const ModifyPost = ({navigation, route}) => {
                   value={value}
                   placeholder="Title"
                   inputContainerStyle={styles.titleInput}
-                  errorMessage={errors.description && 'This is required.'}
+                  errorMessage={errors.title && errors.title.message}
                 />
               )}
               name="title"
@@ -94,7 +98,11 @@ const ModifyPost = ({navigation, route}) => {
             <Controller
               control={control}
               rules={{
-                required: true,
+                required: {value: true, message: 'This is required'},
+                minLength: {
+                  value: 3,
+                  message: 'Description has to be at least 3 characters.',
+                },
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
@@ -104,7 +112,9 @@ const ModifyPost = ({navigation, route}) => {
                   value={value}
                   placeholder="Description"
                   multiline
-                  errorMessage={errors.description && 'This is required.'}
+                  errorMessage={
+                    errors.description && errors.description.message
+                  }
                   inputContainerStyle={styles.descriptionInput}
                 />
               )}

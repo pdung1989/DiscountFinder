@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
@@ -18,9 +18,9 @@ const ListItem = ({navigation, singleMedia}) => {
     >
       <Card.Cover source={{uri: uploadsUrl + singleMedia.thumbnails.w160}} />
       <Card.Content>
-        <Title style={{fontWeight: '900', fontSize: 25}}>
+        <Text style={{fontWeight: '900', fontSize: 25}}>
           {singleMedia.title}
-        </Title>
+        </Text>
         <Paragraph>{convertUTCToLocalTime(singleMedia.time_added)}</Paragraph>
       </Card.Content>
     </Card>

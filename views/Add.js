@@ -164,6 +164,7 @@ const Add = ({navigation}) => {
                     source={{uri: image}}
                     style={styles.imagePicker}
                     onPress={pickImage}
+                    placeholder="Select an image"
                   />
                 ) : (
                   <Video
@@ -179,7 +180,11 @@ const Add = ({navigation}) => {
                 <Controller
                   control={control}
                   rules={{
-                    required: true,
+                    required: {value: true, message: 'This is required'},
+                    minLength: {
+                      value: 3,
+                      message: 'Title has to be at least 3 characters.',
+                    },
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <Input
@@ -189,7 +194,8 @@ const Add = ({navigation}) => {
                       value={value}
                       placeholder="Title"
                       inputContainerStyle={styles.titleInput}
-                      errorMessage={errors.description && 'This is required.'}
+                      inputStyle={{fontSize: 15}}
+                      errorMessage={errors.title && errors.title.message}
                     />
                   )}
                   name="title"
@@ -197,7 +203,11 @@ const Add = ({navigation}) => {
                 <Controller
                   control={control}
                   rules={{
-                    required: true,
+                    required: {value: true, message: 'This is required'},
+                    minLength: {
+                      value: 3,
+                      message: 'Description has to be at least 3 characters.',
+                    },
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <Input
@@ -207,8 +217,11 @@ const Add = ({navigation}) => {
                       value={value}
                       placeholder="Description"
                       multiline
-                      errorMessage={errors.description && 'This is required.'}
+                      errorMessage={
+                        errors.description && errors.description.message
+                      }
                       inputContainerStyle={styles.descriptionInput}
+                      inputStyle={{fontSize: 15}}
                     />
                   )}
                   name="description"
@@ -267,7 +280,8 @@ const styles = StyleSheet.create({
   imagePicker: {
     height: 200,
     marginHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 5,
+    borderRadius: 10,
   },
   titleInput: {
     height: 40,

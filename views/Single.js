@@ -10,6 +10,7 @@ import {
   Keyboard,
   Alert,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -33,7 +34,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
 import PostDescription from '../components/PostDescription';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import LottieView from 'lottie-react-native';
+import GlobalSyles from '../utils/GlobalSyles';
 
 const Single = ({route, navigation}) => {
   const {file} = route.params;
@@ -142,12 +143,12 @@ const Single = ({route, navigation}) => {
 
   return (
     <>
-      <SafeAreaView>
-        <Card style={{height: '100%'}}>
-          <View style={{maxHeight: '70%'}}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            >
+      <SafeAreaView style={GlobalSyles.AndroidSafeArea}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+        >
+          <Card style={{height: '100%'}}>
+            <View style={{maxHeight: '72%'}}>
               <TouchableOpacity
                 onPress={() => Keyboard.dismiss()}
                 activeOpacity={1}
@@ -224,7 +225,7 @@ const Single = ({route, navigation}) => {
                       }}
                       useNativeControls={true}
                       isLooping
-                      resizeMode="center"
+                      resizeMode="contain"
                       onError={(error) => {
                         console.error('<Video> error', error);
                       }}
@@ -258,13 +259,13 @@ const Single = ({route, navigation}) => {
                   </Text>
                 </Card.Content>
               </TouchableOpacity>
-            </KeyboardAvoidingView>
-            <CommentPostForm fileId={file.file_id} />
-          </View>
-          <View style={{maxHeight: '40%'}}>
-            <ListComment fileId={file.file_id} />
-          </View>
-        </Card>
+              <CommentPostForm fileId={file.file_id} />
+            </View>
+            <View style={{maxHeight: '40%'}}>
+              <ListComment fileId={file.file_id} />
+            </View>
+          </Card>
+        </KeyboardAvoidingView>
       </SafeAreaView>
       <FocusAwareStatusBar barStyle="dark-content" />
     </>

@@ -7,6 +7,7 @@ import {Card, TextInput} from 'react-native-paper';
 import PropTypes from 'prop-types';
 import {useFocusEffect} from '@react-navigation/native';
 import {MainContext} from '../contexts/MainContext';
+import InteractiveTextInput from 'react-native-text-input-interactive';
 
 const CommentPostForm = ({navigation, fileId}) => {
   const {postComment} = useComment(fileId);
@@ -67,22 +68,25 @@ const CommentPostForm = ({navigation, fileId}) => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            mode="outlined"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            placeholder="Write a comment"
-            right={
-              <TextInput.Icon
-                name="send"
-                onPress={handleSubmit(onSubmit)}
-                style={{paddingTop: 7}}
-              />
-            }
-            errorMessage={errors.comment && errors.comment.message}
-            style={styles.commentInputBox}
-          ></TextInput>
+          <>
+            <TextInput
+              mode="flat"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="Write a comment"
+              right={
+                <TextInput.Icon
+                  name="send"
+                  onPress={handleSubmit(onSubmit)}
+                  style={{marginEnd: 0}}
+                />
+              }
+              activeUnderlineColor="#1D3354"
+              errorMessage={errors.comment && errors.comment.message}
+              style={styles.commentInputBox}
+            ></TextInput>
+          </>
         )}
         name="comment"
       />
@@ -95,7 +99,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
     backgroundColor: '#FFFFFF',
-    height: 38,
+    height: 40,
+    marginBottom: 5,
+    paddingBottom: 3,
   },
 });
 
