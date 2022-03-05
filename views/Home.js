@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
 import {Searchbar} from 'react-native-paper';
 import RecentButton from '../components/RecentButton';
 import CategoryBox from '../components/CategoryBox';
 import {MainContext} from '../contexts/MainContext';
 import {Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
-import {useMedia, useTag} from '../hooks/ApiHooks';
+import {useTag} from '../hooks/ApiHooks';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 
@@ -26,6 +26,18 @@ const Home = ({navigation}) => {
       setAvatar(uploadsUrl + avatar.filename);
     } catch (e) {
       console.log(e.message);
+    }
+  };
+
+  const searchValidate = () => {
+    if (searchQuery.length < 3) {
+      Alert.alert('Please enter at least 3 characters');
+    } else {
+      navigation.navigate('Search', {
+        category: `search_${searchQuery}`,
+      });
+      setUpdate(update + 1);
+      setSearchQuery('');
     }
   };
 
@@ -61,11 +73,10 @@ const Home = ({navigation}) => {
             onChangeText={onChangeSearch}
             value={searchQuery}
             onIconPress={() => {
-              navigation.navigate('Search', {
-                category: `search_${searchQuery}`,
-              });
-              setUpdate(update + 1);
-              setSearchQuery('');
+              searchValidate();
+            }}
+            onSubmitEditing={() => {
+              searchValidate();
             }}
           />
         </View>
