@@ -1,8 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
-import List from '../components/List';
-import PropTypes from 'prop-types';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {StyleSheet, View, Text} from 'react-native';
 import {IconButton} from 'react-native-paper';
 
 const CustomHeader = ({navigation, header}) => {

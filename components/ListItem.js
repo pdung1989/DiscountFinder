@@ -18,7 +18,7 @@ const ListItem = ({navigation, singleMedia}) => {
     >
       <Card.Cover source={{uri: uploadsUrl + singleMedia.thumbnails.w160}} />
       <Card.Content>
-        <Text style={{fontWeight: '900', fontSize: 25}}>
+        <Text style={{fontWeight: '600', fontSize: 25, marginVertical: 5, }}>
           {singleMedia.title}
         </Text>
         <Paragraph>{convertUTCToLocalTime(singleMedia.time_added)}</Paragraph>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     marginBottom: 20,
-    shadowColor: '#888888',
+    shadowColor: '#bfbfbf',
     shadowOffset: {
       width: 5,
       height: 5,

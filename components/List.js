@@ -1,12 +1,12 @@
 import {FlatList, Text, StyleSheet, View} from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useFavorite, useMedia} from '../hooks/ApiHooks';
+import {useMedia} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appId, baseUrl} from '../utils/variables';
-import {Button, FAB} from 'react-native-paper';
+import {appId} from '../utils/variables';
+import {FAB} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import {Alert} from 'react-native';
 
@@ -15,10 +15,10 @@ const List = ({navigation, route}) => {
   console.log('category here', category.split('_').pop());
   const {loadMedia, searchMedia} = useMedia();
   const [postArray, setPostArray] = useState([]);
-  const {update, setUpdate} = useContext(MainContext);
+  const {update} = useContext(MainContext);
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 5;
+  const CONTENT_OFFSET_THRESHOLD = 500;
 
   const fetchAllPosts = async (tag) => {
     try {
@@ -78,6 +78,7 @@ const List = ({navigation, route}) => {
             <LottieView
               source={require('../assets/empty-searching.json')}
               autoPlay
+              loop
               speed={2}
               style={styles.animation}
             />

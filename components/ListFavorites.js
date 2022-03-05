@@ -14,7 +14,7 @@ const ListFavorites = ({navigation}) => {
   const {update} = useContext(MainContext);
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 5;
+  const CONTENT_OFFSET_THRESHOLD = 500;
 
   const fetchFavoritesByUser = async () => {
     try {
