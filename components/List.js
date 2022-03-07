@@ -12,7 +12,6 @@ import {Alert} from 'react-native';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
-  console.log('category here', category.split('_').pop());
   const {loadMedia, searchMedia} = useMedia();
   const [postArray, setPostArray] = useState([]);
   const {update} = useContext(MainContext);
