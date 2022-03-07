@@ -14,7 +14,7 @@ import Register from '../views/Register';
 import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
-import {Title, IconButton} from 'react-native-paper';
+import {Title} from 'react-native-paper';
 import Profile from '../components/Profile';
 import ModifyPost from '../views/ModifyPost';
 import Search from '../views/Search';

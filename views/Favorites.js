@@ -4,6 +4,7 @@ import ListFavorites from '../components/ListFavorites';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
+/* This view shows all loggin user's favorite posts */
 const Favourites = ({navigation}) => {
   return (
     <>

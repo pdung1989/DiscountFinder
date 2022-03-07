@@ -4,17 +4,16 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
-  View,
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
-  Image,
 } from 'react-native';
 import RegisterForm from '../components/RegisterForm';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import { Ionicons } from "@expo/vector-icons";
 
+/* This view is for registering a new user's account */
 const Register = ({navigation}) => {
   return (
     <TouchableOpacity

@@ -1,6 +1,6 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import {Card, Title, Paragraph} from 'react-native-paper';
+import {StyleSheet, Text} from 'react-native';
+import {Card, Paragraph} from 'react-native-paper';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {useTime} from '../hooks/helpersHooks';

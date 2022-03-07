@@ -1,6 +1,6 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import React, {useState, useCallback, useEffect} from 'react';
-import {Button, Overlay, Icon} from 'react-native-elements';
+import React, {useState} from 'react';
+import {Button, Overlay} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 
 const PostDescription = ({text}) => {

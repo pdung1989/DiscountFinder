@@ -1,5 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
-import {MainContext} from '../contexts/MainContext';
+import {useState} from 'react';
 import {appId, baseUrl} from '../utils/variables';
 
 // fetch data from endpoint
@@ -154,6 +153,7 @@ const useMedia = () => {
     }
   };
 
+  // add new post
   const postMedia = async (formData, token) => {
     setLoading(true);
 
@@ -188,6 +188,7 @@ const useMedia = () => {
     return await doFetch(baseUrl + `media/${fileId}`, options);
   };
 
+  // modify a post
   const putMedia = async (data, token, fileId) => {
     setLoading(true);
 

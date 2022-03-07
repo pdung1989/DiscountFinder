@@ -9,19 +9,16 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
-  Pressable,
   ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {
   Card,
-  Paragraph,
   List,
   Chip,
   IconButton,
   ActivityIndicator,
-  Title,
 } from 'react-native-paper';
 import {Video} from 'expo-av';
 import ListComment from '../components/ListComment';
@@ -36,6 +33,7 @@ import PostDescription from '../components/PostDescription';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import GlobalSyles from '../utils/GlobalSyles';
 
+/* This view shows a detail of a post */
 const Single = ({route, navigation}) => {
   const {file} = route.params;
   const videoRef = useRef(null);

@@ -4,6 +4,7 @@ import List from '../components/List';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
+/* This view shows a list of all posts*/
 const Browse = ({navigation, route}) => {
   return (
     <>

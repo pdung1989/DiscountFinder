@@ -10,6 +10,7 @@ import {useTag} from '../hooks/ApiHooks';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {uploadsUrl} from '../utils/variables';
 
+/* This view is for the home page */
 const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const {user} = useContext(MainContext);

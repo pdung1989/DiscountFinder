@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useTag} from '../hooks/ApiHooks';
 import {Avatar} from 'react-native-paper';
