@@ -28,6 +28,7 @@
     "react-native-dropdown-picker": "^5.3.0",
     "react-native-elements": "^3.4.2",
     "react-native-paper": "^4.11.2",
+    "react-native-passmeter": "^0.0.5",
     "react-native-popup-menu": "^0.15.12",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",

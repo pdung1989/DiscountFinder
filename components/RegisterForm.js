@@ -1,16 +1,27 @@
-import React, {useState} from 'react';
-import {View, Alert, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  LogBox,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useUser} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import InteractiveTextInput from 'react-native-text-input-interactive';
 import {ErrorMessage} from '@hookform/error-message';
+import PassMeter from 'react-native-passmeter';
 
 // Handle registering new users with useForm
 const RegisterForm = ({navigation}) => {
   const {postUser, checkUsername} = useUser();
   const [hidden, setHidden] = useState(true);
   const [hiddenConfirm, setHiddenConfirm] = useState(true);
+  const MAX_LEN = 15,
+    MIN_LEN = 6,
+    PASS_LABELS = ['Too Short', 'Weak', 'Normal', 'Strong', 'Secure'];
 
   const {
     control,
@@ -28,6 +39,10 @@ const RegisterForm = ({navigation}) => {
     },
     mode: 'onBlur',
   });
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -106,15 +121,14 @@ const RegisterForm = ({navigation}) => {
         rules={{
           required: {value: true, message: 'This is required.'},
           minLength: {
-            value: 5,
-            message: 'Password has to be at least 5 characters.',
+            value: 8,
+            message: 'Password need to have at least 8 characters.',
           },
-          /*
           pattern: {
             value: /(?=.*[\p{Lu}])(?=.*[0-9]).{8,}/u,
-            message: 'Min 8, Uppercase, Number',
+            message:
+              'Minimum 8 characters, at least 1 uppercase character and 1 number',
           },
-          */
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <>
@@ -135,6 +149,13 @@ const RegisterForm = ({navigation}) => {
               onIconPress={() => {
                 setHidden(!hidden);
               }}
+            />
+            <PassMeter
+              showLabels
+              password={value}
+              maxLength={MAX_LEN}
+              minLength={MIN_LEN}
+              labels={PASS_LABELS}
             />
             <ErrorMessage
               errors={errors}
