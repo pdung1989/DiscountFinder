@@ -1,9 +1,10 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import CustomHeader from '../components/CustomHeader';
+import GlobalSyles from '../utils/GlobalSyles';
 
 /* This view shows posts relating to each category */
 const Filter = ({navigation, route}) => {
@@ -11,9 +12,11 @@ const Filter = ({navigation, route}) => {
 
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <CustomHeader navigation={navigation} header={category} />
-        <List navigation={navigation} route={route} style={styles.infoArea} />
+      <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.container)}>
+        <View style={styles.container}>
+          <CustomHeader navigation={navigation} header={category} />
+          <List navigation={navigation} route={route} />
+        </View>
       </SafeAreaView>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
@@ -25,10 +28,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#1D3354',
-    paddingTop: 0,
-  },
-  infoArea: {
-    flex: 1,
+    height: '100%',
+    paddingTop: 10,
   },
   header: {
     flexDirection: 'row',

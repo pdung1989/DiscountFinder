@@ -10,6 +10,7 @@ import {
   Keyboard,
   Alert,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
@@ -262,7 +263,7 @@ const Single = ({route, navigation}) => {
               </ScrollView>
             </View>
             <View style={{maxHeight: '40%'}}>
-              <ListComment fileId={file.file_id} />
+              <ListComment navigation={navigation} fileId={file.file_id} />
             </View>
           </Card>
         </KeyboardAvoidingView>

@@ -3,12 +3,13 @@ import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import ListFavorites from '../components/ListFavorites';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import GlobalSyles from '../utils/GlobalSyles';
 
 /* This view shows all loggin user's favorite posts */
 const Favourites = ({navigation}) => {
   return (
     <>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.container)}>
         <View style={styles.header}>
           <Text style={styles.title}>Favorites</Text>
         </View>
@@ -25,10 +26,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1D3354',
     height: '100%',
+    paddingTop: 10,
   },
-  infoArea: {
+  /* infoArea: {
     flex: 1,
-  },
+  }, */
   header: {
     height: 50,
     backgroundColor: '#1D3354',

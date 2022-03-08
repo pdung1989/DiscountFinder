@@ -26,6 +26,7 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import ListItem from '../components/ListItem';
+import GlobalSyles from '../utils/GlobalSyles';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -88,7 +89,7 @@ const Profile = ({route, navigation}) => {
     <>
       <MenuProvider ref={menuP} skipInstanceCheck={true}>
         {ownProfile ? (
-          <SafeAreaView style={styles.full}>
+          <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.full)}>
             <View style={styles.header}>
               {fromBottomNav ? (
                 <Text style={styles.title}>My Profile</Text>
@@ -247,6 +248,7 @@ const styles = StyleSheet.create({
   full: {
     flex: 1,
     backgroundColor: '#1D3354',
+    paddingTop: 10,
   },
   header: {
     height: 50,

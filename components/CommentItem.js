@@ -1,4 +1,11 @@
-import {FlatList, Text, View, Alert, StyleSheet} from 'react-native';
+import {
+  FlatList,
+  Text,
+  View,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {Card, List, Paragraph, IconButton} from 'react-native-paper';
 import {useUser, useTag, useComment} from '../hooks/ApiHooks';
@@ -9,7 +16,7 @@ import {MainContext} from '../contexts/MainContext';
 import InteractiveTextInput from 'react-native-text-input-interactive';
 import {ErrorMessage} from '@hookform/error-message';
 
-const CommentItem = ({singleCommment}) => {
+const CommentItem = ({navigation, singleCommment}) => {
   const {getUserById} = useUser();
   const {deleteComment} = useComment();
   const [commentOwner, setCommentOwner] = useState({username: 'fetching...'});
@@ -59,7 +66,19 @@ const CommentItem = ({singleCommment}) => {
       <Card.Title
         title={commentOwner.username}
         titleStyle={{fontSize: 14, fontWeight: '500', marginLeft: -15}}
-        left={() => <AvatarComponent userId={singleCommment.user_id} />}
+        left={() => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.push('Profile', {
+                navigation: navigation,
+                fromBottomNav: false,
+                userProf: commentOwner,
+              });
+            }}
+          >
+            <AvatarComponent userId={singleCommment.user_id} />
+          </TouchableOpacity>
+        )}
         right={() => (
           <>
             <Text
