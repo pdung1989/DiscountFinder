@@ -23,6 +23,7 @@ import {appId} from '../utils/variables';
 import {Video} from 'expo-av';
 import {View} from 'react-native';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import GlobalSyles from '../utils/GlobalSyles';
 
 /* This view is for adding a new post*/
 const Add = ({navigation}) => {
@@ -145,7 +146,7 @@ const Add = ({navigation}) => {
 
   return (
     <>
-      <SafeAreaView style={styles.full}>
+      <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.full)}>
         <View style={styles.header}>
           <Text style={styles.title}>Add a new post</Text>
         </View>
@@ -177,6 +178,16 @@ const Add = ({navigation}) => {
                     }}
                   />
                 )}
+                <DropDownPicker
+                  open={open}
+                  value={dropDownPickerValue}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setDropDownPickerValue}
+                  setItems={setItems}
+                  containerStyle={styles.picker}
+                  listMode="SCROLLVIEW"
+                />
                 <Controller
                   control={control}
                   rules={{
@@ -194,7 +205,7 @@ const Add = ({navigation}) => {
                       value={value}
                       placeholder="Title"
                       inputContainerStyle={styles.titleInput}
-                      inputStyle={{fontSize: 15}}
+                      inputStyle={styles.textInput}
                       errorMessage={errors.title && errors.title.message}
                     />
                   )}
@@ -221,22 +232,12 @@ const Add = ({navigation}) => {
                         errors.description && errors.description.message
                       }
                       inputContainerStyle={styles.descriptionInput}
-                      inputStyle={{fontSize: 15}}
+                      inputStyle={styles.textInput}
                     />
                   )}
                   name="description"
                 />
 
-                <DropDownPicker
-                  open={open}
-                  value={dropDownPickerValue}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setDropDownPickerValue}
-                  setItems={setItems}
-                  containerStyle={styles.picker}
-                  listMode="SCROLLVIEW"
-                />
                 <Button
                   loading={loading}
                   disabled={!imageSelected}
@@ -263,6 +264,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1D3354',
     height: '100%',
+    paddingTop: 10,
   },
   header: {
     height: 50,
@@ -280,15 +282,24 @@ const styles = StyleSheet.create({
   imagePicker: {
     height: 200,
     marginHorizontal: 10,
-    marginBottom: 5,
+    marginBottom: 15,
     borderRadius: 10,
+  },
+  picker: {
+    paddingTop: 10,
+    marginHorizontal: 10,
+    width: '94%',
+    paddingBottom: 15,
+  },
+  textInput: {
+    fontSize: 15,
+    padding: 10,
   },
   titleInput: {
     height: 40,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 7,
-    padding: 5,
     marginTop: 10,
   },
   descriptionInput: {
@@ -296,17 +307,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 10,
-    padding: 5,
-  },
-  picker: {
-    paddingTop: 0,
-    marginHorizontal: 10,
-    width: '94%',
   },
   uploadButton: {
-    margin: 10,
-    marginTop: 25,
-    paddingVertical: 3,
+    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 7,
   },
 });

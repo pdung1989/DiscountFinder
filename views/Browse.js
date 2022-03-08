@@ -1,21 +1,19 @@
-import React, {useState, useRef} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import GlobalSyles from '../utils/GlobalSyles';
 
 /* This view shows a list of all posts*/
 const Browse = ({navigation, route}) => {
-  const listRef = useRef(null);
-  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 500;
   return (
     <>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.container)}>
         <View style={styles.header}>
           <Text style={styles.title}>Browse</Text>
         </View>
-        <List navigation={navigation} route={route} style={styles.infoArea} />
+        <List navigation={navigation} route={route} />
       </SafeAreaView>
       <FocusAwareStatusBar barStyle="light-content" />
     </>
@@ -28,10 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1D3354',
     height: '100%',
-    paddingTop: 0,
-  },
-  infoArea: {
-    flex: 1,
+    paddingTop: 10,
   },
   header: {
     height: 50,
