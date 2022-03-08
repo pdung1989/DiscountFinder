@@ -1,4 +1,4 @@
-import {FlatList, Text, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useMedia} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appId} from '../utils/variables';
-import {FAB} from 'react-native-paper';
-import LottieView from 'lottie-react-native';
 import {Alert} from 'react-native';
+import NoPostFound from './NoPostFound';
+import ToTheTopButton from './ToTheTopButton';
+import {CONTENT_OFFSET_THRESHOLD} from '../utils/variables';
 
 const List = ({navigation, route}) => {
   const {category} = route.params;
@@ -17,7 +18,6 @@ const List = ({navigation, route}) => {
   const {update} = useContext(MainContext);
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 500;
 
   const fetchAllPosts = async (tag) => {
     try {
@@ -72,63 +72,20 @@ const List = ({navigation, route}) => {
         renderItem={({item}) => (
           <ListItem navigation={navigation} singleMedia={item} />
         )}
-        ListEmptyComponent={
-          <View style={styles.notFoundContainer}>
-            <LottieView
-              source={require('../assets/empty-searching.json')}
-              autoPlay
-              loop
-              speed={2}
-              style={styles.animation}
-            />
-            <Text style={styles.notFoundText}>No post found</Text>
-          </View>
-        }
+        ListEmptyComponent={<NoPostFound />}
       />
       {contentVerticalOffset > CONTENT_OFFSET_THRESHOLD && (
-        <FAB
-          style={styles.fab}
-          small={false}
-          icon="arrow-up"
-          onPress={() =>
-            listRef.current.scrollToOffset({offset: 0, animated: true})
-          }
-        />
+        <ToTheTopButton listRef={listRef} />
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  notFoundContainer: {
-    flex: 1,
-    alignItems: 'center',
-    alignContent: 'center',
-    height: '100%',
-  },
-  notFoundText: {
-    marginVertical: 30,
-    color: '#cdcdcd',
-    fontWeight: '700',
-    fontSize: 20,
-    padding: 10,
-  },
-  animation: {
-    marginVertical: 50,
-    width: 300,
-    height: 300,
-  },
   list: {
     backgroundColor: '#fefefe',
     paddingTop: 15,
     paddingBottom: 15,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 24,
-    backgroundColor: '#9ed8db',
   },
 });
 

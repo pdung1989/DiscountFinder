@@ -122,14 +122,6 @@ const StackScreen = () => {
             options={{
               headerShown: true,
               headerTitle: () => <Title>Modify a post</Title>,
-              /* headerLeft: () => (
-                <IconButton
-                  icon="arrow-left"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />
-              ), */
             }}
           />
           <Stack.Screen

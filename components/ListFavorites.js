@@ -1,12 +1,13 @@
-import {FlatList, StyleSheet, View, Text, Alert} from 'react-native';
+import {FlatList, StyleSheet, Alert} from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import {useFavorite} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {FAB} from 'react-native-paper';
-import LottieView from 'lottie-react-native';
+import NoPostFound from './NoPostFound';
+import ToTheTopButton from './ToTheTopButton';
+import {CONTENT_OFFSET_THRESHOLD} from '../utils/variables';
 
 const ListFavorites = ({navigation}) => {
   const [favoritesArray, setFavoritesArray] = useState([]);
@@ -14,7 +15,6 @@ const ListFavorites = ({navigation}) => {
   const {update} = useContext(MainContext);
   const listRef = useRef(null);
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 500;
 
   const fetchFavoritesByUser = async () => {
     try {
@@ -44,26 +44,10 @@ const ListFavorites = ({navigation}) => {
         renderItem={({item}) => (
           <ListItem navigation={navigation} singleMedia={item} />
         )}
-        ListEmptyComponent={
-          <View style={styles.notFoundContainer}>
-            <LottieView
-              source={require('../assets/community-image.json')}
-              autoPlay
-              style={styles.animation}
-            />
-            <Text style={styles.notFoundText}>No favorite posts</Text>
-          </View>
-        }
+        ListEmptyComponent={<NoPostFound />}
       />
       {contentVerticalOffset > CONTENT_OFFSET_THRESHOLD && (
-        <FAB
-          style={styles.fab}
-          small={false}
-          icon="arrow-up"
-          onPress={() =>
-            listRef.current.scrollToOffset({offset: 0, animated: true})
-          }
-        />
+        <ToTheTopButton listRef={listRef} />
       )}
     </>
   );
@@ -77,30 +61,6 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#fefefe',
     paddingVertical: 15,
-  },
-  notFoundContainer: {
-    flex: 1,
-    alignItems: 'center',
-    height: '100%',
-  },
-  notFoundText: {
-    marginVertical: 50,
-    color: '#808080',
-    fontWeight: '700',
-    fontSize: 16,
-    padding: 10,
-  },
-  animation: {
-    marginVertical: 50,
-    width: 300,
-    height: 300,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 24,
-    backgroundColor: '#d8d8d8',
   },
 });
 

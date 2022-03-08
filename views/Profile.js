@@ -43,6 +43,7 @@ const Profile = ({route, navigation}) => {
   const menuP = useRef();
   const [userMedia, setUserMedia] = useState([]);
   const {loadMedia} = useMedia();
+  const {update} = useContext(MainContext);
 
   const {Popover} = renderers;
   const tag = appId;
@@ -73,8 +74,11 @@ const Profile = ({route, navigation}) => {
   useEffect(() => {
     userProf.user_id == user.user_id && setOwnProfile(true);
     fetchAvatar(userProf.user_id);
-    fetchPosts(tag);
   }, []);
+
+  useEffect(() => {
+    fetchPosts(tag);
+  }, [update]);
 
   const closeMenu = async () => {
     await menuP.current.menuCtx.menuActions.closeMenu();
@@ -174,6 +178,7 @@ const Profile = ({route, navigation}) => {
                 renderItem={({item}) => (
                   <ListItem navigation={navigation} singleMedia={item} />
                 )}
+                initialNumToRender={10}
               />
             </View>
           </SafeAreaView>

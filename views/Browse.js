@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
@@ -6,6 +6,9 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 /* This view shows a list of all posts*/
 const Browse = ({navigation, route}) => {
+  const listRef = useRef(null);
+  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
+  const CONTENT_OFFSET_THRESHOLD = 500;
   return (
     <>
       <SafeAreaView style={styles.container}>
