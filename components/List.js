@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 24,
-    backgroundColor: '#d8d8d8',
+    backgroundColor: '#9ed8db',
   },
 });
 

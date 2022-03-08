@@ -169,7 +169,7 @@ const useMedia = () => {
     try {
       const result = await doFetch(baseUrl + 'media', options);
       result && setLoading(false);
-
+      console.log('result', result);
       return result;
     } catch (error) {
       console.error(error);

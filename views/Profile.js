@@ -15,7 +15,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FocusAwareStatusBar from './FocusAwareStatusBar';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {appId, uploadsUrl} from '../utils/variables';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
@@ -25,7 +25,7 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-import ListItem from './ListItem';
+import ListItem from '../components/ListItem';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
