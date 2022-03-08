@@ -6,7 +6,7 @@ import CommentItem from './CommentItem';
 import {MainContext} from '../contexts/MainContext';
 import {Card, Text} from 'react-native-paper';
 
-const ListComment = ({fileId}) => {
+const ListComment = ({navigation, fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
   const {commentUpdate} = useContext(MainContext);
@@ -40,7 +40,9 @@ const ListComment = ({fileId}) => {
           data={comments}
           keyExtractor={(item) => item.comment_id.toString()}
           initialNumToRender={10}
-          renderItem={({item}) => <CommentItem singleCommment={item} />}
+          renderItem={({item}) => (
+            <CommentItem navigation={navigation} singleCommment={item} />
+          )}
           removeClippedSubviews={true}
         />
       )}

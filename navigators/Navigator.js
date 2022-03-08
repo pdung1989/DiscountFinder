@@ -2,10 +2,10 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
-import ProfilePage from '../components/Profile';
 import Browse from '../views/Browse';
 import Add from '../views/Add';
 import Favorites from '../views/Favorites';
+import Profile from '../views/Profile';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Single from '../views/Single';
 import {MainContext} from '../contexts/MainContext';
@@ -15,7 +15,6 @@ import SuccessfulRegister from '../views/SuccessfulRegister';
 import {Ionicons} from '@expo/vector-icons';
 import EditProfile from '../views/EditProfile';
 import {Title} from 'react-native-paper';
-import Profile from '../components/Profile';
 import ModifyPost from '../views/ModifyPost';
 import Search from '../views/Search';
 import Filter from '../views/Filter';
@@ -123,14 +122,6 @@ const StackScreen = () => {
             options={{
               headerShown: true,
               headerTitle: () => <Title>Modify a post</Title>,
-              /* headerLeft: () => (
-                <IconButton
-                  icon="arrow-left"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />
-              ), */
             }}
           />
           <Stack.Screen
@@ -140,7 +131,7 @@ const StackScreen = () => {
           />
           <Stack.Screen
             name="Profile"
-            component={ProfilePage}
+            component={Profile}
             options={{headerShown: false}}
           />
         </>

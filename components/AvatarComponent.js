@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {useTag} from '../hooks/ApiHooks';
 import {Avatar} from 'react-native-paper';
 import {uploadsUrl} from '../utils/variables';
+import {TouchableOpacity} from 'react-native';
 
-const AvatarComponent = ({userId}) => {
+const AvatarComponent = ({navigation, userId}) => {
   const {getFilesByTag} = useTag();
   const [avatar, setAvatar] = useState('http://placekitten.com/200/300');
 

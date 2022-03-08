@@ -15,7 +15,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {FontAwesome} from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FocusAwareStatusBar from './FocusAwareStatusBar';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {appId, uploadsUrl} from '../utils/variables';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
@@ -25,7 +25,8 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-import ListItem from './ListItem';
+import ListItem from '../components/ListItem';
+import GlobalSyles from '../utils/GlobalSyles';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -43,6 +44,7 @@ const Profile = ({route, navigation}) => {
   const menuP = useRef();
   const [userMedia, setUserMedia] = useState([]);
   const {loadMedia} = useMedia();
+  const {update} = useContext(MainContext);
 
   const {Popover} = renderers;
   const tag = appId;
@@ -73,8 +75,11 @@ const Profile = ({route, navigation}) => {
   useEffect(() => {
     userProf.user_id == user.user_id && setOwnProfile(true);
     fetchAvatar(userProf.user_id);
-    fetchPosts(tag);
   }, []);
+
+  useEffect(() => {
+    fetchPosts(tag);
+  }, [update]);
 
   const closeMenu = async () => {
     await menuP.current.menuCtx.menuActions.closeMenu();
@@ -84,7 +89,7 @@ const Profile = ({route, navigation}) => {
     <>
       <MenuProvider ref={menuP} skipInstanceCheck={true}>
         {ownProfile ? (
-          <SafeAreaView style={styles.full}>
+          <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.full)}>
             <View style={styles.header}>
               {fromBottomNav ? (
                 <Text style={styles.title}>My Profile</Text>
@@ -174,6 +179,7 @@ const Profile = ({route, navigation}) => {
                 renderItem={({item}) => (
                   <ListItem navigation={navigation} singleMedia={item} />
                 )}
+                initialNumToRender={10}
               />
             </View>
           </SafeAreaView>
@@ -242,6 +248,7 @@ const styles = StyleSheet.create({
   full: {
     flex: 1,
     backgroundColor: '#1D3354',
+    paddingTop: 10,
   },
   header: {
     height: 50,
