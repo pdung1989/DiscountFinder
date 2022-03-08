@@ -1,5 +1,5 @@
 import {Alert, StyleSheet, Keyboard} from 'react-native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useComment} from '../hooks/ApiHooks';
@@ -8,14 +8,9 @@ import PropTypes from 'prop-types';
 import {useFocusEffect} from '@react-navigation/native';
 import {MainContext} from '../contexts/MainContext';
 
-const CommentPostForm = ({navigation, fileId}) => {
+const CommentPostForm = ({fileId}) => {
   const {postComment} = useComment(fileId);
   const {commentUpdate, setCommentUpdate} = useContext(MainContext);
-  const [comment, setComment] = useState('');
-
-  const hasError = () => {
-    return comment.length < 3;
-  };
 
   const {
     control,
