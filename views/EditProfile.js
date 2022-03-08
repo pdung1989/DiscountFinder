@@ -19,6 +19,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import InteractiveTextInput from 'react-native-text-input-interactive';
 
+/* This view is for editing the user's profile */
 const EditProfile = ({navigation}) => {
   const {checkUsername, putUser} = useUser();
   const {user, setUser} = useContext(MainContext);

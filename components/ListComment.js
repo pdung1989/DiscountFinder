@@ -1,4 +1,4 @@
-import {FlatList, View, StyleSheet, SafeAreaView} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import {Card, Text} from 'react-native-paper';
 const ListComment = ({fileId}) => {
   const {getCommentsByFileId} = useComment();
   const [comments, setComments] = useState([]);
-  const {commentUpdate, setCommentUpdate} = useContext(MainContext);
+  const {commentUpdate} = useContext(MainContext);
   const [error, setError] = useState(false);
 
   const fetchComments = async () => {

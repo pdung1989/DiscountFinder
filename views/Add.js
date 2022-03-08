@@ -5,7 +5,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableOpacity,
-  TextInput,
   ScrollView,
   Text,
 } from 'react-native';
@@ -25,6 +24,7 @@ import {Video} from 'expo-av';
 import {View} from 'react-native';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
+/* This view is for adding a new post*/
 const Add = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [dropDownPickerValue, setDropDownPickerValue] = useState(null);

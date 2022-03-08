@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet, View, Text, Alert} from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
-import {useFavorite, useMedia} from '../hooks/ApiHooks';
+import {useFavorite} from '../hooks/ApiHooks';
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';

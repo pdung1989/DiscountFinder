@@ -3,6 +3,7 @@ import React from 'react';
 import {StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import AnimatedLoader from 'react-native-animated-loader';
 
+/* This view shows if the user registerd successfully */
 const SuccessfulRegister = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>

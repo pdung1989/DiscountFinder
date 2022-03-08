@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {EvilIcons} from '@expo/vector-icons';
 import {MainContext} from '../contexts/MainContext';
 
+/* This view shows most recent posts*/
 const RecentButton = ({navigation}) => {
   const {update, setUpdate} = useContext(MainContext);
 

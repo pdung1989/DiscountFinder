@@ -31,6 +31,7 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
+/* This view is the profile page*/
 const Profile = ({route, navigation}) => {
   const {fromBottomNav, userProf} = route.params;
   const {setIsLoggedIn} = useContext(MainContext);

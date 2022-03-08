@@ -17,6 +17,7 @@ import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
+/* This view is for Login */
 const Login = ({navigation}) => {
   // props is needed for navigation
   const {setIsLoggedIn, setUser} = useContext(MainContext);

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import CustomHeader from '../components/CustomHeader';
 
+/* This view shows the result of the user's search */
 const Search = ({navigation, route}) => {
   const {category} = route.params;
   const searchterm = category.split('_')[1].toLowerCase();

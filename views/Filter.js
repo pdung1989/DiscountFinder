@@ -1,10 +1,11 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import CustomHeader from '../components/CustomHeader';
 
+/* This view shows posts relating to each category */
 const Filter = ({navigation, route}) => {
   const {category} = route.params;
 

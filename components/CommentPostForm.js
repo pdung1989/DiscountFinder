@@ -1,4 +1,4 @@
-import {View, Alert, StyleSheet, Keyboard} from 'react-native';
+import {Alert, StyleSheet, Keyboard} from 'react-native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,8 +7,6 @@ import {Card, HelperText, TextInput} from 'react-native-paper';
 import PropTypes from 'prop-types';
 import {useFocusEffect} from '@react-navigation/native';
 import {MainContext} from '../contexts/MainContext';
-import InteractiveTextInput from 'react-native-text-input-interactive';
-import {ErrorMessage} from '@hookform/error-message';
 
 const CommentPostForm = ({navigation, fileId}) => {
   const {postComment} = useComment(fileId);

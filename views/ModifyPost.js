@@ -6,20 +6,16 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 import {Button} from 'react-native-paper';
 import PropTypes from 'prop-types';
 import {useForm, Controller} from 'react-hook-form';
-import DropDownPicker from 'react-native-dropdown-picker';
-import * as ImagePicker from 'expo-image-picker';
 import {Card, Input} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
-import {useMedia, useTag} from '../hooks/ApiHooks';
-import {useFocusEffect} from '@react-navigation/native';
-import {appId} from '../utils/variables';
-import {Video} from 'expo-av';
+import {useMedia} from '../hooks/ApiHooks';
 
+/* This page is for modifying the post */
 const ModifyPost = ({navigation, route}) => {
   const {file} = route.params;
   const {loading, putMedia} = useMedia();
