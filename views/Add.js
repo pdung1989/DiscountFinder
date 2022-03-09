@@ -58,7 +58,7 @@ const Add = ({navigation}) => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      quality: 0.5,
+      quality: 0.8,
     });
 
     if (!result.cancelled) {
@@ -127,7 +127,7 @@ const Add = ({navigation}) => {
             onPress: () => {
               reset();
               setUpdate(update + 1);
-              navigation.navigate('Browse');
+              navigation.navigate('Feeds');
             },
           },
         ]);

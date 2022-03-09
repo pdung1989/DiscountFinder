@@ -44,7 +44,7 @@ const ModifyPost = ({navigation, route}) => {
             text: 'OK',
             onPress: () => {
               setUpdate(update + 1);
-              navigation.navigate('Browse');
+              navigation.navigate('Feeds');
             },
           },
         ]);

@@ -1,4 +1,3 @@
-import AnimatedLottieView from 'lottie-react-native';
 import React from 'react';
 import {StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import AnimatedLoader from 'react-native-animated-loader';
