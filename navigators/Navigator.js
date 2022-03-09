@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
-import Browse from '../views/Browse';
+import Feeds from '../views/Feeds';
 import Add from '../views/Add';
 import Favorites from '../views/Favorites';
 import Profile from '../views/Profile';
@@ -35,8 +35,8 @@ const TabScreen = () => {
             case 'Home':
               iconName = 'home-outline';
               break;
-            case 'Browse':
-              iconName = 'menu-outline';
+            case 'Feeds':
+              iconName = 'newspaper-outline';
               break;
             case 'Add':
               iconName = 'add-circle-outline';
@@ -58,8 +58,8 @@ const TabScreen = () => {
         options={{headerShown: false}}
       ></Tab.Screen>
       <Tab.Screen
-        name="Browse"
-        component={Browse}
+        name="Feeds"
+        component={Feeds}
         options={{headerShown: false}}
         initialParams={{category: `all`}}
       ></Tab.Screen>
