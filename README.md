@@ -3,18 +3,19 @@ A React Native media sharing mobile app where people share deals, discounts, cou
 
 ### Installation
 - Clone the repo to your local machine
-`git clone https://github.com/pdung1989/DiscountFinder.git`
+
+  `git clone https://github.com/pdung1989/DiscountFinder.git`
 - Install Node Package Management
 
-`npm install`
+  `npm install`
 - Install Expo CLI
 
-`npm install --global expo-cli`
+  `npm install --global expo-cli`
 - Start the app
 
-`npm start`or `expo start`
+  `npm start`or `expo start`
 - Reload the app
 
-Press key `r`
+  Press key `r`
  
 If you want to to run the app in your physical device, you need to install Expo app in your phone. After that, you scan QR code that runs your app in local machine in  order to open the app on your phone. Your phone and your local machine need to be in the same network.
