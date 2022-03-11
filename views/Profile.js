@@ -39,7 +39,7 @@ const Profile = ({route, navigation}) => {
   const {user} = useContext(MainContext);
   const [currentUser] = useState(userProf);
   const [ownProfile, setOwnProfile] = useState(false);
-  const [avatar, setAvatar] = useState('http://placekitten.com/640');
+  const [avatar, setAvatar] = useState('https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg');
   const {getFilesByTag} = useTag();
   const menuP = useRef();
   const [userMedia, setUserMedia] = useState([]);

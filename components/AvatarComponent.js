@@ -6,7 +6,7 @@ import {TouchableOpacity} from 'react-native';
 
 const AvatarComponent = ({navigation, userId}) => {
   const {getFilesByTag} = useTag();
-  const [avatar, setAvatar] = useState('http://placekitten.com/200/300');
+  const [avatar, setAvatar] = useState('https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg');
 
   const fetchAvatar = async () => {
     try {
