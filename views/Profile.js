@@ -75,9 +75,6 @@ const Profile = ({route, navigation}) => {
   useEffect(() => {
     userProf.user_id == user.user_id && setOwnProfile(true);
     fetchAvatar(userProf.user_id);
-  }, []);
-
-  useEffect(() => {
     fetchPosts(tag);
   }, [update]);
 
@@ -164,12 +161,8 @@ const Profile = ({route, navigation}) => {
                           }}
                           style={styles.profilePic}
                         />
-                        <Text style={styles.username}>
-                          {currentUser.username}
-                        </Text>
-                        <Text style={styles.fullName}>
-                          {currentUser.full_name}
-                        </Text>
+                        <Text style={styles.username}>{user.username}</Text>
+                        <Text style={styles.fullName}>{user.full_name}</Text>
                       </View>
                       <View style={styles.feed}></View>
                     </View>

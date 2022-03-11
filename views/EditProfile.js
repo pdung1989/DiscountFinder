@@ -22,7 +22,7 @@ import InteractiveTextInput from 'react-native-text-input-interactive';
 /* This view is for editing the user's profile */
 const EditProfile = ({navigation}) => {
   const {checkUsername, putUser} = useUser();
-  const {user, setUser} = useContext(MainContext);
+  const {user, setUser, update, setUpdate} = useContext(MainContext);
   const [hidden, setHidden] = useState(true);
   const [hiddenConfirm, setHiddenConfirm] = useState(true);
   const {
@@ -30,6 +30,7 @@ const EditProfile = ({navigation}) => {
     handleSubmit,
     formState: {errors},
     getValues,
+    setValue,
   } = useForm({
     defaultValues: {
       username: user.username,
@@ -43,7 +44,6 @@ const EditProfile = ({navigation}) => {
 
   // edit profile information
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       delete data.confirmPassword;
       if (data.password === '') {
@@ -55,10 +55,21 @@ const EditProfile = ({navigation}) => {
         Alert.alert('Success', userData.message);
         delete data.password;
         setUser(data);
+        setUpdate(update + 1);
         navigation.goBack();
       }
     } catch (error) {
       console.error(error.message);
+      Alert.alert('Modyfying user profile error:', `${error.message}`, [
+        {
+          text: 'OK',
+          onPress: () => {
+            setValue('username', `${user.username}`);
+            setValue('email', `${user.email}`);
+            setValue('full_name', `${user.full_name}`);
+          },
+        },
+      ]);
     }
   };
 
