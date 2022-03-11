@@ -147,7 +147,7 @@ const Single = ({route, navigation}) => {
           behavior={Platform.OS === 'ios' ? 'position' : 'height'}
         >
           <Card style={{height: '100%'}}>
-            <View style={{maxHeight: '72%'}}>
+            <View style={{maxHeight: '76%'}}>
               <ScrollView>
                 <TouchableOpacity
                   onPress={() => Keyboard.dismiss()}
