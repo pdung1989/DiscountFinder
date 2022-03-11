@@ -11,7 +11,7 @@ const RecentButton = ({navigation}) => {
     <TouchableOpacity
       style={styles.button}
       onPress={() => {
-        navigation.navigate('Browse', {category: 'all'});
+        navigation.navigate('Feeds', {category: 'all'});
         setUpdate(update + 1);
       }}
     >

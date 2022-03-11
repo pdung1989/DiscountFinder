@@ -11,7 +11,7 @@ const Browse = ({navigation, route}) => {
     <>
       <SafeAreaView style={(GlobalSyles.AndroidSafeArea, styles.container)}>
         <View style={styles.header}>
-          <Text style={styles.title}>Browse</Text>
+          <Text style={styles.title}>Feeds</Text>
         </View>
         <List navigation={navigation} route={route} />
       </SafeAreaView>
